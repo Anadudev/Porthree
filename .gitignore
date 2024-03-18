@@ -1,0 +1,12 @@
+# ignore file not required in production
+
+/venv
+Porthree/__pycache__/
+Porthree/*/__pycache__/
+Porthree/main/migrations/__pycache__/
+*.zip
+*.pyc
+*/.jpg
+*/.pdf
+/landingpage
+get-pip.py

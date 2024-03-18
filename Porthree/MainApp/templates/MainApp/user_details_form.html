@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Signup - Porthree{% endblock %}
+
+{% block content %}
+<!-- Your page details content goes here -->
+<h2>Enter and define Your Details</h2>
+<form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Create/Update</button>
+</form>
+{% endblock %}

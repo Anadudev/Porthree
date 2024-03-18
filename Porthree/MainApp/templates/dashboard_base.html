@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Base-dashboard - Porthree{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6 col-md-4">
+      <div class="d-flex justify-content-center">
+        <a href="{% url 'user-details' %}">My Details</a>
+      </div>
+      <div class="d-flex justify-content-center">
+        <a href="{% url 'create-skills' %}">My SKills</a>
+      </div>
+      <div class="d-flex justify-content-center">
+        <a href="{% url 'create-project' %}">My Projects</a>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-8">{% block db-content %}{% endblock %}</div>
+  </div>
+</div>
+{% endblock %}

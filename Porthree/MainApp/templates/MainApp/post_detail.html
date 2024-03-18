@@ -1,0 +1,175 @@
+{% extends 'portfolio_nav.html' %}
+{% load static %}
+<!-- Custom styles for this page tables -->
+
+{% block title %}{{ post.title }} - {{ user.username }} posts - Porthree{% endblock %}
+
+{% block nav %}
+<div class="d-sm-inline-block form-inline navbar-search m-lg-auto" style="width: fit-content;">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="nav-link font-weight-bold text-dark" href="{%url 'portfolio' post.user%}">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link font-weight-bold text-dark" href="#">About</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link font-weight-bold text-dark" href="#">Portfolios</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link font-weight-bold text-dark" href="#">Contact</a>
+        </li>
+        <li class="nav-item">
+            <a type="button" class="nav-link font-weight-bold text-dark" data-toggle="modal"
+                data-target="#exampleModalLong">
+                resume
+            </a>
+        </li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container mb-5">
+    <style>
+        img {
+            width: 100%;
+        }
+
+        .post-container::-webkit-scrollbar {
+            width: 7px;
+            /* width of the entire scrollbar */
+        }
+
+        .post-container::-webkit-scrollbar-track {
+            background: #4E73DF;
+            border-radius: 4px;
+            /* color of the tracking area */
+        }
+
+        .post-container::-webkit-scrollbar-thumb {
+            background-color: #fff;
+            /* color of the scroll thumb */
+            border-radius: 2px;
+            /* roundness of the scroll thumb */
+        }
+    </style>
+    <!-- Back to Posts link -->
+    {% if user.is_authenticated %}
+    <!-- Link to create-post endpoint -->
+    <div class="d-flex w-50 justify-content-between">
+        <a href="{% url 'create-post' %}" class="btn btn-primary">Create New Post</a>
+        <a href="{% url 'edit-post' post.id %}" class="btn btn-success font-weight-bold">
+            Edit Post</a>
+    </div>
+    {% endif %}
+
+</div>
+
+<div class="row">
+    <!-- Area Chart -->
+    <div class="col-xl-8 col-lg-7 post-container mb-3" style="overflow-y: scroll; max-height:135vh;">
+        <div class="card shadow mb-4">
+            <div class="car-title text-center">
+                {% if post.post_image %}
+                <div class="post-image rounded-top d-flex justify-content-center p-3" style="background: url('{{ post.post_image.url }}') rgba(0, 0, 0, 0.514);
+                min-height: 300px;
+                width: 100%;
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-position: center; background-blend-mode: multiply;">
+                <h1 class="h1 font-weight-bold text-capitalize align-self-center text-light">{{ post.title|safe }}</h1>
+                </div>
+                {% else %}
+                <h1 class="h1 font-weight-bold text-dark text-capitalize">{{ post.title|safe }}</h1>
+                {% endif %}
+            </div>
+            <!-- Card Header - Dropdown -->
+            <div class="p-3 card-body">
+                <div class="d-flex flex-wrap justify-content-between w-75">
+                    <p>Post by: {{ post.user|safe }}</p>
+                    <p>Posted on: {{ post.created_at|date:"SHORT_DATE_FORMAT" }}</p>
+                </div>
+                <div class="pr-3">
+                    {{ post.content|safe }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- right details -->
+    <div class="col-xl-4 col-lg-5 col-lg-auto">
+        <!-- portfolio card -->
+        <a href="">
+            <div class="card shadow-lg py-3 border border-primary m-3" style="width: 300px;">
+                <div class=" d-flex justify-content-center mb-3 h-100">
+                    {%if user_details.profile_picture%}
+                    <img src="{{user_details.profile_picture.url}}" width="150" height="150" class="rounded"
+                        alt="User profile image">
+                    {%else%}
+                    <img src="{% static 'MainApp/img/undraw_posting_photo.svg' %}" width="150" height="150"
+                        class="rounded" alt="User profile image">
+                    {%endif%}
+                </div>
+                <div class="container">
+                    <div class="h5 font-bold text-center">Anadu Godwin</div>
+                    <small class="font-bold">software Engineer</small>
+                    <div class="card my-3">
+                        <div class="dropdown show">
+                            <a class="btn btn-success dropdown-toggle w-100" href="#" role="button"
+                                id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                skills
+                            </a>
+                            <div class="dropdown-menu w-100 border border-success" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-center">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quidem ad in
+                        voluptate
+                        vitae eligendi dicta
+                        laudantium dolorum voluptatum hic ex.</p>
+                    <div class="d-flex justify-content-center">
+                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400 border mx-1"></i>
+                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400 border mx-1"></i>
+                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400 border mx-1"></i>
+                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400 border mx-1"></i>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <div class="card shadow-lg p-3 border rounded m-3 text-center" style="width: 300px;">
+            <p>Tags: {% for tag in post.get_post_tags %}
+                {{ tag }} |
+                {% if not forloop.last %}, {% endif %}{% endfor%}
+            </p>
+        </div>
+        <div class="card shadow-lg p-3 border rounded m-3 " style="width: 300px;">
+            <p>Likes: {{ post.like }}</p>
+            <p>Shares: {{ post.shared }}</p>
+        </div>
+        <div class="card shadow-lg p-3 border rounded m-3 " style="width: 300px;">
+            <p>Other posts by {{user.username}}</p>
+            <ul>
+                <li><a href="">{{post.title}}</a></li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+<div class="row">
+
+    <!-- Area Chart -->
+    <div class="col-xl-8 col-lg-7">
+        <div class="card shadow mb-4">
+            <h2 class="text-center">Comments:</h2>
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

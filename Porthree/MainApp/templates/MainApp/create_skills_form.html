@@ -1,0 +1,13 @@
+{% extends 'dashboard_base.html' %}
+
+{% block title %}User skills - Porthree{% endblock %}
+
+{% block db-content %}
+  <h2>Create/Update Skills </h2>
+  Note :<br> Enter skills as : skill1, skill2, skill3, .... skilln </h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+{% endblock %}
