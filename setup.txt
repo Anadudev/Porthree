@@ -1,5 +1,5 @@
-yarn create vite Porthree --template react
-cd Porthree
+yarn create vite frontend --template react
+cd frontend
 yarn add -D tailwindcss postcss autoprefixer
 yarn tailwindcss init -p
 yarn dev
