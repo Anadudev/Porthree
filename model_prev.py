@@ -37,7 +37,7 @@ post = {
     'publish':"Boolean",
     'shared':"",
 }
-
+_______________________
 project = {
     'id':"pk",
     'user':"",

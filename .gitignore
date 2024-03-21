@@ -10,3 +10,5 @@ Porthree/main/migrations/__pycache__/
 */.pdf
 /landingpage
 get-pip.py
+*/*/test_image_*.png
+*/*/test_image_*.jpg
