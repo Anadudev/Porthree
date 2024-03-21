@@ -1,43 +1,33 @@
-# myapp/views.py
-
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
-from rest_framework_jwt.settings import api_settings
+from rest_framework.decorators import api_view
 from api.models import UserDetails
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
-
-jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
-jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+from .serializers import UserDetailsSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework_simplejwt.views import TokenObtainPairView
+from .serializers import MyTokenObtainPairSerializer
 
 @api_view(['POST'])
-@permission_classes([AllowAny])
 def signup(request):
-    username = request.data.get('username')
-    password = request.data.get('password')
-    if username is None or password is None:
-        return Response({'error': 'Please provide both username and password'}, status=400)
-    user = UserDetails.objects.create_user(username=username, password=password)
-    return Response({'success': 'User created successfully'}, status=201)
+    serializer = UserDetailsSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['POST'])
-@permission_classes([AllowAny])
-def login(request):
-    username = request.data.get('username')
-    password = request.data.get('password')
-    user = authenticate(username=username, password=password)
-    if user is not None:
-        login(request, user)
-        payload = jwt_payload_handler(user)
-        token = jwt_encode_handler(payload)
-        return Response({'token': token})
-    else:
-        return Response({'error': 'Invalid credentials'}, status=400)
 
-@api_view(['POST'])
-@login_required
-def logout(request):
-    logout(request)
-    return Response({'success': 'Logged out successfully'})
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
 
+class Logout(APIView):
+    def post(self, request, format=None):
+        try:
+            refresh_token = request.data["refresh_token"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)

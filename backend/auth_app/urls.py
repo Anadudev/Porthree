@@ -1,8 +1,8 @@
 from django.urls import path
-import views
+from auth_app.views import signup, MyTokenObtainPairView, Logout
 
 urlpatterns = [
-    path('signup/', views.signup),
-    path('login/', views.login),
-    path('logout/', views.logout),
+    path('signup/', signup, name='signup'),
+    path('login/', MyTokenObtainPairView.as_view(), name='login'),
+    path('logout/', Logout.as_view(), name='logout'),
 ]
