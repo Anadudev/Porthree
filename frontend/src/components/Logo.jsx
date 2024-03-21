@@ -1,9 +1,7 @@
-import React from 'react'
 
-const logo = () => {
-  return (
-    <div>logo</div>
+const logo = () => (
+    <span className="text-2xl font-black font-mono text-blue-900">Porthree</span>
   )
-}
+
 
 export default logo
