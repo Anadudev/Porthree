@@ -1,3 +1,7 @@
+"""
+This module contains tests for the Social model in the Porthree application.
+"""
+
 from django.test import TestCase
 from api.models import Social, UserDetails
 from datetime import datetime
@@ -7,14 +11,24 @@ from unittest import skip
 
 
 class SocialModelTestCase(TestCase):
+    """
+    A test case for the Social model.
+    """
+
     @classmethod
     def setUpTestData(cls):
+        """
+        Set up test data for the SocialModelTestCase.
+        """
         # Create a user for testing
         cls.user = UserDetails.objects.create(
             username="testuser", email="test@example.com"
         )
 
     def test_social_creation(self):
+        """
+        Set up test data for the SocialModelTestCase.
+        """
         # Test social creation
         social = Social.objects.create(
             user=self.user, social="Test Social", url="http://example.com"
@@ -25,6 +39,9 @@ class SocialModelTestCase(TestCase):
 
     @skip("due to TypeError: can't compare offset-naive and offset-aware datetimes")
     def test_created_at_auto_now_add(self):
+        """
+        Set up test data for the SocialModelTestCase.
+        """
         # Test auto_now_add behavior for created_at field
         before_creation = datetime.now()
         social = Social.objects.create(
@@ -36,6 +53,9 @@ class SocialModelTestCase(TestCase):
 
     @skip("will be updated")
     def test_updated_at_auto_now(self):
+        """
+        Set up test data for the SocialModelTestCase.
+        """
         # Test auto_now behavior for updated_at field
         social = Social.objects.create(
             user=self.user, social="Test Social", url="http://example.com"
@@ -47,6 +67,9 @@ class SocialModelTestCase(TestCase):
         self.assertLess(before_update, after_update)
 
     def test_str_representation(self):
+        """
+        Set up test data for the SocialModelTestCase.
+        """
         # Test string representation of the social
         social = Social.objects.create(
             user=self.user, social="Test Social", url="http://example.com"
@@ -54,6 +77,9 @@ class SocialModelTestCase(TestCase):
         self.assertEqual(str(social), "Test Social")
 
     def test_icon_upload(self):
+        """
+        Set up test data for the SocialModelTestCase.
+        """
         # Test image upload for icon field
         test_image_path = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), "test_image.png"

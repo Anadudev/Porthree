@@ -79,6 +79,8 @@ class Post(models.Model):
 
 
 class Project(models.Model):
+    """Represents a project created by a user."""
+
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
@@ -104,6 +106,8 @@ class Project(models.Model):
 
 
 class Tag(models.Model):
+    """Represents a tag that can be associated with posts or projects."""
+
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
     post = models.ManyToManyField(Post, related_name="tags", blank=True)
@@ -117,6 +121,8 @@ class Tag(models.Model):
 
 
 class Tool(models.Model):
+    """Represents a tool used in a project."""
+
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
     project = models.ManyToManyField(Project, related_name="tools", blank=True)
@@ -130,6 +136,8 @@ class Tool(models.Model):
 
 
 class Social(models.Model):
+    """Represents a social media link for a user."""
+
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -143,6 +151,8 @@ class Social(models.Model):
 
 
 class Skill(models.Model):
+    """Represents a skill of a user."""
+
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -155,6 +165,8 @@ class Skill(models.Model):
 
 
 class Education(models.Model):
+    """Represents an educational experience of a user."""
+
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -170,6 +182,8 @@ class Education(models.Model):
 
 
 class Experience(models.Model):
+    """Represents a work experience of a user."""
+
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -185,6 +199,8 @@ class Experience(models.Model):
 
 
 class Rating(models.Model):
+    """Represents a rating given to a project by a user."""
+
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
@@ -198,6 +214,8 @@ class Rating(models.Model):
 
 
 class Comment(models.Model):
+    """Represents a comment on a post by a user."""
+
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
@@ -210,6 +228,8 @@ class Comment(models.Model):
 
 
 class Reply(models.Model):
+    """Represents a reply to a comment or a post."""
+
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True)
@@ -228,6 +248,8 @@ class Reply(models.Model):
 
 
 class Share(models.Model):
+    """Represents a share of a post or a project."""
+
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True)
@@ -245,6 +267,8 @@ class Share(models.Model):
 
 
 class Like(models.Model):
+    """Represents a like on a post, project, comment, reply, or share."""
+
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True)

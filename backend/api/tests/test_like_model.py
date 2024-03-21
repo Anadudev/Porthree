@@ -1,36 +1,72 @@
+"""
+This module contains tests for the Like model in the Porthree application.
+It includes tests for creating likes for different entities such as posts, projects, comments, replies, and shares.
+"""
+
 from django.test import TestCase
 from api.models import Like, UserDetails, Post, Project, Comment, Reply, Share
 from datetime import datetime
 from unittest import skip
 
+
 class LikeModelTestCase(TestCase):
+    """
+    A test case for testing the Like model.
+    It sets up test data for a user, post, project, comment, reply, and share.
+    """
+
     @classmethod
     def setUpTestData(cls):
+        """
+        Sets up test data for the Like model tests.
+        Creates a user, post, project, comment, reply, and share for testing purposes.
+        """
         # Create a user for testing
-        cls.user = UserDetails.objects.create(username='testuser', email='test@example.com')
+        cls.user = UserDetails.objects.create(
+            username="testuser", email="test@example.com"
+        )
 
         # Create a post for testing
-        cls.post = Post.objects.create(user=cls.user, title='Test Post', content='This is a test post', publish=True)
+        cls.post = Post.objects.create(
+            user=cls.user,
+            title="Test Post",
+            content="This is a test post",
+            publish=True,
+        )
 
         # Create a project for testing
-        cls.project = Project.objects.create(user=cls.user, title='Test Project', content='This is a test project', publish=True)
+        cls.project = Project.objects.create(
+            user=cls.user,
+            title="Test Project",
+            content="This is a test project",
+            publish=True,
+        )
 
         # Create a comment for testing
-        cls.comment = Comment.objects.create(user=cls.user, post=cls.post, comment='This is a test comment')
+        cls.comment = Comment.objects.create(
+            user=cls.user, post=cls.post, comment="This is a test comment"
+        )
 
         # Create a reply for testing
-        cls.reply = Reply.objects.create(user=cls.user, post=cls.post, comment=cls.comment, reply='This is a test reply')
+        cls.reply = Reply.objects.create(
+            user=cls.user,
+            post=cls.post,
+            comment=cls.comment,
+            reply="This is a test reply",
+        )
 
         # Create a share for testing
-        cls.share = Share.objects.create(user=cls.user, post=cls.post, thought='This is a test share')
+        cls.share = Share.objects.create(
+            user=cls.user, post=cls.post, thought="This is a test share"
+        )
 
     def test_like_creation_post(self):
+        """
+        Sets up test data for the Like model tests.
+        Creates a user, post, project, comment, reply, and share for testing purposes.
+        """
         # Test like creation for a post
-        like = Like.objects.create(
-            user=self.user,
-            post=self.post,
-            like=True
-        )
+        like = Like.objects.create(user=self.user, post=self.post, like=True)
         self.assertIsNotNone(like)
         self.assertEqual(like.like, True)
         self.assertEqual(like.post, self.post)
@@ -41,12 +77,12 @@ class LikeModelTestCase(TestCase):
         self.assertIsNone(like.share)
 
     def test_like_creation_project(self):
+        """
+        Sets up test data for the Like model tests.
+        Creates a user, post, project, comment, reply, and share for testing purposes.
+        """
         # Test like creation for a project
-        like = Like.objects.create(
-            user=self.user,
-            project=self.project,
-            like=True
-        )
+        like = Like.objects.create(user=self.user, project=self.project, like=True)
         self.assertIsNotNone(like)
         self.assertEqual(like.like, True)
         self.assertEqual(like.project, self.project)
@@ -57,12 +93,12 @@ class LikeModelTestCase(TestCase):
         self.assertIsNone(like.share)
 
     def test_like_creation_comment(self):
+        """
+        Sets up test data for the Like model tests.
+        Creates a user, post, project, comment, reply, and share for testing purposes.
+        """
         # Test like creation for a comment
-        like = Like.objects.create(
-            user=self.user,
-            comment=self.comment,
-            like=True
-        )
+        like = Like.objects.create(user=self.user, comment=self.comment, like=True)
         self.assertIsNotNone(like)
         self.assertEqual(like.like, True)
         self.assertEqual(like.comment, self.comment)
@@ -73,12 +109,12 @@ class LikeModelTestCase(TestCase):
         self.assertIsNone(like.share)
 
     def test_like_creation_reply(self):
+        """
+        Sets up test data for the Like model tests.
+        Creates a user, post, project, comment, reply, and share for testing purposes.
+        """
         # Test like creation for a reply
-        like = Like.objects.create(
-            user=self.user,
-            reply=self.reply,
-            like=True
-        )
+        like = Like.objects.create(user=self.user, reply=self.reply, like=True)
         self.assertIsNotNone(like)
         self.assertEqual(like.like, True)
         self.assertEqual(like.reply, self.reply)
@@ -90,11 +126,11 @@ class LikeModelTestCase(TestCase):
 
     def test_like_creation_share(self):
         # Test like creation for a share
-        like = Like.objects.create(
-            user=self.user,
-            share=self.share,
-            like=True
-        )
+        """
+        Sets up test data for the Like model tests.
+        Creates a user, post, project, comment, reply, and share for testing purposes.
+        """
+        like = Like.objects.create(user=self.user, share=self.share, like=True)
         self.assertIsNotNone(like)
         self.assertEqual(like.like, True)
         self.assertEqual(like.share, self.share)
@@ -106,53 +142,53 @@ class LikeModelTestCase(TestCase):
 
     @skip("needs update")
     def test_created_at_auto_now_add(self):
+        """
+        Sets up test data for the Like model tests.
+        Creates a user, post, project, comment, reply, and share for testing purposes.
+        """
         # Test auto_now_add behavior for created_at field
         before_creation = datetime.now()
-        like = Like.objects.create(
-            user=self.user,
-            post=self.post,
-            like=True
-        )
+        like = Like.objects.create(user=self.user, post=self.post, like=True)
         after_creation = datetime.now()
         self.assertLessEqual(before_creation, like.created_at)
         self.assertLessEqual(like.created_at, after_creation)
 
     def test_str_representation_post(self):
+        """
+        Sets up test data for the Like model tests.
+        Creates a user, post, project, comment, reply, and share for testing purposes.
+        """
         # Test string representation of the like for a post
-        like = Like.objects.create(
-            user=self.user,
-            post=self.post,
-            like=True
-        )
+        like = Like.objects.create(user=self.user, post=self.post, like=True)
         expected_str = f"Like by {self.user} on {self.post} at {like.created_at}"
         self.assertEqual(str(like), expected_str)
 
     def test_str_representation_project(self):
+        """
+        Sets up test data for the Like model tests.
+        Creates a user, post, project, comment, reply, and share for testing purposes.
+        """
         # Test string representation of the like for a project
-        like = Like.objects.create(
-            user=self.user,
-            project=self.project,
-            like=True
-        )
+        like = Like.objects.create(user=self.user, project=self.project, like=True)
         expected_str = f"Like by {self.user} on {self.project} at {like.created_at}"
         self.assertEqual(str(like), expected_str)
 
     def test_str_representation_comment(self):
+        """
+        Sets up test data for the Like model tests.
+        Creates a user, post, project, comment, reply, and share for testing purposes.
+        """
         # Test string representation of the like for a comment
-        like = Like.objects.create(
-            user=self.user,
-            comment=self.comment,
-            like=True
-        )
+        like = Like.objects.create(user=self.user, comment=self.comment, like=True)
         expected_str = f"Like by {self.user} on {self.comment} at {like.created_at}"
         self.assertEqual(str(like), expected_str)
 
     def test_str_representation_reply(self):
+        """
+        Sets up test data for the Like model tests.
+        Creates a user, post, project, comment, reply, and share for testing purposes.
+        """
         # Test string representation of the like for a reply
-        like = Like.objects.create(
-            user=self.user,
-            reply=self.reply,
-            like=True
-        )
+        like = Like.objects.create(user=self.user, reply=self.reply, like=True)
         expected_str = f"Like by {self.user} on {self.reply} at {like.created_at}"
         self.assertEqual(str(like), expected_str)
