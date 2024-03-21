@@ -1,4 +1,4 @@
-const NavLink = [
+export const NavLink = [
     {
         id: 1,
         title: "Home",
@@ -14,4 +14,4 @@ const NavLink = [
         title: "Portfolios",
         url: "#portfolios",
     },
-]
+];

@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+from rest_framework.permissions import BasePermission, IsAuthenticated, SAFE_METHODS
 from .models import (
     UserDetails,
     Post,
@@ -33,6 +34,16 @@ from .serializers import (
 )
 
 
+class ReadOnly(BasePermission):
+    """will allow authenticated users to perform
+    any request. Requests for unauthenticated users
+    will only be permitted if the request method is
+    one of the "safe" methods; GET, HEAD or OPTIONS"""
+
+    def has_permission(self, request, view):
+        return request.method in SAFE_METHODS
+
+
 class UserDetailsViewSet(viewsets.ModelViewSet):
     """adds representations of the to to the API view"""
 
@@ -43,6 +54,7 @@ class UserDetailsViewSet(viewsets.ModelViewSet):
 class PostViewSet(viewsets.ModelViewSet):
     """adds representations of the Post to the API view"""
 
+    permission_classes = [IsAuthenticated | ReadOnly]
     queryset = Post.objects.all().order_by("created_at")
     serializer_class = PostSerializer
 
@@ -50,6 +62,7 @@ class PostViewSet(viewsets.ModelViewSet):
 class ProjectViewSet(viewsets.ModelViewSet):
     """adds representations of the Project to the API view"""
 
+    permission_classes = [IsAuthenticated | ReadOnly]
     queryset = Project.objects.all().order_by("created_at")
     serializer_class = ProjectSerializer
 
@@ -57,6 +70,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
 class TagViewSet(viewsets.ModelViewSet):
     """adds representations of the Tag to the API view"""
 
+    permission_classes = [IsAuthenticated | ReadOnly]
     queryset = Tag.objects.all().order_by("created_at")
     serializer_class = TagSerializer
 
@@ -64,6 +78,7 @@ class TagViewSet(viewsets.ModelViewSet):
 class ToolViewSet(viewsets.ModelViewSet):
     """adds representations of the Tool to the API view"""
 
+    permission_classes = [IsAuthenticated | ReadOnly]
     queryset = Tool.objects.all().order_by("created_at")
     serializer_class = ToolSerializer
 
@@ -71,6 +86,7 @@ class ToolViewSet(viewsets.ModelViewSet):
 class SocialViewSet(viewsets.ModelViewSet):
     """adds representations of the Social to the API view"""
 
+    permission_classes = [IsAuthenticated | ReadOnly]
     queryset = Social.objects.all().order_by("created_at")
     serializer_class = SocialSerializer
 
@@ -78,6 +94,7 @@ class SocialViewSet(viewsets.ModelViewSet):
 class SkillViewSet(viewsets.ModelViewSet):
     """adds representations of the Skill to the API view"""
 
+    permission_classes = [IsAuthenticated | ReadOnly]
     queryset = Skill.objects.all().order_by("created_at")
     serializer_class = SkillSerializer
 
@@ -85,6 +102,7 @@ class SkillViewSet(viewsets.ModelViewSet):
 class EducationViewSet(viewsets.ModelViewSet):
     """adds representations of the Education to the API view"""
 
+    permission_classes = [IsAuthenticated | ReadOnly]
     queryset = Education.objects.all().order_by("created_at")
     serializer_class = EducationSerializer
 
@@ -92,6 +110,7 @@ class EducationViewSet(viewsets.ModelViewSet):
 class ExperienceViewSet(viewsets.ModelViewSet):
     """adds representations of the Experience to the API view"""
 
+    permission_classes = [IsAuthenticated | ReadOnly]
     queryset = Experience.objects.all().order_by("created_at")
     serializer_class = ExperienceSerializer
 
@@ -99,6 +118,7 @@ class ExperienceViewSet(viewsets.ModelViewSet):
 class RatingViewSet(viewsets.ModelViewSet):
     """adds representations of the Rating to the API view"""
 
+    permission_classes = [IsAuthenticated | ReadOnly]
     queryset = Rating.objects.all().order_by("created_at")
     serializer_class = RatingSerializer
 
@@ -106,6 +126,7 @@ class RatingViewSet(viewsets.ModelViewSet):
 class CommentViewSet(viewsets.ModelViewSet):
     """adds representations of the Comment to the API view"""
 
+    permission_classes = [IsAuthenticated | ReadOnly]
     queryset = Comment.objects.all().order_by("created_at")
     serializer_class = CommentSerializer
 
@@ -113,6 +134,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 class ReplyViewSet(viewsets.ModelViewSet):
     """adds representations of the Reply to the API view"""
 
+    permission_classes = [IsAuthenticated | ReadOnly]
     queryset = Reply.objects.all().order_by("created_at")
     serializer_class = ReplySerializer
 
@@ -120,6 +142,7 @@ class ReplyViewSet(viewsets.ModelViewSet):
 class ShareViewSet(viewsets.ModelViewSet):
     """adds representations of the Share to the API view"""
 
+    permission_classes = [IsAuthenticated | ReadOnly]
     queryset = Share.objects.all().order_by("created_at")
     serializer_class = ShareSerializer
 
@@ -127,5 +150,6 @@ class ShareViewSet(viewsets.ModelViewSet):
 class LikeViewSet(viewsets.ModelViewSet):
     """adds representations of the Like to the API view"""
 
+    permission_classes = [IsAuthenticated | ReadOnly]
     queryset = Like.objects.all().order_by("created_at")
     serializer_class = LikeSerializer
