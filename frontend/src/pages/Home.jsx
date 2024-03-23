@@ -1,9 +1,9 @@
-import React from 'react'
-import Nav from '../components/Nav';
+import ResponsiveAppBar from '../components/Nav';
+
 const Home = () => {
     return (
         <div>
-            <Nav />
+            <ResponsiveAppBar />
             <div>Home</div>
         </div>
     )
