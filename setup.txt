@@ -2,4 +2,9 @@ yarn create vite frontend --template react
 cd frontend
 yarn add -D tailwindcss postcss autoprefixer
 yarn tailwindcss init -p
+
+_____start react sever_____
 yarn dev
+
+_____install react-router_____
+yarn add react-router-dom localforage match-sorter sort-by
