@@ -8,3 +8,12 @@ yarn dev
 
 _____install react-router_____
 yarn add react-router-dom localforage match-sorter sort-by
+
+_____install material ui_____
+yarn add @mui/material @emotion/react @emotion/styled
+
+_____install material ui robot font_____
+yarn add @fontsource/roboto
+
+_____install material ui icons_____
+yarn add @mui/icons-material

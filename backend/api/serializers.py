@@ -24,7 +24,11 @@ class UserDetailsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserDetails
-        fields = "__all__"
+
+        fields = ["id", "last_login", "username", "first_name", "last_name","email",
+                "is_active", "date_joined", "middle_name", "career", "bio", "location",
+                "about", "resume", "phone", "primary_color", "secondary_color", "picture",
+                "groups",]
 
 
 class PostSerializer(serializers.ModelSerializer):
