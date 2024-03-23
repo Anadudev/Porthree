@@ -47,6 +47,7 @@ class ReadOnly(BasePermission):
 class UserDetailsViewSet(viewsets.ModelViewSet):
     """adds representations of the to to the API view"""
 
+    permission_classes = [IsAuthenticated | ReadOnly]
     queryset = UserDetails.objects.all().order_by("date_joined")
     serializer_class = UserDetailsSerializer
 
