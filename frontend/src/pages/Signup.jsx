@@ -1,9 +1,13 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { Container, Grid, TextField, Button, Box } from '@mui/material';
-import ResponsiveAppBar from '../components/Nav';
+import DrawerAppBar from '../components/Nav';
+import Footer from '../components/Footer';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import api from '../../apiConfig';
+import { NavLinks } from '../data/NavLinks';
+import { useLocation } from 'react-router-dom';
+import Breadcrumb from '../components/Breadcrumb';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -74,7 +78,8 @@ const Signup = () => {
 
   return (
     <div>
-      <ResponsiveAppBar />
+      <DrawerAppBar pages={NavLinks} />
+      <Breadcrumb path={useLocation()} />
       {successMessage && ( // Conditionally render success message
         <Box
           display="flex"
@@ -190,6 +195,7 @@ const Signup = () => {
           </Grid>
         </Grid>
       </Container>
+      <Footer />
     </div>
   );
 };

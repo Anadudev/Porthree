@@ -3,8 +3,6 @@ import { useRouteError } from "react-router-dom";
 import DrawerAppBar from '../components/Nav';
 import { NavLinks } from '../data/NavLinks';
 import Footer from '../components/Footer';
-
-
 const Error = () => {
     const error = useRouteError();
 
