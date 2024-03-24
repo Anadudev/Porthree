@@ -16,4 +16,4 @@ _____install material ui roboto font_____
 yarn add @fontsource/roboto
 
 _____install material ui icons_____
-yarn add @mui/icons-material
+yarn add @mui/icons-material (run with "--network-timeout 500000" incase of error)

@@ -3,14 +3,14 @@ import DrawerAppBar from '../components/Nav';
 import { UserNavLinks } from '../data/NavLinks';
 import Footer from '../components/Footer';
 
-const Projects = () => {
+const UserAbout = () => {
     return (
         <React.Fragment>
             <DrawerAppBar pages={UserNavLinks}/>
-        <div>Projects</div>
+            <div>UserAbout</div>
             <Footer />
         </React.Fragment>
     )
 }
 
-export default Projects
+export default UserAbout

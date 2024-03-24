@@ -1,19 +1,25 @@
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-// import App from './App.jsx';
-import Home from './pages/Home.jsx';
-import About from './pages/About.jsx';
-import Error from './pages/Error.jsx';
-import Portfolios from './pages/Portfolios.jsx';
-import Portfolio from './pages/Portfolio.jsx';
-import Posts from './pages/Posts.jsx';
-import Post from './pages/Post.jsx';
-import Projects from './pages/Projects.jsx';
-import Project from './pages/Project.jsx';
-import Login from './pages/Login.jsx';
-import Signup from './pages/Signup.jsx';
-import PasswordReset from './pages/PasswordReset.jsx';
-import Dashboard from './pages/Dashboard.jsx';
+// import App from './App';
+import Home from './pages/Home';
+import About from './pages/About';
+import UserAbout from './pages/UserAbout';
+import Error from './pages/Error';
+import Portfolios from './pages/Portfolios';
+import Portfolio from './pages/Portfolio';
+import Posts from './pages/Posts';
+import Post from './pages/Post';
+import Projects from './pages/Projects';
+import Project from './pages/Project';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import PasswordReset from './pages/PasswordReset';
+import Dashboard from './pages/Dashboard';
 import Profile from './components/Dashboard/Profile';
 import EditProfile from './components/Dashboard/EditProfile';
 import DashboardPosts from './components/Dashboard/DashboardPosts';
@@ -55,6 +61,10 @@ const router = createBrowserRouter([
   {
     path: "/:username/posts",
     element: <Posts />,
+  },
+  {
+    path: "/:username/about",
+    element: <UserAbout />,
   },
   {
     path: "/:username/post/:slug",

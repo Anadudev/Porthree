@@ -5,18 +5,19 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
-// import MenuIcon from '@mui/icons-material/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-// import AdbIcon from '@mui/icons-material/Adb';
+import AdbIcon from '@mui/icons-material/Adb';
+import { Link } from "react-router-dom";
 
-const pages = ['Products', 'Pricing', 'Blog'];
+
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-function ResponsiveAppBar() {
+function ResponsiveAppBar({pages}) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -39,25 +40,26 @@ function ResponsiveAppBar() {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
+          {/* app logo */}
           {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
           <Typography
-            variant="h6"
+            variant="h4"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
-              mr: 2,
+              mr: 5,
               display: { xs: 'none', md: 'flex' },
               fontFamily: 'monospace',
               fontWeight: 700,
-              letterSpacing: '.3rem',
+              letterSpacing: '.2rem',
               color: 'inherit',
               textDecoration: 'none',
             }}
           >
-            LOGO
+            Porthree
           </Typography>
-
+          {/* nav toggler */}
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -67,7 +69,7 @@ function ResponsiveAppBar() {
               onClick={handleOpenNavMenu}
               color="inherit"
             >
-              {/* <MenuIcon /> */}
+              <MenuIcon />
             </IconButton>
             <Menu
               id="menu-appbar"
@@ -88,13 +90,14 @@ function ResponsiveAppBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem key={page.id} component={Link} to={page.url} onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">{page.title}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-          {/* <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} /> */}
+          {/* site logo */}
+          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
@@ -113,22 +116,25 @@ function ResponsiveAppBar() {
           >
             LOGO
           </Typography>
+          {/* large screen nav links */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
-                key={page}
+                key={page.id}
+                component={Link}
+                to={page.url}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {page}
+                {page.title}
               </Button>
             ))}
           </Box>
-
+          <Button component={Link} to='/login' color="inherit">Login</Button>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="U" src="/static/images/avatar/2.jpg" />
               </IconButton>
             </Tooltip>
             <Menu

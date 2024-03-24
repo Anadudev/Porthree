@@ -1,8 +1,15 @@
 import React from 'react'
+import DrawerAppBar from '../components/Nav';
+import { UserNavLinks } from '../data/NavLinks';
+import Footer from '../components/Footer';
 
 const Posts = () => {
     return (
-        <div>Posts</div>
+        <React.Fragment>
+            <DrawerAppBar pages={UserNavLinks}/>
+            <div>Posts</div>
+            <Footer />
+        </React.Fragment>
     )
 }
 

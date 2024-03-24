@@ -1,12 +1,19 @@
 import React from 'react';
 import { useRouteError } from "react-router-dom";
+import DrawerAppBar from '../components/Nav';
+import { NavLinks } from '../data/NavLinks';
+import Footer from '../components/Footer';
 
 
 const Error = () => {
     const error = useRouteError();
 
     return (
-        <div>Ernest caused a <b className='text-blue'>{error.statusText ||  error.message}</b> error</div>
+        <React.Fragment>
+            <DrawerAppBar pages={NavLinks}/>
+            <div>Ernest caused a <b className='text-blue'>{error.statusText ||  error.message}</b> error</div>
+            <Footer />
+        </React.Fragment>
     )
 }
 
