@@ -10,7 +10,8 @@ from rest_framework import status
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import MyTokenObtainPairSerializer
 
-@api_view(['POST'])
+
+@api_view(["POST"])
 def signup(request):
     serializer = UserDetailsSerializer(data=request.data)
     if serializer.is_valid():
@@ -21,6 +22,7 @@ def signup(request):
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+
 
 class Logout(APIView):
     def post(self, request, format=None):

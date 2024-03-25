@@ -27,6 +27,12 @@ class UserDetails(AbstractUser):
     primary_color = models.CharField(max_length=50, blank=True, null=True)
     secondary_color = models.CharField(max_length=50, blank=True, null=True)
     picture = models.ImageField(upload_to="profile_pics/", blank=True, null=True)
+    class Meta:
+        """ensuring the email field is unique
+        """
+        constraints = [
+            models.UniqueConstraint(fields=['email'], name='unique_email')
+        ]
 
     def __str__(self):
         """returns the string representation of the  model
