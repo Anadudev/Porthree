@@ -17,3 +17,8 @@ yarn add @fontsource/roboto
 
 _____install material ui icons_____
 yarn add @mui/icons-material (run with "--network-timeout 500000" incase of error)
+
+_____install formik form validator_____
+yarn add formik
+_____install yup form validator_____
+yarn add yup
