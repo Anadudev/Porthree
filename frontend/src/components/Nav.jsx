@@ -12,11 +12,11 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from "react-router-dom";
-
+import ButtonGroup from '@mui/material/ButtonGroup';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-function ResponsiveAppBar({pages}) {
+function ResponsiveAppBar({ pages }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -129,7 +129,10 @@ function ResponsiveAppBar({pages}) {
               </Button>
             ))}
           </Box>
-          <Button component={Link} to='/login' color="inherit">Login</Button>
+          <ButtonGroup variant="text" aria-label="Basic button group " color="inherit">
+            <Button component={Link} to='/login' color="inherit">Login</Button>
+            <Button component={Link} to='/signup' color="inherit">SignUp</Button>
+          </ButtonGroup>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

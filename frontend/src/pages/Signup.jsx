@@ -1,199 +1,149 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import axios from 'axios';
 import { Container, Grid, TextField, Button, Box } from '@mui/material';
 import DrawerAppBar from '../components/Nav';
 import Footer from '../components/Footer';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 import api from '../../apiConfig';
 import { NavLinks } from '../data/NavLinks';
 import { useLocation } from 'react-router-dom';
 import Breadcrumb from '../components/Breadcrumb';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import Alert from '@mui/material/Alert';
 
 const Signup = () => {
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    username: '' // Add username field
+  const navigate = useNavigate();
+  const signupRef = useRef(null);
+  const [success, setSuccess] = useState('');
+  
+  const formik = useFormik({
+    initialValues: {
+      first_name: '',
+      last_name: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      username: ''
+    },
+    validationSchema: Yup.object({
+      first_name: Yup.string().required('First Name is required'),
+      last_name: Yup.string().required('Last Name is required'),
+      email: Yup.string().email('Invalid email address').required('Email is required'),
+      password: Yup.string().min(12, 'Password must be at least 12 characters').required('Password is required'),
+      confirmPassword: Yup.string()
+        .oneOf([Yup.ref('password'), null], 'Passwords must match')
+        .required('Confirm Password is required'),
+      username: Yup.string().matches(/^[a-zA-Z0-9]+$/, 'Username can only contain letters and numbers').required('Username is required'),
+    }),
+    onSubmit: async (values, { setErrors }) => {
+      // console.log(values);
+      try {
+        const response = await axios.post(`${api.apiHost}/auth_app/signup/`, values);
+        const success_message = `Account successfully created ${response.data.username}`;
+        setSuccess(<Alert severity="success">{success_message}.</Alert>);
+        setTimeout(() => {
+          navigate('/login');
+        }, 2000);
+      } catch (error) {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          const errorMessage = error.response.data;
+          Object.entries(errorMessage).forEach(([key, value]) => {
+            setErrors({ [key]: value[0] })
+          });
+          // setErrors({ username: fieldError[0] });
+          // console.log(error.response.data);
+        }
+      }
+    }
   });
-  const [emptyFields, setEmptyFields] = useState({}); // State to track empty fields
-  const [successMessage, setSuccessMessage] = useState(''); // State for success message
-  const navigate = useNavigate(); // Use navigate for navigation
-  const signupRef = useRef(null); // Create a ref for the signup container
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    // Update emptyFields state based on the input change
-    setEmptyFields(prev => ({ ...prev, [name]: value.trim() === '' }));
-  };
-
-  const scrollToSignup = () => {
-    signupRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
-
-  const handleSignUp = async () => {
-    // Check if any field is empty
-    const isAnyFieldEmpty = Object.values(emptyFields).some(isEmpty => isEmpty);
-    if (isAnyFieldEmpty) {
-      alert("Please fill in all required fields.");
-      return; // Prevent the sign-up logic from running
-    }
-
-    // Check if passwords match
-    if (formData.password !== formData.confirmPassword) {
-      alert("Passwords don't match!");
-      return;
-    }
-
-    // Prepare data for submission
-    const userData = {
-      first_name: formData.firstName,
-      last_name: formData.lastName,
-      email: formData.email,
-      password: formData.password,
-      username: formData.username // Include username in the data
-    };
-
-    try {
-      // Send POST request to signup API endpoint
-      const apiUrl = `${api.apiHost}/auth_app/signup/`
-      const response = await axios.post(apiUrl, userData);
-      console.log(response.data);
-      const success_message = `Account successfully created ${response.data.username}`;
-      setSuccessMessage(success_message);
-
-      // After successful signup, redirect to login page
-      // Uncomment the following line and replace '/login' with your actual login route
-      // history.push('/login');
-    } catch (error) {
-      const failure_message = `For some reason your account was not created please try again`;
-      setSuccessMessage(failure_message);
-      console.error("Error signing up:", error);
-      // Handle error, e.g., show an error message to the user
-    }
-  };
 
   return (
     <div>
       <DrawerAppBar pages={NavLinks} />
       <Breadcrumb path={useLocation()} />
-      {successMessage && ( // Conditionally render success message
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          justifyContent="center"
-          height="100vh" // Adjust the height as needed
-          textAlign="center"
-          borderBottom="20px"
-        >
-          <p>{successMessage}</p>
-          <Button variant="contained" color="primary" onClick={() => navigate('/login')}>
-            Go to login
-          </Button> <br></br>
-          <Button variant="contained" color="primary" onClick={scrollToSignup}>
-            Sign up
-          </Button>
-        </Box>
-      )}
-      <Container >
-        <Grid container spacing={3} justifyContent="center" style={{ marginTop: '20px' }}>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              ref={signupRef}
-              name="username" // Add username TextField
-              label="Username"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              value={formData.username}
-              onChange={handleInputChange}
-              required // Mark as required
-              error={emptyFields.username} // Highlight if empty
-              helperText={emptyFields.username && "This field is required"} // Show helper text if empty
-            />
+      <Container>
+        {success}
+        <form onSubmit={formik.handleSubmit}>
+          <Grid container spacing={3} justifyContent="center" style={{ marginTop: '20px' }}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                {...formik.getFieldProps('first_name')}
+                label="First Name"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                error={formik.touched.firstName && formik.errors.firstName}
+                helperText={formik.touched.firstName && formik.errors.firstName}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                {...formik.getFieldProps('last_name')}
+                label="Last Name"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                error={formik.touched.lastName && formik.errors.lastName}
+                helperText={formik.touched.lastName && formik.errors.lastName}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                {...formik.getFieldProps('username')}
+                ref={signupRef}
+                label="Username"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                error={formik.touched.username && formik.errors.username}
+                helperText={formik.touched.username && formik.errors.username}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                {...formik.getFieldProps('email')}
+                label="Email"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                error={formik.touched.email && formik.errors.email}
+                helperText={formik.touched.email && formik.errors.email}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                {...formik.getFieldProps('password')}
+                label="Password"
+                type="password"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                error={formik.touched.password && formik.errors.password}
+                helperText={formik.touched.password && formik.errors.password}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                {...formik.getFieldProps('confirmPassword')}
+                label="Confirm Password"
+                type="password"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                error={formik.touched.confirmPassword && formik.errors.confirmPassword}
+                helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Button variant="contained" color="primary" fullWidth type="submit">
+                Sign Up
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              name="email"
-              label="Email"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              value={formData.email}
-              onChange={handleInputChange}
-              required // Mark as required
-              error={emptyFields.email} // Highlight if empty
-              helperText={emptyFields.email && "This field is required"} // Show helper text if empty
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              name="firstName"
-              label="First Name"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              value={formData.firstName}
-              onChange={handleInputChange}
-              required // Mark as required
-              error={emptyFields.firstName} // Highlight if empty
-              helperText={emptyFields.firstName && "This field is required"} // Show helper text if empty
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              name="lastName"
-              label="Last Name"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              value={formData.lastName}
-              onChange={handleInputChange}
-              required // Mark as required
-              error={emptyFields.lastName} // Highlight if empty
-              helperText={emptyFields.lastName && "This field is required"} // Show helper text if empty
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              name="password"
-              label="Password"
-              type="password"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              value={formData.password}
-              onChange={handleInputChange}
-              required // Mark as required
-              error={emptyFields.password} // Highlight if empty
-              helperText={emptyFields.password && "This field is required"} // Show helper text if empty
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              name="confirmPassword"
-              label="Confirm Password"
-              type="password"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              value={formData.confirmPassword}
-              onChange={handleInputChange}
-              required // Mark as required
-              error={emptyFields.confirmPassword} // Highlight if empty
-              helperText={emptyFields.confirmPassword && "This field is required"} // Show helper text if empty
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Button variant="contained" color="primary" fullWidth onClick={handleSignUp}>
-              Sign Up
-            </Button>
-          </Grid>
-        </Grid>
+        </form>
       </Container>
       <Footer />
     </div>
