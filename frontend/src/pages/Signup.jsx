@@ -30,7 +30,7 @@ const Signup = () => {
       first_name: Yup.string().required('First Name is required'),
       last_name: Yup.string().required('Last Name is required'),
       email: Yup.string().email('Invalid email address').required('Email is required'),
-      password: Yup.string().min(12, 'Password must be at least 12 characters').required('Password is required'),
+      password: Yup.string().min(10, 'Password must be at least 10 characters').required('Password is required'),
       confirmPassword: Yup.string()
         .oneOf([Yup.ref('password'), null], 'Passwords must match')
         .required('Confirm Password is required'),
@@ -41,7 +41,7 @@ const Signup = () => {
       try {
         const response = await axios.post(`${api.apiHost}/auth_app/signup/`, values);
         const success_message = `Account successfully created ${response.data.username}`;
-        setSuccess(<Alert severity="success">{success_message}.</Alert>);
+        setSuccess(<Alert severity="success">{SUCCESS_MESSAGE}.</Alert>);
         setTimeout(() => {
           navigate('/login');
         }, 2000);
@@ -71,23 +71,23 @@ const Signup = () => {
             <Grid item xs={12} sm={6}>
               <TextField
                 {...formik.getFieldProps('first_name')}
-                label="First Name"
+                label="first_name"
                 variant="outlined"
                 fullWidth
                 margin="normal"
-                error={formik.touched.firstName && formik.errors.firstName}
-                helperText={formik.touched.firstName && formik.errors.firstName}
+                error={formik.touched.first_name && formik.errors.first_name}
+                helperText={formik.touched.first_name && formik.errors.first_name}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 {...formik.getFieldProps('last_name')}
-                label="Last Name"
+                label="last_name"
                 variant="outlined"
                 fullWidth
                 margin="normal"
-                error={formik.touched.lastName && formik.errors.lastName}
-                helperText={formik.touched.lastName && formik.errors.lastName}
+                error={formik.touched.last_name && formik.errors.last_name}
+                helperText={formik.touched.last_name && formik.errors.last_name}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
