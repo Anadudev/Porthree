@@ -8,48 +8,56 @@ import axios from 'axios';
 import { Container, TextField, Button, Box, Typography } from '@mui/material'; // Import Typography
 import { useNavigate, Link } from 'react-router-dom'; // Import Link
 import api from '../../apiConfig';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import Alert from '@mui/material/Alert';
 
 const Login = () => {
-  const [formData, setFormData] = useState({
-    username: '',
-    password: '',
-  });
+  const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState('');
-  const navigate = useNavigate(); // Use navigate for navigation
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  const formik = useFormik({
+    initialValues: {
+      first_name: '',
+      last_name: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      username: ''
+    },
+    validationSchema: Yup.object({
+      username: Yup.string().matches(/^[a-zA-Z0-9]+$/, 'Username can only contain letters and numbers').required('Username is required'),
+      password: Yup.string().min(10, 'Password must be at least 12 characters').required('Password is required'),
+    }),
+    onSubmit: async (values) => {
+      // e.preventDefault();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await axios.post(`${api.apiHost}/auth_app/login/`, formData);
-
-      if (response.status === 200) {
-        // The login was successful
-        const token = response.data.access; // The JWT token
-        const user = response.data.user;
-        console.log('Login successful, token saved');
-        // Store the token in local storage or a cookie for future use
-        localStorage.setItem('access_token', token);
-        localStorage.setItem('user', JSON.stringify(user));
-        console.log(response);
-        // Redirect the user to a protected page or the home page
-        navigate(`/dashboard/${user.username}`);
-      } else {
-        setErrorMessage('Login failed. Please check username and password and try again.');
+      try {
+        const response = await axios.post(`${api.apiHost}/auth_app/login/`, values);
+        if (response.status === 200) {
+          // The login was successful
+          const token = response.data.access; // The JWT token
+          const user = response.data.user;
+          // console.log('Login successful, token saved');
+          // Store the token in local storage or a cookie for future use
+          localStorage.setItem('access_token', token);
+          localStorage.setItem('user', JSON.stringify(user));
+          // console.log(response);
+          // Redirect the user to a protected page or the home page
+          navigate(`/dashboard/${user.username}`);
+        } else {
+          // setErrorMessage('Login failed. Please check username and password and try again.');
+        }
+      } catch (error) {
+        setErrorMessage(<Alert severity="error">{error.response.data.detail}.</Alert>);
+        // console.error('Error logging in:', error.response.data);
+        // setErrorMessage('Login failed. Please check username and password and try again.');
       }
-    } catch (error) {
-      console.error('Error logging in:', error);
-      setErrorMessage('Login failed. Please check username and password and try again.');
     }
-  };
+  });
 
   return (
-    <>
+    <div onClick={()=> (setErrorMessage(''))}>
       <DrawerAppBar pages={NavLinks} />
       <Breadcrumb path={useLocation()} />
       <Container>
@@ -58,39 +66,40 @@ const Login = () => {
           flexDirection="column"
           alignItems="center"
           justifyContent="center"
-          height="100vh" // Adjust the height as needed
+          height="60vh"
           textAlign="center"
         >
           <h2>Login</h2>
-          <form onSubmit={handleLogin}>
+          {errorMessage}
+          <form onSubmit={formik.handleSubmit}>
             <TextField
+            {...formik.getFieldProps('username')}
               name="username"
               label="Username"
               variant="outlined"
               fullWidth
               margin="normal"
-              value={formData.username}
-              onChange={handleInputChange}
-              required
+              error={formik.touched.username && formik.errors.username}
+                helperText={formik.touched.username && formik.errors.username}
             />
             <TextField
+            {...formik.getFieldProps('password')}
               name="password"
               label="Password"
               type="password"
               variant="outlined"
               fullWidth
               margin="normal"
-              value={formData.password}
-              onChange={handleInputChange}
-              required
+              error={formik.touched.password && formik.errors.password}
+                helperText={formik.touched.password && formik.errors.password}
             />
-            {errorMessage && <p color='error'>{errorMessage}</p>}
+            {/* {errorMessage && <p>{errorMessage}</p>} */}
             <Button variant="contained" color="primary" type="submit">
               Login
             </Button>
-            {/* Add the "Sign Up" link */}
+            {/* Add the "password reset" link */}
             <Typography component="div" variant="body2" style={{ marginTop: '10px' }}>
-              Forgot your password? <Link to="/reset_password" style={{ color: 'blue' }}>Reset</Link>
+              Forgot your password? <Link to="/password_reset" style={{ color: 'blue' }}>Reset</Link>
             </Typography>
             {/* Add the "Sign Up" link */}
             <Typography component="div" variant="body2" style={{ marginTop: '10px' }}>
@@ -100,7 +109,7 @@ const Login = () => {
         </Box>
       </Container>
       <Footer />
-    </>
+    </div>
   );
 };
 
