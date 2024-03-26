@@ -16,14 +16,13 @@ const Dashboard = () => {
             <Breadcrumb path={useLocation()} />
             <div>
                 Dashboard <br /><Outlet />
-                <h1> Welcome {localStorage.getItem('user')}</h1>
-                <h1> Welcome {localStorage.getItem('access_token')}</h1>
+                <h1> Welcome {JSON.parse(localStorage.getItem('user')).username}</h1>
+                <h1> id {JSON.parse(localStorage.getItem('user')).id}</h1>
+                <h1> token {localStorage.getItem('access_token')}</h1>
                 <Logout />
             </div>
             <Footer />
-
         </React.Fragment>
-
     )
 }
 

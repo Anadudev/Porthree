@@ -34,6 +34,7 @@ ALLOWED_HOSTS = [
 # permit frontend to access server
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:5173',
+    'http://localhost:5174',
 ]
 
 
