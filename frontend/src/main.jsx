@@ -32,6 +32,7 @@ import EditProject from './components/Dashboard/EditProject';
 import EditPost from './components/Dashboard/EditPost';
 import Bio from './components/Dashboard/Bio';
 import EditBio from './components/Dashboard/EditBio';
+import Logout from './components/Dashboard/Logout.jsx';
 
 import './index.css';
 import {
@@ -81,6 +82,10 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <Signup />,
+  },
+  {
+    path: "/logout",
+    element: <Logout />,
   },
   {
     path: "/password_reset",
