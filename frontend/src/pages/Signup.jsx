@@ -16,7 +16,7 @@ const Signup = () => {
   const navigate = useNavigate();
   const signupRef = useRef(null);
   const [success, setSuccess] = useState('');
-  
+
   const formik = useFormik({
     initialValues: {
       first_name: '',
