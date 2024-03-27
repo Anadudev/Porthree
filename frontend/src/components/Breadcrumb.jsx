@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
-import { Link as MuiLink } from "@mui/material";
+import { Link as MuiLink, Box } from "@mui/material";
 import { Link } from "react-router-dom";
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 
@@ -25,6 +25,9 @@ const Breadcrumb = ({ path }) => {
                     ))}
                 </Breadcrumbs>
             </div>
+            <Box p={"10px"}></Box>
+            <hr />
+            <Box p={"20px"}></Box>
         </div>
     )
 }

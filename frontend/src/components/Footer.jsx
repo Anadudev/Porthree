@@ -10,8 +10,8 @@ export default function Footer() {
   return (
     <div>
       <Paper elevation={0} sx={{ height: '120px' }}></Paper>
-      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, padding: '20px' }} elevation={3}>
-        <BottomNavigation showLabels sx={{ display: 'flex', justifyContent: 'space-between', alignContent: 'center' }}>
+      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, padding: '10px' }} elevation={3}>
+        <BottomNavigation  sx={{ display: 'flex', justifyContent: 'space-between', alignContent: 'center' }}>
           <Typography
             variant="h4"
             noWrap

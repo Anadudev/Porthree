@@ -41,7 +41,7 @@ const Signup = () => {
       try {
         const response = await axios.post(`${api.apiHost}/auth_app/signup/`, values);
         const success_message = `Account successfully created ${response.data.username}`;
-        setSuccess(<Alert severity="success">{SUCCESS_MESSAGE}.</Alert>);
+        setSuccess(<Alert severity="success">{success_message}.</Alert>);
         setTimeout(() => {
           navigate('/login');
         }, 2000);
