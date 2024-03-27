@@ -1,4 +1,7 @@
 from rest_framework import viewsets
+from django.http import JsonResponse
+from django.views import View
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.permissions import BasePermission, IsAuthenticated, SAFE_METHODS
 from .models import (
     UserDetails,
@@ -154,3 +157,15 @@ class LikeViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated | ReadOnly]
     queryset = Like.objects.all().order_by("created_at")
     serializer_class = LikeSerializer
+
+class GetUserByUsernameView(View):
+    def get(self, request, username):
+        try:
+            user = UserDetails.objects.get(username=username)
+            serialized_user = {
+                'id': user.id,
+                'username': user.username,
+            }
+            return JsonResponse(serialized_user)
+        except ObjectDoesNotExist:
+            return JsonResponse({'error': 'User not found'}, status=404)
