@@ -122,6 +122,10 @@ class Tag(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        # Ensure that a user cannot have duplicate tags
+        unique_together = ['user', 'tag']
+
     def __str__(self):
         return str(self.tag)
 
@@ -136,6 +140,10 @@ class Tool(models.Model):
     tool = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        # Ensure that a user cannot have duplicate tools
+        unique_together = ['user', 'tool']
 
     def __str__(self):
         return str(self.tool)
@@ -152,6 +160,10 @@ class Social(models.Model):
     social = models.CharField(max_length=255)
     url = models.URLField()
 
+    class Meta:
+        # Ensure that a user cannot have duplicate social
+        unique_together = ['user', 'social']
+
     def __str__(self):
         return str(self.social)
 
@@ -165,6 +177,10 @@ class Skill(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     skill = models.CharField(max_length=255)
     detail = models.TextField()
+
+    class Meta:
+        # Ensure that a user cannot have duplicate skills
+        unique_together = ['user', 'skill']
 
     def __str__(self):
         return str(self.skill)
@@ -180,8 +196,12 @@ class Education(models.Model):
     institute = models.CharField(max_length=255)
     degree = models.CharField(max_length=255)
     start_date = models.DateField()
-    end_date = models.DateField()
+    end_date = models.DateField(blank=True, null=True)
     detail = models.TextField()
+
+    class Meta:
+        # Ensure that a user cannot have duplicate institute
+        unique_together = ['user', 'institute']
 
     def __str__(self):
         return f"{self.degree} at {self.institute}"
@@ -197,8 +217,12 @@ class Experience(models.Model):
     company = models.CharField(max_length=255)
     position = models.CharField(max_length=255)
     start_date = models.DateField()
-    end_date = models.DateField()
+    end_date = models.DateField(blank=True, null=True)
     detail = models.TextField()
+
+    class Meta:
+        # Ensure that a user cannot have duplicate companies
+        unique_together = ['user', 'company']
 
     def __str__(self):
         return f"{self.position} at {self.company}"

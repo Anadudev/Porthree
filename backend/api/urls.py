@@ -13,27 +13,27 @@ router.register(r"posts", views.PostViewSet)
 # projects route definition
 router.register(r"projects", views.ProjectViewSet)
 # Tag route definition
-router.register(r"Tag", views.TagViewSet)
+router.register(r"tags", views.TagViewSet)
 # Tool route definition
-router.register(r"Tool", views.ToolViewSet)
+router.register(r"tools", views.ToolViewSet)
 # Social route definition
-router.register(r"Social", views.SocialViewSet)
+router.register(r"socials", views.SocialViewSet)
 # Skill route definition
-router.register(r"Skill", views.SkillViewSet)
+router.register(r"skills", views.SkillViewSet)
 # Education route definition
-router.register(r"Education", views.EducationViewSet)
+router.register(r"educations", views.EducationViewSet)
 # Experience route definition
-router.register(r"Experience", views.ExperienceViewSet)
+router.register(r"experiences", views.ExperienceViewSet)
 # Rating route definition
-router.register(r"Rating", views.RatingViewSet)
+router.register(r"ratings", views.RatingViewSet)
 # Comment route definition
-router.register(r"Comment", views.CommentViewSet)
+router.register(r"comments", views.CommentViewSet)
 # Reply route definition
-router.register(r"Reply", views.ReplyViewSet)
+router.register(r"replies", views.ReplyViewSet)
 # Share route definition
-router.register(r"Share", views.ShareViewSet)
+router.register(r"shares", views.ShareViewSet)
 # Like route definition
-router.register(r"Like", views.LikeViewSet)
+router.register(r"likes", views.LikeViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
