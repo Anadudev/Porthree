@@ -26,16 +26,16 @@ const Hero = () => {
   // console.log(user)
   return (
     <Box component="section" sx={{ width: '100%' }}>
-      <Grid container rowSpacing={1} columnSpacing={{ xs: 2, sm: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} sx={{ flexGrow: 1 }}>
+      <Grid container rowSpacing={1} columnSpacing={{ xs: 2, sm: 2, md: 3 }} textAlign={{xs:"center",  sm: "left", md: "left"}} columns={{ xs: 4, sm: 8, md: 12 }} sx={{ flexGrow: 1 }}>
         <Grid item xs={7} md={6}>
-          <Typography variant="h3" component="h2" sx={{ fontWeight: '900', marginBottom: "30px" }}>{user.first_name|| 'User'} {user.last_name|| 'User'}</Typography>
+          <Typography variant="h3" component="h2" sx={{ fontWeight: '900'}} >{user.first_name|| 'User'} {user.last_name|| 'User'}</Typography>
           <Typography variant="h1" component="h1" sx={{ fontWeight: '900', marginBottom: "30px" }}>{user.career || 'career'}</Typography>
           <Typography variant="p" component="p">{user.bio || 'bio'}</Typography>
         </Grid>
         <Grid item xs={5} md={6}>
           <Box sx={{
-            '--Grid-borderWidth': '5px',
-          }} p={"10px"}>
+            display:"flex", alignItems:"center", justifyContent:"center"
+          }} p={"10px"} className="h-full  md:w-full">
             <CardMedia component="img" height="194" image={BgImage} sx={{
               borderRadius: '10px',
             }} />
@@ -44,8 +44,8 @@ const Hero = () => {
       </Grid>
       <Box>
         <ButtonGroup variant="text" aria-label="Basic button group " color="primary">
-          <Button component={Link} to='#about' color="primary">About</Button>
-          <Button component={Link} to='#skills' color="primary">Skills</Button>
+          <Button Link href='#about' color="primary">About</Button>
+          <Button Link href='#skills' color="primary">Skills</Button>
         </ButtonGroup>
       </Box>
     </Box>

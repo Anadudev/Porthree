@@ -11,6 +11,78 @@ import BgImage from "/src/assets/image.jpg";
 import { Typography, Paper, Avatar, Chip, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Badge from '@mui/material/Badge';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+
+const options = [
+    'None',
+    'Atria',
+    'Callisto',
+    'Dione',
+    'Ganymede',
+    'Hangouts Call',
+    'Luna',
+    'Oberon',
+    'Phobos',
+    'Pyxis',
+    'Sedna',
+    'Titania',
+    'Triton',
+    'Umbriel',
+];
+
+const ITEM_HEIGHT = 48;
+
+export function SkillMenu() {
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    return (
+        <div>
+
+            <IconButton
+                aria-label="more"
+                id="long-button"
+                color='primary'
+                aria-controls={open ? 'long-menu' : undefined}
+                aria-expanded={open ? 'true' : undefined}
+                aria-haspopup="true"
+                onClick={handleClick}
+            >
+                <Typography>Skills</Typography><MoreVertIcon />
+            </IconButton>
+            <Menu
+                id="long-menu"
+                MenuListProps={{
+                    'aria-labelledby': 'long-button',
+                }}
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                PaperProps={{
+                    style: {
+                        maxHeight: ITEM_HEIGHT * 4.5,
+                        width: '20ch',
+                    },
+                }}
+            >
+                {options.map((option) => (
+                    <MenuItem key={option} /* selected={option === 'Pyxis'} */ onClick={handleClose}>
+                        {option}
+                    </MenuItem>
+                ))}
+            </Menu>
+        </div>
+    );
+}
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
@@ -70,7 +142,6 @@ const Portfolios = () => {
                                         </StyledBadge>
                                     </Box>
                                     <Paper elevation={6} sx={{ pt: '40px', px: '10px', pb: '10px', borderRadius: '20px' }}>
-
                                         <Box sx={{ display: "flex", justifyContent: 'space-between' }}>
                                             <Box>
                                                 <Typography component='p' className='capitalize text-center pr-2' >projects <br /> <b>10</b>+</Typography>
@@ -80,14 +151,19 @@ const Portfolios = () => {
                                             <Box><Typography component='p' className='capitalize text-center pl-2' >posts <br /> <b>1K</b>+</Typography>
                                             </Box>
                                         </Box>
-                                        <Typography variant='p' component='p' sx={{ fontWeight: '700' }}>Bio:</Typography>
+                                        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                            <Typography variant='p' component='p' sx={{ fontWeight: '700' }}>Bio:</Typography>
+                                            <Box sx={{ display: "flex", alignItems: "center" }}>
+                                                <SkillMenu />
+                                            </Box>
+                                        </Box>
                                         <Typography variant='p' component='p'>{data.detail}</Typography>
                                         <Box className="mt-3 flex justify-center">
                                             <Chip
                                                 label="Portfolio"
                                                 color="success"
                                                 component="a"
-                                                href="#basic-chip"
+                                                href="http://localhost:5173/admin"
                                                 variant="outlined"
                                                 clickable
                                             />

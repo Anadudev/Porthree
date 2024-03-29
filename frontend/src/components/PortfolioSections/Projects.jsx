@@ -5,7 +5,7 @@ import Tab from '@mui/material/Tab';
 import { Typography, Grid } from '@mui/material';
 import Box from '@mui/material/Box';
 import SectionHeader from './SectionHeader';
-import ProjectCard from './ProjectCard';
+import PostCard from './PostCard';
 import { Projects as pj } from '../../data/Info';
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -53,7 +53,7 @@ function TabData() {
         {pj.map((data) => (
           <Grid item key={data.id}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
             <Box className=" p-2">
-              <ProjectCard />
+              <PostCard type='Project' />
             </Box>
           </Grid>
         ))}

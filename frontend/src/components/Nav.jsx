@@ -15,45 +15,45 @@ import { Link } from "react-router-dom";
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Logout from './Dashboard/Logout';
 
-const settings = ['Profile', 'Account', 'Dashboard', <Logout key={1}/>];
+const settings = ['My Portfolio', 'My Account', 'My Dashboard', <Logout key={1} />];
 
 function ResponsiveAppBar({ pages }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-  const OutUser = ()=> (<ButtonGroup variant="text" aria-label="Basic button group " color="inherit">
-  <Button component={Link} to='/login' color="inherit">Login</Button>
-  <Button component={Link} to='/signup' color="inherit">SignUp</Button>
-</ButtonGroup>)
-const InUser = () => (<Box sx={{ flexGrow: 0 }}>
-  <Tooltip title="Open settings">
-    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-      <Avatar alt="U" src="/static/images/avatar/2.jpg" />
-    </IconButton>
-  </Tooltip>
-  <Menu
-    sx={{ mt: '45px' }}
-    id="menu-appbar"
-    anchorEl={anchorElUser}
-    anchorOrigin={{
-      vertical: 'top',
-      horizontal: 'right',
-    }}
-    keepMounted
-    transformOrigin={{
-      vertical: 'top',
-      horizontal: 'right',
-    }}
-    open={Boolean(anchorElUser)}
-    onClose={handleCloseUserMenu}
-  >
-    {settings.map((setting) => (
-      <MenuItem key={setting} onClick={handleCloseUserMenu}>
-        <Typography textAlign="center">{setting}</Typography>
-      </MenuItem>
-    ))}
-  </Menu>
-</Box>)
+  const OutUser = () => (<ButtonGroup variant="text" aria-label="Basic button group " color="inherit">
+    <Button component={Link} to='/login' color="inherit">Login</Button>
+    <Button component={Link} to='/signup' color="inherit">SignUp</Button>
+  </ButtonGroup>)
+  const InUser = () => (<Box sx={{ flexGrow: 0 }}>
+    <Tooltip title="Open settings">
+      <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+        <Avatar alt="U" src="/static/images/avatar/2.jpg" />
+      </IconButton>
+    </Tooltip>
+    <Menu
+      sx={{ mt: '45px' }}
+      id="menu-appbar"
+      anchorEl={anchorElUser}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      keepMounted
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      open={Boolean(anchorElUser)}
+      onClose={handleCloseUserMenu}
+    >
+      {settings.map((setting) => (
+        <MenuItem key={setting} onClick={handleCloseUserMenu}>
+          <Typography textAlign="center">{setting}</Typography>
+        </MenuItem>
+      ))}
+    </Menu>
+  </Box>)
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -165,8 +165,8 @@ const InUser = () => (<Box sx={{ flexGrow: 0 }}>
             ))}
           </Box>
 
-          {localStorage.getItem('access_token')!== null ? InUser() : OutUser()}
-          
+          {localStorage.getItem('access_token') !== null ? InUser() : OutUser()}
+
         </Toolbar>
       </Container>
     </AppBar>
