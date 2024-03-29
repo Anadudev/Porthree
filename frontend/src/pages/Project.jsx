@@ -4,8 +4,10 @@ import { UserNavLinks } from '../data/NavLinks';
 import Footer from '../components/Footer';
 import Breadcrumb from '../components/Breadcrumb';
 import { useLocation } from 'react-router-dom';
+import PageTitle from './PageTitle';
 
 const Project = () => {
+        PageTitle("Project");
     return (
         <React.Fragment>
             <DrawerAppBar pages={UserNavLinks}/>

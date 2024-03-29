@@ -21,7 +21,6 @@ import Signup from './pages/Signup';
 import PasswordReset from './pages/PasswordReset';
 import Dashboard from './pages/Dashboard';
 import Logout from './components/Dashboard/Logout.jsx';
-
 import './index.css';
 import {
   createBrowserRouter,
@@ -46,6 +45,7 @@ const router = createBrowserRouter([
   {
     path: "/:username",
     element: <Portfolio />,
+    loader: async ({params}) => {return fetch(`http://127.0.0.1:8000/api/user/${params.username}`)},
   },
   {
     path: "/:username/posts",

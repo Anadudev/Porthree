@@ -11,8 +11,10 @@ import Breadcrumb from '../components/Breadcrumb';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Alert from '@mui/material/Alert';
+import PageTitle from './PageTitle';
 
 const Signup = () => {
+      PageTitle("SignUp");
   const navigate = useNavigate();
   const signupRef = useRef(null);
   const [success, setSuccess] = useState('');

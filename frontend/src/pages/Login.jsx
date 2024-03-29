@@ -11,8 +11,10 @@ import api from '../../apiConfig';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Alert from '@mui/material/Alert';
+import PageTitle from './PageTitle';
 
 const Login = () => {
+      PageTitle("Login");
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState('');
 

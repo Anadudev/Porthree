@@ -11,31 +11,15 @@ export default function Footer() {
     <div>
       <Paper elevation={0} sx={{ height: '120px' }}></Paper>
       <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, padding: '10px' }} elevation={3}>
-        <BottomNavigation  sx={{ display: 'flex', justifyContent: 'space-between', alignContent: 'center' }}>
-          <Typography
-            variant="h4"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.2rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >Porthree </Typography>
+        <BottomNavigation>
           <Typography
             noWrap
             sx={{
               display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
               fontWeight: 700,
-              letterSpacing: '.2rem',
               color: 'inherit',
-              textDecoration: 'none',
             }}
+            className='text-center'
           >Porthree copyright {year} </Typography>
           <BottomNavigationAction />
         </BottomNavigation>

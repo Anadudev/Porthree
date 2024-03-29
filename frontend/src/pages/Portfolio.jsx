@@ -11,8 +11,11 @@ import Skills from '../components/PortfolioSections/Skills';
 import Projects from '../components/PortfolioSections/Projects';
 import Blog from '../components/PortfolioSections/Blog';
 import Contact from '../components/PortfolioSections/Contact';
+import PageTitle from './PageTitle';
 
 const Portfolio = () => {
+        PageTitle("Portfolio");
+
     return (
         <React.Fragment>
             <DrawerAppBar pages={UserNavLinks} />

@@ -18,7 +18,7 @@ import ToolsComponent from '../components/Dashboard/Tools';
 import ProjectsComponent from '../components/Projects';
 import EducationComponent from '../components/Projects';
 import PostsComponent from '../components/Dashboard/Posts';
-
+import PageTitle from './PageTitle';
 const boardStructure = {
   user: <UserComponent />,
   tools: <ToolsComponent />,
@@ -30,6 +30,7 @@ const boardStructure = {
 
 
 const Dashboard = () => {
+    PageTitle("Dashboard");
   const [activeLink, setActiveLink] = useState('user'); // Default active link
 
   const handleLinkClick = (link) => {
