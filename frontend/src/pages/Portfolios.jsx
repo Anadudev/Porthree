@@ -5,7 +5,7 @@ import { Skills as sk } from '../data/Info';
 import PageTitle from './PageTitle';
 import DrawerAppBar from '../components/Nav';
 import Breadcrumb from '../components/Breadcrumb';
-import { UserNavLinks } from '../data/NavLinks';
+import { NavLinks } from '../data/NavLinks';
 import { useLocation } from 'react-router-dom';
 import BgImage from "/src/assets/image.jpg";
 import { Typography, Paper, Avatar, Chip, Button } from '@mui/material';
@@ -47,7 +47,7 @@ const Portfolios = () => {
     return (
         <Box component="section" id="skills">
 
-            <DrawerAppBar pages={UserNavLinks} />
+            <DrawerAppBar pages={NavLinks} />
             <Box p={"50px"}>
                 <Breadcrumb path={useLocation()} />
                 <Box sx={{ flexGrow: 1, p: 2 }}>
