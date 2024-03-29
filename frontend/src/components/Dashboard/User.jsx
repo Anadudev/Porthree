@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Grid, Typography, Button, TextField, Avatar } from '@mui/material';
 import Logout from './Logout';
 import axios from 'axios';
+import PhoneNumberInputWithLocation from '../PnoneNumberInput';
 
 const UserComponent = () => {
  const [user, setUser] = useState({}); // State to store user data
@@ -75,50 +76,131 @@ const UserComponent = () => {
               />
               {isEdit ? (
                 <>
-                 <TextField
-                    label="Username"
-                    name="username"
-                    value={user.username}
-                    onChange={handleChange}
-                    fullWidth
-                 />
-                 <TextField
-                    label="First Name"
-                    name="first_name"
-                    value={user.first_name}
-                    onChange={handleChange}
-                    fullWidth
-                 />
-                 <TextField
-                    label="Last Name"
-                    name="last_name"
-                    value={user.last_name}
-                    onChange={handleChange}
-                    fullWidth
-                 />
-                 <TextField
-                    label="Email"
-                    name="email"
-                    value={user.email}
-                    onChange={handleChange}
-                    fullWidth
-                 />
-                 <TextField
-                    label="Bio"
-                    name="bio"
-                    value={user.bio || ''}
-                    onChange={handleChange}
-                    fullWidth
-                    multiline
-                    rows={4}
-                 />
-                 <TextField
-                    label="Location"
-                    name="location"
-                    value={user.location || ''}
-                    onChange={handleChange}
-                    fullWidth
-                 />
+                   <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                      <TextField
+                        label="Picture"
+                        name="picture"
+                        value={user.picture || ''}
+                        onChange={handleChange}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Username"
+                        name="username"
+                        value={user.username}
+                        onChange={handleChange}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="First Name"
+                        name="first_name"
+                        value={user.first_name}
+                        onChange={handleChange}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Middle Name"
+                        name="middle_name"
+                        value={user.middle_name || ''}
+                        onChange={handleChange}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Last Name"
+                        name="last_name"
+                        value={user.last_name}
+                        onChange={handleChange}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Email"
+                        name="email"
+                        value={user.email}
+                        onChange={handleChange}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <PhoneNumberInputWithLocation value={user.phone || ''} onChange={handleChange}/>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Career"
+                        name="career"
+                        value={user.career || ''}
+                        onChange={handleChange}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Bio"
+                        name="bio"
+                        value={user.bio || ''}
+                        onChange={handleChange}
+                        fullWidth
+                        multiline
+                        rows={4}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Location"
+                        name="location"
+                        value={user.location || ''}
+                        onChange={handleChange}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="About"
+                        name="about"
+                        value={user.about || ''}
+                        onChange={handleChange}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Primary Color"
+                        name="primary_color"
+                        value={user.primary_color || ''}
+                        onChange={handleChange}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Secondary Color"
+                        name="secondary_color"
+                        value={user.secondary_color || ''}
+                        onChange={handleChange}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Resume"
+                        name="resume"
+                        value={user.resume || ''}
+                        onChange={handleChange}
+                        fullWidth
+                      />
+                    </Grid>
+                  </Grid>
+                  <br></br>
                  <Button variant="contained" color="primary" onClick={handleSave}>
                     Save
                  </Button>
