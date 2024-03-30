@@ -65,32 +65,33 @@ export function ContactList({ contacts, socials }) {
     <Paper elevation={6} sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
       <nav aria-label="main mailbox folders">
         <List>
-          <ListItem disablePadding>
+          {contacts.location && <ListItem disablePadding>
             <ListItemButton>
               <ListItemIcon>
                 <LocationOnIcon />
               </ListItemIcon>
-              <ListItemText primary={contacts.location || "location"} />
+              <ListItemText primary={contacts.location || ""} />
             </ListItemButton>
-          </ListItem>
+          </ListItem>}
           <Divider />
-          <ListItem disablePadding>
+          {contacts.phone && <ListItem disablePadding>
             <ListItemButton>
               <ListItemIcon>
                 <LocalPhoneIcon />
               </ListItemIcon>
-              <ListItemText primary={contacts.phone || "phone"} />
+              <ListItemText primary={contacts.phone || ""} />
             </ListItemButton>
           </ListItem>
+          }
           <Divider />
-          <ListItem disablePadding>
+          {contacts.email && <ListItem disablePadding>
             <ListItemButton>
               <ListItemIcon>
                 <InboxIcon />
               </ListItemIcon>
-              <ListItemText primary={contacts.mail || "Inbox"} />
+              <ListItemText primary={contacts.email || ""} />
             </ListItemButton>
-          </ListItem>
+          </ListItem>}
         </List>
       </nav>
       <Box sx={{ flexGrow: 1, p: 2 }}>
@@ -101,8 +102,8 @@ export function ContactList({ contacts, socials }) {
           justifyContent={'center'}
         >
           {socials?.map((data, index) => (
-            <Paper elevation={3} key={index} className="px-2 py-1 w-fit mx-2">
-              <Link href={data.url} className='uppercase' sx={{ fontWeight: '900' }}>{data.social}</Link>
+            <Paper elevation={3} key={index} className="px-2 py-1 w-fit m-2">
+              <Link href={data.url} className='capitalize' sx={{ fontWeight: '900' }}>{data.social}</Link>
             </Paper>
           ))}
         </Grid>

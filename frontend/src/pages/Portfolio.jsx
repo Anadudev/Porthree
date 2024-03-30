@@ -73,10 +73,11 @@ const Portfolio = () => {
                     <>
                         <Breadcrumb path={currLoc} />
                         <Hero props={user} />
+                        {/* confirm this about section  condition */}
                         <About user={user} tools={tools} experience={experiences} education={educations}/>
-                        <Skills skills={skills} />
-                        <Projects />
-                        <Blog />
+                        {skills && <Skills skills={skills} />}
+                        {<Projects />}
+                        {<Blog />}
                         <Contact contacts={contacts} socials={socials}/>
                     </>)}
             </Box>

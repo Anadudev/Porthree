@@ -27,12 +27,11 @@ class UserDetails(AbstractUser):
     primary_color = models.CharField(max_length=50, blank=True, null=True)
     secondary_color = models.CharField(max_length=50, blank=True, null=True)
     picture = models.ImageField(upload_to="profile_pics/", blank=True, null=True)
+
     class Meta:
-        """ensuring the email field is unique
-        """
-        constraints = [
-            models.UniqueConstraint(fields=['email'], name='unique_email')
-        ]
+        """ensuring the email field is unique"""
+
+        constraints = [models.UniqueConstraint(fields=["email"], name="unique_email")]
 
     def __str__(self):
         """returns the string representation of the  model
@@ -124,7 +123,7 @@ class Tag(models.Model):
 
     class Meta:
         # Ensure that a user cannot have duplicate tags
-        unique_together = ['user', 'tag']
+        unique_together = ["user", "tag"]
 
     def __str__(self):
         return str(self.tag)
@@ -143,7 +142,7 @@ class Tool(models.Model):
 
     class Meta:
         # Ensure that a user cannot have duplicate tools
-        unique_together = ['user', 'tool']
+        unique_together = ["user", "tool"]
 
     def __str__(self):
         return str(self.tool)
@@ -162,7 +161,7 @@ class Social(models.Model):
 
     class Meta:
         # Ensure that a user cannot have duplicate social
-        unique_together = ['user', 'social']
+        unique_together = ["user", "social"]
 
     def __str__(self):
         return str(self.social)
@@ -180,7 +179,7 @@ class Skill(models.Model):
 
     class Meta:
         # Ensure that a user cannot have duplicate skills
-        unique_together = ['user', 'skill']
+        unique_together = ["user", "skill"]
 
     def __str__(self):
         return str(self.skill)
@@ -201,7 +200,7 @@ class Education(models.Model):
 
     class Meta:
         # Ensure that a user cannot have duplicate institute
-        unique_together = ['user', 'institute']
+        unique_together = ["user", "institute"]
 
     def __str__(self):
         return f"{self.degree} at {self.institute}"
@@ -222,7 +221,7 @@ class Experience(models.Model):
 
     class Meta:
         # Ensure that a user cannot have duplicate companies
-        unique_together = ['user', 'company']
+        unique_together = ["user", "company"]
 
     def __str__(self):
         return f"{self.position} at {self.company}"

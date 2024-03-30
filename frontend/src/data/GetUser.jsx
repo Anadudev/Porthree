@@ -14,10 +14,10 @@ async function GetUser(user) {
         // console.log(response);
         // console.log(user);
     } catch (error) {
-        // console.error(error);
         if (error.res.status === 404) {
             throw new Response("Not Found", { status: 404 });
         }
+        // console.error(error);
         return error;
     }
 }
