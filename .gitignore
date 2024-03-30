@@ -1,6 +1,7 @@
 # ignore file not required in production
 
 /venv
+/.vscode
 Porthree/__pycache__/
 Porthree/*/__pycache__/
 Porthree/main/migrations/__pycache__/
