@@ -50,13 +50,25 @@ class UserDetails(AbstractUser):
         return f"{self.first_name} {self.middle_name} {self.last_name}"
 
 
+class Tag(models.Model):
+    """Represents a tag that can be associated with posts or projects."""
+
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
+    tag = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        # Ensure that a user cannot have duplicate tags
+        unique_together = ["user", "tag"]
+
+    def __str__(self):
+        return str(self.tag)
+
+
 class Post(models.Model):
-    """post model representing users post table in the application
-
-    Args:
-        models (_models_): django model
-
-    """
+    """post model representing users post table in the application"""
 
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
@@ -67,13 +79,11 @@ class Post(models.Model):
     post_image = models.ImageField(upload_to="post_images/", blank=True)
     content = models.TextField(blank=True, null=True)
     publish = models.BooleanField(default=False)
+    tags = models.ManyToManyField(
+        Tag, related_name="posts", blank=True
+    )  # Many-to-Many with Tag
 
     def __str__(self):
-        """returns the string representation of the Post model
-
-        Returns:
-            _str_: post title
-        """
         return str(self.title)
 
     def save(self, *args, **kwargs):
@@ -81,6 +91,24 @@ class Post(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+
+
+class Tool(models.Model):
+    """Represents a tool used in a project."""
+
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
+    icon = models.ImageField(upload_to="tool_icons/", blank=True)
+    tool = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        # Ensure that a user cannot have duplicate tools
+        unique_together = ["user", "tool"]
+
+    def __str__(self):
+        return str(self.tool)
 
 
 class Project(models.Model):
@@ -100,6 +128,12 @@ class Project(models.Model):
     video = models.FileField(upload_to="project_videos/", blank=True)
     content = models.TextField(blank=True, null=True)
     publish = models.BooleanField(default=False)
+    tags = models.ManyToManyField(
+        Tag, related_name="projects", blank=True
+    )  # Many-to-Many with Tag
+    tools = models.ManyToManyField(
+        Tool, related_name="projects", blank=True
+    )  # Many-to-Many with Tool
 
     def __str__(self):
         return str(self.title)
@@ -108,44 +142,6 @@ class Project(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
-
-
-class Tag(models.Model):
-    """Represents a tag that can be associated with posts or projects."""
-
-    id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
-    post = models.ManyToManyField(Post, related_name="tags", blank=True)
-    project = models.ManyToManyField(Project, related_name="tags", blank=True)
-    tag = models.CharField(max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        # Ensure that a user cannot have duplicate tags
-        unique_together = ["user", "tag"]
-
-    def __str__(self):
-        return str(self.tag)
-
-
-class Tool(models.Model):
-    """Represents a tool used in a project."""
-
-    id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
-    project = models.ManyToManyField(Project, related_name="tools", blank=True)
-    icon = models.ImageField(upload_to="tool_icons/", blank=True)
-    tool = models.CharField(max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        # Ensure that a user cannot have duplicate tools
-        unique_together = ["user", "tool"]
-
-    def __str__(self):
-        return str(self.tool)
 
 
 class Social(models.Model):
