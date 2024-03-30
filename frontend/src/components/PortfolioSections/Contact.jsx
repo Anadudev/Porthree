@@ -1,6 +1,11 @@
 import React from 'react'
 import SectionHeader from './SectionHeader'
-import { List, Box, Paper, TextField, FormControl, Grid } from '@mui/material';
+import {
+  Button, Link,
+  List, Box, Paper,
+  TextField, FormControl,
+  Grid
+} from '@mui/material';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -48,12 +53,14 @@ export function ContactForm() {
             rows={6}
           />
         </FormControl>
+        <Button varian="outlined">Send</Button>
       </div>
     </Box>
   );
 }
 
-export function ContactList({ location, phone, mail, socials }) {
+export function ContactList({ contacts, socials }) {
+
   return (
     <Paper elevation={6} sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
       <nav aria-label="main mailbox folders">
@@ -63,7 +70,7 @@ export function ContactList({ location, phone, mail, socials }) {
               <ListItemIcon>
                 <LocationOnIcon />
               </ListItemIcon>
-              <ListItemText primary={location || "location"} />
+              <ListItemText primary={contacts.location || "location"} />
             </ListItemButton>
           </ListItem>
           <Divider />
@@ -72,7 +79,7 @@ export function ContactList({ location, phone, mail, socials }) {
               <ListItemIcon>
                 <LocalPhoneIcon />
               </ListItemIcon>
-              <ListItemText primary={phone || "phone"} />
+              <ListItemText primary={contacts.phone || "phone"} />
             </ListItemButton>
           </ListItem>
           <Divider />
@@ -81,22 +88,36 @@ export function ContactList({ location, phone, mail, socials }) {
               <ListItemIcon>
                 <InboxIcon />
               </ListItemIcon>
-              <ListItemText primary={mail || "Inbox"} />
+              <ListItemText primary={contacts.mail || "Inbox"} />
             </ListItemButton>
           </ListItem>
         </List>
       </nav>
+      <Box sx={{ flexGrow: 1, p: 2 }}>
+        <Grid
+          container
+          spacing={2}
+          alignItems={'center'}
+          justifyContent={'center'}
+        >
+          {socials?.map((data, index) => (
+            <Paper elevation={3} key={index} className="px-2 py-1 w-fit mx-2">
+              <Link href={data.url} className='uppercase' sx={{ fontWeight: '900' }}>{data.social}</Link>
+            </Paper>
+          ))}
+        </Grid>
+      </Box>
     </Paper>
   );
 }
-const Contact = () => {
+const Contact = ({ contacts, socials }) => {
   return (
     <Box className="mt-20">
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} px={{ md: '100px' }}>
         <Grid item xs={12} sm={6} md={6} mb={{ xs: '40px' }}>
 
           <SectionHeader title={'contact address'} side={true} />
-          <ContactList />
+          <ContactList contacts={contacts} socials={socials} />
         </Grid>
         <Grid item xs={12} sm={6} md={6} mb={{ xs: '40px' }}>
 

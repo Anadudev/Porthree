@@ -58,10 +58,13 @@ const Portfolio = () => {
     const tools = componentData(user?.id, getUserData, "tools")
     const  educations = componentData(user?.id, getUserData, "educations")
     const  experiences = componentData(user?.id, getUserData, "experiences")
+    const  skills = componentData(user?.id, getUserData, "skills")
+    const  socials = componentData(user?.id, getUserData, "socials")
     PageTitle(user?.username);
-    console.log(educations);
     const currLoc = useLocation()
-
+    const contacts = {phone:user.phone,email:user.email, location:user.location}
+    // console.log(contacts);
+    // console.log(user);
     return (
         <React.Fragment>
             <DrawerAppBar pages={UserNavLinks} />
@@ -71,10 +74,10 @@ const Portfolio = () => {
                         <Breadcrumb path={currLoc} />
                         <Hero props={user} />
                         <About user={user} tools={tools} experience={experiences} education={educations}/>
-                        <Skills />
+                        <Skills skills={skills} />
                         <Projects />
                         <Blog />
-                        <Contact />
+                        <Contact contacts={contacts} socials={socials}/>
                     </>)}
             </Box>
             <Footer />
