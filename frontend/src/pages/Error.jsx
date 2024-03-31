@@ -5,14 +5,14 @@ import { NavLinks } from '../data/NavLinks';
 import Footer from '../components/Footer';
 import PageTitle from './PageTitle';
 
-const Error = () => {
+const Error = ({ err }) => {
     PageTitle("Error");
-    const error = useRouteError();
+    const error = err || useRouteError();
 
     return (
         <React.Fragment>
             <DrawerAppBar pages={NavLinks} />
-            <div>Ernest caused a <b className='text-blue'>{error.statusText || error.message}</b> error</div>
+            <div>Error <b className='text-blue'>{error.status || ''} {error.statusText || ''} @ {error.request && error.request.responseURL || ''}</b> </div>
             <Footer />
         </React.Fragment>
     )

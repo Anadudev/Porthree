@@ -7,12 +7,12 @@ import { useLocation } from 'react-router-dom';
 import PageTitle from './PageTitle';
 
 const Projects = () => {
-        PageTitle("Projects");
+    PageTitle("Projects");
     return (
         <React.Fragment>
-            <DrawerAppBar pages={UserNavLinks}/>
-      <Breadcrumb path={useLocation()} />
-        <div>Projects</div>
+            <DrawerAppBar pages={UserNavLinks} />
+            <Breadcrumb path={useLocation()} />
+            <div>Projects</div>
             <Footer />
         </React.Fragment>
     )

@@ -1,36 +1,24 @@
 import axios from 'axios';
-import { useRef } from 'react';
 
 async function GetUser(user) {
-    // console.log(user.id);
     try {
         const response = await axios.get(`http://localhost:8000/api/users/${user.id}/`);
         if (response && response.status === 200 && response.data) {
-
-            const result = response.data;
-            // console.log(result);
-            return result;
+            return response.data;
         }
-        // console.log(response);
-        // console.log(user);
     } catch (error) {
-        if (error.res.status === 404) {
-            throw new Response("Not Found", { status: 404 });
+        if (error.response) {
+            // console.log(error.response)
+            return error.response
+            // throw new Error("User not found");
+        } else {
+            throw new Error("Failed to fetch user data");
         }
-        // console.error(error);
-        return error;
     }
 }
 
 const assembleData = (id, dataList) => {
-    const assembly = []
-    dataList.map((data) => {
-        if (data.user === id) {
-            assembly.push(data)
-        }
-    });
-    return assembly;
-    // console.log(assembly);
+    return dataList.filter(data => data.user === id);
 }
 
 export const getUserData = async (userId, data) => {
@@ -38,20 +26,39 @@ export const getUserData = async (userId, data) => {
         const response = await axios.get(`http://localhost:8000/api/${data}/`);
         if (response && response.status === 200 && response.data) {
 
-            const result = response.data.results;
-            const data = assembleData(userId, result);
-            return data;
+            return assembleData(userId, response.data.results);
             // console.log(result);
             // return result;
         }
         // console.log(response);
         // console.log(user);
     } catch (error) {
-        // console.error(error);
-        /*  if (error.res.status === 404) {
-                throw new Response("Not Found", { status: 404 });
-         } */
-        // return error;
+        if (error.response) {
+            console.log(error.response)
+            return error.response
+            // throw new Error("User not found");
+        } else {
+            throw new Error("Failed to fetch user data");
+        }
     }
 }
+
+export async function GetItem(item, id) {
+    try {
+        const response = await axios.get(`http://localhost:8000/api/${item}/${id}/`);
+        if (response && response.status === 200 && response.data) {
+            return response.data;
+        }
+    } catch (error) {
+        if (error.response) {
+            // console.log(error.response)
+            return error.response
+            // throw new Error("User not found");
+        } else {
+            throw new Error("Failed to fetch user data");
+        }
+    }
+}
+
+
 export default GetUser;

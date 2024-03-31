@@ -22,3 +22,5 @@ _____install formik form validator_____
 yarn add formik
 _____install yup form validator_____
 yarn add yup
+_____install react-timeago form time formatting_____
+ yarn add react-timeago

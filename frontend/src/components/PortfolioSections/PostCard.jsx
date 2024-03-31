@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
-import { Card, Chip, Box, Link } from '@mui/material';
+import { Card, Chip, Box, Link, Paper } from '@mui/material';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
@@ -15,6 +15,10 @@ import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import BgImage from "/src/assets/image.jpg";
+import TimeAgo from 'react-timeago';
+import Limiter from '../Limiter';
+import { GetItem } from '../../data/GetUser';
+
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -27,20 +31,49 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-export default function PostCard({ Blog, type }) {
+
+
+export default function PostCard({ post, mode }) {
+    if (!post) {
+        return null;
+    }
     const [expanded, setExpanded] = React.useState(false);
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
+    const [user, setUser] = useState('');
+    const [tools, setTools] = useState([]);
+    const [tags, setTags] = useState([]);
+    useEffect(() => {
+        const fetchDataForUser = async () => {
 
+            setUser(await GetItem("users", post.user));
+            // collect post tools
+            let collection = []
+            const tools = post.tools;
+            for (const tool in tools) {
+                const data = await GetItem("tools", tools[tool]);
+                collection.push(data)
+            }
+            setTools(collection);
+            // collect post tags
+            collection = []
+            const tags = post.tags;
+            for (const tag in tags) {
+                const data = await GetItem("tags", tags[tag]);
+                collection.push(data)
+            }
+            setTags(collection);
+        }
+        fetchDataForUser()
+    }, [post]);
+    console.log(tools)
     return (
         <Card sx={{ maxWidth: 345 }}>
-            <p className='font-bold text-center primary'>{type}</p>
             <CardHeader
                 avatar={
-                    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                        R
+                    <Avatar sx={{ bgcolor: red[500] }} alt={user.username} aria-label="recipe">
                     </Avatar>
                 }
                 action={
@@ -48,23 +81,22 @@ export default function PostCard({ Blog, type }) {
                         <MoreVertIcon />
                     </IconButton>
                 }
-                title={Blog || "User name here"}
-                subheader={Blog || "September 14, 2016"}
+                title={<Typography className='capitalize'> {user.username || ""}</Typography>}
+                subheader={<TimeAgo date={post.created_at} /> || ""}
             />
             <CardMedia
                 component="img"
                 height="194"
-                image={Blog || BgImage}
-                alt={Blog || "Paella dish"}
+                image={post.image || BgImage}
+                alt={"Post thumbnail"}
             />
             <CardContent>
+                <p className='font-bold text-center primary'>{mode}:</p>
+
                 <Link href="/post" gutterBottom underline="always" variant="h5">
-                    {Blog || "Blog title here..."}
+                    {post.title || ""}
                 </Link>
-                <Typography variant="body2" color="text.secondary">
-                    This impressive paella is a perfect party dish and a fun meal to cook
-                    together with your guests. Add 1 cup of frozen peas along with the mussels,
-                    if you like.
+                <Typography variant="body2" color="text.secondary">{Limiter(post.content, 150)}
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
@@ -83,12 +115,17 @@ export default function PostCard({ Blog, type }) {
                     <ExpandMoreIcon />
                 </ExpandMore>
             </CardActions>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <Collapse in={expanded} timeout="auto">
                 <CardContent>
+                    <Typography sx={{ fontWeight: "700" }}>Tools:</Typography>
                     <Box sx={{ flexGrow: 1 }}>
-                        <Chip label="Outlined" className="m-0.5" variant="outlined" />
-                        <Chip label="Chip " className="m-0.5" variant="outlined" />
-                        <Chip label="Chip Outlined" className="m-0.5" variant="outlined" />
+                        {tools?.map((data, index) => (<Chip component={Paper} elevation={3} key={index} label={data.tool} className="m-0.5" variant="outlined" />))}
+                    </Box>
+                </CardContent>
+                <CardContent>
+                    <Typography sx={{ fontWeight: "700" }}>Tags:</Typography>
+                    <Box sx={{ flexGrow: 1 }}>
+                        {tags?.map((data, index) => (<Chip component={Paper} elevation={3} key={index} label={data.tag} className="m-0.5" variant="outlined" />))}
                     </Box>
                 </CardContent>
             </Collapse>

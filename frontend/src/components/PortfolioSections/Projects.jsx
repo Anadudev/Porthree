@@ -6,7 +6,8 @@ import { Typography, Grid } from '@mui/material';
 import Box from '@mui/material/Box';
 import SectionHeader from './SectionHeader';
 import PostCard from './PostCard';
-import { Projects as pj } from '../../data/Info';
+import Limiter from '../Limiter';
+import GetUser from '../../data/GetUser';
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -40,29 +41,7 @@ function a11yProps(index) {
   };
 }
 
-
-function TabData() {
-  return (
-    <Box sx={{ flexGrow: 1, p: 2 }}>
-      <Grid
-        container
-        spacing={2}
-        alignItems={'center'}
-        justifyContent={'center'}
-      >
-        {pj.map((data) => (
-          <Grid item key={data.id}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-            <Box className=" p-2">
-              <PostCard type='Project' />
-            </Box>
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
-  )
-}
-
-const Projects = () => {
+const Projects = ({ projects }) => {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -88,13 +67,58 @@ const Projects = () => {
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
-          <TabData />
+          <Box sx={{ flexGrow: 1, p: 2 }}>
+            <Grid
+              container
+              spacing={2}
+              alignItems={'center'}
+              justifyContent={'center'}
+            >
+              {projects.map((data, index) => (
+                <Grid item key={index}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+                  <Box className=" p-2">
+                    <PostCard type='Project' post={data} mode={"Project"} />
+                  </Box>
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-          <TabData />
+          <Box sx={{ flexGrow: 1, p: 2 }}>
+            <Grid
+              container
+              spacing={2}
+              alignItems={'center'}
+              justifyContent={'center'}
+            >
+              {projects.map((data) => (
+                <Grid item key={data.id}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+                  <Box className=" p-2">
+                    <PostCard type='Project' />
+                  </Box>
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
-          <TabData />
+          <Box sx={{ flexGrow: 1, p: 2 }}>
+            <Grid
+              container
+              spacing={2}
+              alignItems={'center'}
+              justifyContent={'center'}
+            >
+              {projects.map((data) => (
+                <Grid item key={data.id}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+                  <Box className=" p-2">
+                    <PostCard type='Project' />
+                  </Box>
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
         </CustomTabPanel>
       </Box>
     </Box>
