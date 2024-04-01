@@ -9,9 +9,9 @@ router = routers.DefaultRouter()
 # users route definition
 router.register(r"users", views.UserDetailsViewSet)
 # posts route definition
-router.register(r"posts", views.PostViewSet)
+router.register(r"posts", views.PostViewSet, basename="posts")
 # projects route definition
-router.register(r"projects", views.ProjectViewSet)
+router.register(r"projects", views.ProjectViewSet, basename='projects')
 # Tag route definition
 router.register(r"tags", views.TagViewSet)
 # Tool route definition
@@ -40,5 +40,9 @@ router.register(r"likes", views.LikeViewSet)
 
 urlpatterns = [
     path("", include(router.urls)),
-    path('user/<str:username>/', GetUserByUsernameView.as_view(), name='get_user_by_username'),
+    path(
+        "user/<str:username>/",
+        GetUserByUsernameView.as_view(),
+        name="get_user_by_username",
+    ),
 ]

@@ -59,16 +59,35 @@ class PostViewSet(viewsets.ModelViewSet):
     """adds representations of the Post to the API view"""
 
     permission_classes = [IsAuthenticated | ReadOnly]
-    queryset = Post.objects.all().order_by("created_at")
     serializer_class = PostSerializer
+    def get_queryset(self):
+        """
+        Optionally restricts the returned purchases to a given post,
+        by filtering against a `slug` query parameter in the URL.
+        """
+        queryset = Post.objects.all().order_by("created_at")
+        slug = self.request.query_params.get('slug')
+        if slug is not None:
+            queryset = queryset.filter(slug=slug)
+        return queryset
 
 
 class ProjectViewSet(viewsets.ModelViewSet):
     """adds representations of the Project to the API view"""
 
     permission_classes = [IsAuthenticated | ReadOnly]
-    queryset = Project.objects.all().order_by("created_at")
     serializer_class = ProjectSerializer
+    def get_queryset(self):
+        """
+        Optionally restricts the returned purchases to a given project,
+        by filtering against a `slug` query parameter in the URL.
+        """
+        queryset = Project.objects.all().order_by("created_at")
+        slug = self.request.query_params.get('slug')
+        if slug is not None:
+            queryset = queryset.filter(slug=slug)
+        return queryset
+
 
 
 class TagViewSet(viewsets.ModelViewSet):

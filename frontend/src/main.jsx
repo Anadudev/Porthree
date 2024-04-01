@@ -27,7 +27,12 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-
+/* TODO: handle unique url path */
+/* TODO: handle unique url path */
+/* TODO: handle unique url path */
+/* TODO: handle unique url path */
+/* TODO: handle unique url path */
+/* TODO: handle unique url path */
 const router = createBrowserRouter([
   {
     path: "/",
@@ -45,7 +50,7 @@ const router = createBrowserRouter([
   {
     path: "/:username",
     element: <Portfolio />,
-    loader: async ({params}) => {return fetch(`http://127.0.0.1:8000/api/user/${params.username}`)},
+    loader: async ({ params }) => { return fetch(`http://127.0.0.1:8000/api/user/${params.username}`) },
   },
   {
     path: "/:username/posts",
@@ -56,8 +61,9 @@ const router = createBrowserRouter([
     element: <UserAbout />,
   },
   {
-    path: "/:username/post/:slug",
+    path: "/:username/posts/:slug",
     element: <Post />,
+    loader: async ({ params }) => { return fetch(`http://127.0.0.1:8000/api/posts/?slug=${params.slug}`) },
   },
   {
     path: "/:username/projects",
@@ -66,6 +72,7 @@ const router = createBrowserRouter([
   {
     path: "/:username/projects/:slug",
     element: <Project />,
+    loader: async ({ params }) => { return fetch(`http://127.0.0.1:8000/api/projects/?slug=${params.slug}`) },
   },
   {
     path: "/signup",
