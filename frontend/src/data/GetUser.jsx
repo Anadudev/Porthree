@@ -47,6 +47,7 @@ export async function GetItem(item, id) {
     try {
         const response = await axios.get(`http://localhost:8000/api/${item}/${id}/`);
         if (response && response.status === 200 && response.data) {
+            // console.log(response.data)
             return response.data;
         }
     } catch (error) {

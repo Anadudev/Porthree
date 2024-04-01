@@ -52,7 +52,7 @@ const Projects = ({ projects }) => {
   };
 
   return (
-    <Box>
+    <Box id='projects'>
       <SectionHeader title={'awesome works'} />
       <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>

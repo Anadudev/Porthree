@@ -1,3 +1,9 @@
+
+
+import GetUser, { GetItem } from "./GetUser";
+import Logout from "../components/Dashboard/Logout";
+
+
 export const NavLinks = [
     {
         id: 1,
@@ -15,30 +21,65 @@ export const NavLinks = [
         url: "/about",
     },
 ];
-export const UserNavLinks = [
-    {
-        id: 1,
-        title: "UserName",
-        url: "/user",
-    },
-    {
-        id: 2,
-        title: "Projects",
-        url: "/User/projects",
-    },
-    {
-        id: 3,
-        title: "Posts",
-        url: "/User/posts",
-    },
-    {
-        id: 4,
-        title: "About",
-        url: "/User/about",
-    },
-    {
-        id: 5,
-        title: "Contact",
-        url: "/user/#contact",
-    },
-];
+
+export const UserNavLinks = (data) => (
+    [
+        {
+            id: 1,
+            title: data.username || "#",
+            url: `/${data.username}` || "#",
+        },
+        {
+            id: 2,
+            title: "About",
+            url: `/${data.username}#about` || "#",
+        },
+        {
+            id: 3,
+            title: "Skills",
+            url: `/${data.username}#skills` || "#",
+        },
+        {
+            id: 4,
+            title: "Projects",
+            url: `/${data.username}#projects` || "#",
+        },
+        {
+            id: 6,
+            title: "Posts",
+            url: `/${data.username}#posts` || "#",
+        },
+        {
+            id: 6,
+            title: "Contact",
+            url: `/${data.username}#contact` || "#",
+        },
+    ]);
+
+
+const id = JSON.parse(localStorage.getItem("user")).id;
+const authUser = await GetItem('users', id);
+// console.log(authUser)
+export const userTools = () => (
+    [
+        {
+            title: "",
+            url: '',
+            user: authUser,
+        },
+        {
+            title: "My portfolio",
+            url: `/${authUser.username}` || "#",
+        },
+        {
+            title: "My Account",
+            url: `/dashboard/${authUser.username}` || "#",
+        },
+        {
+            title: "My Dashboard",
+            url: `/dashboard/${authUser.username}` || "#",
+        },
+        {
+            item: <Logout />,
+        },
+    ]);

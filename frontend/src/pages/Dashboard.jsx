@@ -19,6 +19,7 @@ import ProjectsComponent from '../components/Projects';
 import EducationComponent from '../components/Projects';
 import PostsComponent from '../components/Dashboard/Posts';
 import PageTitle from './PageTitle';
+import { GetItem } from '../data/GetUser';
 
 const boardStructure = {
   user: <UserComponent />,
@@ -33,17 +34,18 @@ const boardStructure = {
 const Dashboard = () => {
   const navigation = useLocation();
   // console.log(JSON.stringify(JSON.parse(localStorage.getItem("user")).username));
-  const currentUser = JSON.parse(localStorage.getItem("user")).username;
+  const currentUser = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
-
+  const [user, setUser] = useState([]);
   useEffect(() => {
     // Check if the pathname matches the current user
-    if (navigation.pathname.split('/')[2] !== currentUser) {
+    if (navigation.pathname.split('/')[2] !== currentUser.username) {
       // If not, navigate to the login page
       navigate('/login');
-      return;
     }
-  }, [currentUser, navigation.pathname, navigate]); // useEffect dependencies
+    const getter = async () => (setUser(await GetItem('users', currentUser.id)));
+    getter();
+  }, [currentUser.username, currentUser.id, navigation.pathname, navigate]); // useEffect dependencies
 
 
   PageTitle("Dashboard");
@@ -55,7 +57,7 @@ const Dashboard = () => {
 
   return (
     <React.Fragment>
-      <DrawerAppBar pages={UserNavLinks} />
+      <DrawerAppBar pages={UserNavLinks(user)} />
       <Breadcrumb path={useLocation()} />
       <Container>
         <Grid container spacing={3}>

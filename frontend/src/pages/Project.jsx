@@ -92,7 +92,7 @@ const Project = () => {
     // console.log(projectList.results);
     return (
         <React.Fragment>
-            <DrawerAppBar pages={UserNavLinks} />
+            <DrawerAppBar pages={UserNavLinks(user)} />
             <Box p={"50px"}>
                 <Breadcrumb path={useLocation()} />
                 <Box className="flex flex-wrap justify-center">
@@ -112,7 +112,7 @@ const Project = () => {
                                     <Box className="flex">
                                         <Avatar className="capitalize"
                                             alt={user.username}
-                                            src={user.image || "/static/images/avatar/1.jpg"}
+                                            src={user.picture || "/static/images/avatar/1.jpg"}
                                             sx={{ width: 56, height: 56, margin: '5px', marginRight: "10px" }}
                                         />
                                         <Box>
@@ -139,7 +139,7 @@ const Project = () => {
                                                         </React.Fragment>
                                                     }
                                                 >
-                                                    <Avatar alt={data.username} src="/static/images/avatar/5.jpg" />
+                                                    <Avatar alt={data.username} src={data.picture} />
                                                 </HtmlTooltip>
                                                 ))}
                                         </AvatarGroup>

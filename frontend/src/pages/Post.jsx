@@ -57,7 +57,7 @@ const Post = () => {
     // console.log(postList.results);
     return (
         <React.Fragment>
-            <DrawerAppBar pages={UserNavLinks} />
+            <DrawerAppBar pages={UserNavLinks(user)} />
             <Box p={"50px"}>
                 <Breadcrumb path={useLocation()} />
                 <Box className="flex justify-center">

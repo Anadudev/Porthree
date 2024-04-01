@@ -67,7 +67,7 @@ function Portfolio() {
     // console.log(blog)
     return (
         <React.Fragment>
-            <DrawerAppBar pages={UserNavLinks} />
+            <DrawerAppBar pages={UserNavLinks(user)} />
             <Box p="50px">
                 {!user ? (
                     <Typography variant="h1" component="h1">Portfolio not in Porthree</Typography>

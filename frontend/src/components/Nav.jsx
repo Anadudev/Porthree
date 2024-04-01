@@ -11,13 +11,16 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
+import { Link } from '@mui/material';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Logout from './Dashboard/Logout';
+import { userTools } from '../data/NavLinks';
 
-const settings = ['My Portfolio', 'My Account', 'My Dashboard', <Logout key={1} />];
+const settings = userTools();
 
 function ResponsiveAppBar({ pages }) {
+  if (!pages) { return null }
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -28,7 +31,7 @@ function ResponsiveAppBar({ pages }) {
   const InUser = () => (<Box sx={{ flexGrow: 0 }}>
     <Tooltip title="Open settings">
       <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-        <Avatar alt="U" src="/static/images/avatar/2.jpg" />
+        <Avatar alt="U" src={settings[0].user.picture} />
       </IconButton>
     </Tooltip>
     <Menu
@@ -47,9 +50,17 @@ function ResponsiveAppBar({ pages }) {
       open={Boolean(anchorElUser)}
       onClose={handleCloseUserMenu}
     >
-      {settings.map((setting) => (
-        <MenuItem key={setting} onClick={handleCloseUserMenu}>
-          <Typography textAlign="center">{setting}</Typography>
+      {settings?.map((setting, index) => (
+        <MenuItem key={index} onClick={handleCloseUserMenu}>
+          {setting.item || <Button
+            Link
+            href={setting.url}
+            onClick={handleCloseNavMenu}
+          // sx={{ my: 2, color: 'white', display: 'block' }}
+          >
+            {setting.title}
+          </Button>
+          }
         </MenuItem>
       ))}
     </Menu>
@@ -124,8 +135,15 @@ function ResponsiveAppBar({ pages }) {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page.id} component={Link} to={page.url} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page.title}</Typography>
+                <MenuItem key={page.id} onClick={handleCloseNavMenu}>
+                  <Button
+                    Link
+                    href={page.url}
+                  // onClick={handleCloseNavMenu}
+                  // sx={{ my: 2, color: 'white', display: 'block' }}
+                  >
+                    {page.title}
+                  </Button>
                 </MenuItem>
               ))}
             </Menu>
@@ -155,8 +173,8 @@ function ResponsiveAppBar({ pages }) {
             {pages.map((page) => (
               <Button
                 key={page.id}
-                component={Link}
-                to={page.url}
+                Link
+                href={page.url}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >

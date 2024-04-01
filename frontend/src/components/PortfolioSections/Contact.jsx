@@ -113,7 +113,7 @@ export function ContactList({ contacts, socials }) {
 }
 const Contact = ({ contacts, socials }) => {
   return (
-    <Box className="mt-20">
+    <Box className="mt-20" id='contact'>
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} px={{ md: '100px' }}>
         <Grid item xs={12} sm={6} md={6} mb={{ xs: '40px' }}>
 

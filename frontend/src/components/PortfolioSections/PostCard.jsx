@@ -35,7 +35,7 @@ const ExpandMore = styled((props) => {
 
 
 export default function PostCard({ post, mode }) {
-    if (!post || post.length <= 0 ) {
+    if (!post || post.length <= 0) {
         return null;
     }
     const [expanded, setExpanded] = React.useState(false);
@@ -74,7 +74,7 @@ export default function PostCard({ post, mode }) {
         <Card sx={{ maxWidth: 345 }}>
             <CardHeader
                 avatar={
-                    <Avatar sx={{ bgcolor: red[500] }} alt={user.username} aria-label="recipe">
+                    <Avatar /* sx={{ bgcolor: red[500] }} */ alt={user.username} aria-label="recipe" src={user.picture}>
                     </Avatar>
                 }
                 action={
@@ -88,28 +88,23 @@ export default function PostCard({ post, mode }) {
             <CardMedia
                 component="img"
                 height="194"
-                image={post.image || BgImage}
+                image={post.post_image || post.image || BgImage}
                 alt={"Post thumbnail"}
             />
             <CardContent>
                 <p className='font-bold text-center primary'>{mode}:</p>
 
-                <Link component={RL} to={`/${user.username}/${mode==="Project"?"projects":"posts"}/${post.slug}`} gutterBottom underline="always" variant="h5">
+                <Link component={RL} to={`/${user.username}/${mode === "Project" ? "projects" : "posts"}/${post.slug}`} gutterBottom underline="always" variant="h5">
                     {post.title || ""}
                 </Link>
                 <Typography variant="body2" color="text.secondary">{Limiter(post.content, 150)}
                 </Typography>
             </CardContent>
-            <CardActions disableSpacing>
-                <IconButton aria-label="add to favorites">
-                    <FavoriteIcon />
-                </IconButton>
-                <IconButton aria-label="share">
-                    <ShareIcon />
-                </IconButton>
+            <CardActions disableSpacing onClick={handleExpandClick} className='cursor-pointer'>
+                {mode === "Project" && <Typography><span className='font-bold'>{post.contributors?.length} </span>Contributors</Typography>}
                 <ExpandMore
                     expand={expanded}
-                    onClick={handleExpandClick}
+
                     aria-expanded={expanded}
                     aria-label="show more"
                 >
@@ -118,7 +113,7 @@ export default function PostCard({ post, mode }) {
             </CardActions>
             <Collapse in={expanded} timeout="auto">
                 <CardContent>
-                    <Typography sx={{ fontWeight: "700" }}>{mode==="Project"?"Tools:":''}</Typography>
+                    <Typography sx={{ fontWeight: "700" }}>{mode === "Project" ? "Tools:" : ''}</Typography>
                     <Box sx={{ flexGrow: 1 }}>
                         {tools?.map((data, index) => (<Chip component={Paper} elevation={3} key={index} label={data.tool} className="m-0.5" variant="outlined" />))}
                     </Box>
