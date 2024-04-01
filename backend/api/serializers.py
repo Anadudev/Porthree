@@ -21,13 +21,12 @@ from api.models import (
 
 class UserDetailsSerializer(serializers.ModelSerializer):
     """serializing and deserializing the UserDetails instances into representations such as json"""
-
     class Meta:
         model = UserDetails
-        fields = ["id", "last_login", "username", "first_name", "last_name","email",
-                "is_active", "date_joined", "middle_name", "career", "bio", "location",
-                "about", "resume", "phone", "primary_color", "secondary_color", "picture",
-                "groups",]
+        fields = ["id", "last_login", "username", "first_name", "last_name", "email",
+                  "is_active", "date_joined", "middle_name", "career", "bio", "location",
+                  "about", "phone", "primary_color", "secondary_color", "picture",
+                  "groups",]
 
 
 class PostSerializer(serializers.ModelSerializer):

@@ -43,7 +43,7 @@ const Dashboard = () => {
               {Object.keys(boardStructure).map((link) => (
                 <ListItem key={link} button onClick={() => handleLinkClick(link)} selected={activeLink === link}>
                  <ListItemIcon>
-                    {link === 'user' && <UserIcon />}
+                    {link === 'profile' && <UserIcon />}
                     {link === 'tools' && <ToolsIcon />}
                     {link === 'projects' && <ProjectsIcon />}
                     {link === 'education' && <EducationIcon />}

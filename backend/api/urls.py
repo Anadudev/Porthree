@@ -5,6 +5,8 @@ from rest_framework import routers
 from api import views
 from .views import GetUserByUsernameView
 
+
+
 router = routers.DefaultRouter()
 # users route definition
 router.register(r"users", views.UserDetailsViewSet)
@@ -41,4 +43,5 @@ router.register(r"Like", views.LikeViewSet)
 urlpatterns = [
     path("", include(router.urls)),
     path('user/<str:username>/', GetUserByUsernameView.as_view(), name='get_user_by_username'),
-]
+ ]
+
