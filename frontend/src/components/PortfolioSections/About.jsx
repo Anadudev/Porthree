@@ -42,6 +42,7 @@ export function ToolsList({ tools }) {
 
 
 const About = ({ user, tools, education, experience }) => {
+  if (user.about === '' &&  !tools || tools.length <= 0 && !education || education.length <= 0 && !experience || experience.length <= 0) { return null }
   return (
     <Box sx={{ width: '100%' }} id="about">
       <SectionHeader title={'about'} />

@@ -11,7 +11,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
-import InboxIcon from '@mui/icons-material/Inbox';
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 
@@ -87,7 +87,7 @@ export function ContactList({ contacts, socials }) {
           {contacts.email && <ListItem disablePadding>
             <ListItemButton>
               <ListItemIcon>
-                <InboxIcon />
+                <MailOutlineIcon />
               </ListItemIcon>
               <ListItemText primary={contacts.email || ""} />
             </ListItemButton>

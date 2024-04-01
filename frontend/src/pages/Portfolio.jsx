@@ -36,6 +36,7 @@ function Portfolio() {
     const [skills, setSkills] = useState(null);
     const [socials, setSocials] = useState(null);
     const [projects, setProjects] = useState(null);
+    const [blog, setBlog] = useState(null);
 
     useEffect(() => {
         const fetchDataForUser = async () => {
@@ -48,6 +49,7 @@ function Portfolio() {
                 setSkills(await fetchData(fetchedUser.id, getUserData, 'skills'));
                 setSocials(await fetchData(fetchedUser.id, getUserData, 'socials'));
                 setProjects(await fetchData(fetchedUser.id, getUserData, 'projects'));
+                setBlog(await fetchData(fetchedUser.id, getUserData, 'posts'));
                 PageTitle(fetchedUser.username);
             }
         };
@@ -62,7 +64,7 @@ function Portfolio() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const currLoc = useLocation();
     const contacts = { phone: user?.phone, email: user?.email, location: user?.location };
-    // console.log(projects)
+    // console.log(blog)
     return (
         <React.Fragment>
             <DrawerAppBar pages={UserNavLinks} />
@@ -76,7 +78,7 @@ function Portfolio() {
                         <About user={user} tools={tools} experience={experiences} education={educations} />
                         {skills && <Skills skills={skills} />}
                         {projects && <Projects projects={projects} />}
-                        <Blog />
+                        {blog && <Blog blog={blog} />}
                         <Contact contacts={contacts} socials={socials} />
                     </>
                 )}

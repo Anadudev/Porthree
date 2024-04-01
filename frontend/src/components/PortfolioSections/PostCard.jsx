@@ -34,7 +34,7 @@ const ExpandMore = styled((props) => {
 
 
 export default function PostCard({ post, mode }) {
-    if (!post) {
+    if (!post || post.length <= 0 ) {
         return null;
     }
     const [expanded, setExpanded] = React.useState(false);
@@ -59,7 +59,7 @@ export default function PostCard({ post, mode }) {
             setTools(collection);
             // collect post tags
             collection = []
-            const tags = post.tags;
+            const tags = post.tags || blog.tags;
             for (const tag in tags) {
                 const data = await GetItem("tags", tags[tag]);
                 collection.push(data)
@@ -68,7 +68,7 @@ export default function PostCard({ post, mode }) {
         }
         fetchDataForUser()
     }, [post]);
-    console.log(tools)
+    // console.log(tools)
     return (
         <Card sx={{ maxWidth: 345 }}>
             <CardHeader
@@ -117,13 +117,13 @@ export default function PostCard({ post, mode }) {
             </CardActions>
             <Collapse in={expanded} timeout="auto">
                 <CardContent>
-                    <Typography sx={{ fontWeight: "700" }}>Tools:</Typography>
+                    <Typography sx={{ fontWeight: "700" }}>{mode==="Project"?"Tools:":''}</Typography>
                     <Box sx={{ flexGrow: 1 }}>
                         {tools?.map((data, index) => (<Chip component={Paper} elevation={3} key={index} label={data.tool} className="m-0.5" variant="outlined" />))}
                     </Box>
                 </CardContent>
                 <CardContent>
-                    <Typography sx={{ fontWeight: "700" }}>Tags:</Typography>
+                    <Typography sx={{ fontWeight: "700" }}>{tags && "Tags:"}</Typography>
                     <Box sx={{ flexGrow: 1 }}>
                         {tags?.map((data, index) => (<Chip component={Paper} elevation={3} key={index} label={data.tag} className="m-0.5" variant="outlined" />))}
                     </Box>

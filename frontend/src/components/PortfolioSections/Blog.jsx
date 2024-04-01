@@ -53,7 +53,7 @@ function TabData() {
         {pj.map((data) => (
           <Grid item key={data.id}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
             <Box className=" p-2">
-              <PostCard  type={'Blog Post'} />
+              <PostCard mode={'Blog Post'} />
             </Box>
           </Grid>
         ))}
@@ -62,13 +62,17 @@ function TabData() {
   )
 }
 
-const Blogs = () => {
+
+const Blogs = ({ blog }) => {
+  if (!blog || blog.length <= 0 ) {
+    return null;
+  }
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
+// console.log(blog)
   return (
     <Box>
       <SectionHeader title={'Helpful writings'} />
@@ -88,7 +92,22 @@ const Blogs = () => {
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
-          <TabData />
+        <Box sx={{ flexGrow: 1, p: 2 }}>
+            <Grid
+              container
+              spacing={2}
+              alignItems={'center'}
+              justifyContent={'center'}
+            >
+              {blog.map((data, index) => (
+                <Grid item key={index}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+                  <Box className=" p-2">
+                    <PostCard type='Project' post={data} mode={"Blog Post"} />
+                  </Box>
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
           <TabData />

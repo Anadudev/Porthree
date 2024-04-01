@@ -42,6 +42,9 @@ function a11yProps(index) {
 }
 
 const Projects = ({ projects }) => {
+  if (!projects || projects.length <= 0) {
+    return null;
+  }
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
