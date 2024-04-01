@@ -103,7 +103,7 @@ export function ContactList({ contacts, socials }) {
         >
           {socials?.map((data, index) => (
             <Paper elevation={3} key={index} className="px-2 py-1 w-fit m-2">
-              <Link href={data.url} className='capitalize' sx={{ fontWeight: '900' }}>{data.social}</Link>
+              <Link target="_blank" rel="noopener" href={data.url} className='capitalize' sx={{ fontWeight: '900' }}>{data.social}</Link>
             </Paper>
           ))}
         </Grid>
