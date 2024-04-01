@@ -42,7 +42,7 @@ export function ToolsList({ tools }) {
 
 
 const About = ({ user, tools, education, experience }) => {
-  if (user.about === '' &&  !tools || tools.length <= 0 && !education || education.length <= 0 && !experience || experience.length <= 0) { return null }
+  if (user.about === '' &&  (!tools || tools.length <= 0) && (!education || education.length <= 0) && (!experience || experience.length <= 0)) { return null }
   return (
     <Box sx={{ width: '100%' }} id="about">
       <SectionHeader title={'about'} />
@@ -58,6 +58,7 @@ const About = ({ user, tools, education, experience }) => {
           </Grid>
         </Grid>
       </Box>
+      {/* TODO: add a modal/popover element to view full detail */}
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} px={{ md: '100px' }}>
         {education && education.length > 0 && <Grid item xs={12} sm={6} md={6} mb={{ xs: '40px' }}>
           <AboutCard education={education} title={"Education"} />

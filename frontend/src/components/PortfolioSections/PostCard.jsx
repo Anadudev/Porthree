@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
-import { Card, Chip, Box, Link, Paper } from '@mui/material';
+import { Card, Chip, Box, Paper, Link } from '@mui/material';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
@@ -18,6 +18,7 @@ import BgImage from "/src/assets/image.jpg";
 import TimeAgo from 'react-timeago';
 import Limiter from '../Limiter';
 import { GetItem } from '../../data/GetUser';
+import { Link as RL } from 'react-router-dom';
 
 
 const ExpandMore = styled((props) => {
@@ -93,7 +94,7 @@ export default function PostCard({ post, mode }) {
             <CardContent>
                 <p className='font-bold text-center primary'>{mode}:</p>
 
-                <Link href="/post" gutterBottom underline="always" variant="h5">
+                <Link component={RL} to={`/${user.username}/${mode==="Project"?"projects":"posts"}/${post.slug}`} gutterBottom underline="always" variant="h5">
                     {post.title || ""}
                 </Link>
                 <Typography variant="body2" color="text.secondary">{Limiter(post.content, 150)}

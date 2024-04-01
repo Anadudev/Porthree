@@ -1,18 +1,179 @@
-import React from 'react'
+
+import React, { useState, useEffect } from 'react'
 import DrawerAppBar from '../components/Nav';
-import { UserNavLinks } from '../data/NavLinks';
 import Footer from '../components/Footer';
+import { UserNavLinks } from '../data/NavLinks';
 import Breadcrumb from '../components/Breadcrumb';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useLoaderData } from 'react-router-dom';
 import PageTitle from './PageTitle';
+import Card from '@mui/material/Card';
+import AvatarGroup from '@mui/material/AvatarGroup';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import {
+    Typography,
+    Link,
+    Avatar,
+    CardActions,
+    Box,
+    Chip,
+    Button,
+} from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ShareIcon from '@mui/icons-material/Share';
+import CommentIcon from '@mui/icons-material/Comment';
+import BgImage from '/src/assets/image.jpg';
+import Error from './Error';
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
+import { GetItem } from '../data/GetUser';
+import { styled } from '@mui/material/styles';
+import Limiter from '../components/Limiter';
+import { Link as RL } from 'react-router-dom';
+
+const HtmlTooltip = styled(({ className, ...props }) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+        backgroundColor: '#f5f5f9',
+        color: 'rgba(0, 0, 0, 0.87)',
+        maxWidth: 220,
+        fontSize: theme.typography.pxToRem(12),
+        border: '1px solid #dadde9',
+    },
+}));
 
 const Project = () => {
-        PageTitle("Project");
+    PageTitle("Project");
+    const projectList = useLoaderData();
+    // console.log(projectList)
+    if (projectList.results.length < 1) {
+        return (<h1>Project Not Found</h1>);
+    }
+    const project = projectList.results[0];
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [user, setUser] = useState('');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [tags, setTags] = useState([]);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [tools, setTools] = useState([]);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [contributors, setContributors] = useState([]);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+        const fetchDataForUser = async () => {
+            async function handler() {
+                setUser(await GetItem('users', project.user));
+                let Collection = []
+                for (const tag in project.tags) {
+                    Collection.push(await GetItem('tags', project.tags[tag]))
+                }
+                setTags(Collection)
+                /* get project tools */
+                Collection = []
+                for (const tool in project.tools) {
+                    Collection.push(await GetItem('tools', project.tools[tool]))
+                }
+                setTools(Collection)
+                /* get project contributors */
+                Collection = []
+                for (const contributors in project.contributors) {
+                    Collection.push(await GetItem('users', project.contributors[contributors]))
+                }
+                setContributors(Collection)
+            }
+            handler();
+        };
+        fetchDataForUser();
+    }, [project]);
+    // console.log(tools)
+
+    // console.log(projectList.results);
     return (
         <React.Fragment>
-            <DrawerAppBar pages={UserNavLinks}/>
-      <Breadcrumb path={useLocation()} />
-            <div>Project</div>
+            <DrawerAppBar pages={UserNavLinks} />
+            <Box p={"50px"}>
+                <Breadcrumb path={useLocation()} />
+                <Box className="flex flex-wrap justify-center">
+                    <Card sx={{ maxWidth: 1000 }}>
+                        <CardMedia
+                            component="img"
+                            height="140"
+                            image={project.image || BgImage}
+                            alt="green iguana"
+                        />
+                        <CardContent>
+                            <Typography gutterBottom variant="h2" component="h1" sx={{ fontWeight: '900' }} className="text-center">
+                                {project.title || ''}
+                            </Typography>
+                            <Box className="border-y flex-col py-2 my-4 align-middle justify-center">
+                                <Box className="flex py-2 my-4 justify-between">
+                                    <Box className="flex">
+                                        <Avatar className="capitalize"
+                                            alt={user.username}
+                                            src={user.image || "/static/images/avatar/1.jpg"}
+                                            sx={{ width: 56, height: 56, margin: '5px', marginRight: "10px" }}
+                                        />
+                                        <Box>
+                                            <Typography sx={{ fontWeight: 700 }}>{user.first_name} {user.last_name || ''}</Typography>
+                                            <Link component={RL} to={`/${user.username}`} sx={{ fontWeight: 700 }} className="capitalize">{user.username || ''}</Link>
+                                            <Typography sx={{ fontWeight: 700 }}>{user.career || ''}</Typography>
+                                        </Box>
+                                    </Box>
+                                    <Box className="flex justify-center align-middle">
+                                        <Typography variant="h6" mr={'10px'} component={'h2'} className='self-center'>Contributors: {contributors.length < 1?'0':''}</Typography>
+                                        <AvatarGroup
+                                            renderSurplus={(surplus) => <span>+{surplus.toString()[0]}</span>}
+                                            total={contributors?.length}
+                                            className='self-center'
+                                        >
+
+                                            {contributors?.map((data, index) => (
+                                                <HtmlTooltip key={index}
+                                                    title={
+                                                        <React.Fragment>
+                                                            <Typography color="inherit">{data.first_name} {data.last_name}</Typography>
+                                                            <Link component={RL} to={`/${data.username}`} >{data.username}</Link>
+                                                            {data.bio&&<Typography color="inherit">{Limiter(data.bio)}</Typography>}
+                                                        </React.Fragment>
+                                                    }
+                                                >
+                                                    <Avatar alt={data.username} src="/static/images/avatar/5.jpg" />
+                                                </HtmlTooltip>
+                                                ))}
+                                        </AvatarGroup>
+                                    </Box>
+                                </Box>
+                                <Box px={'10px'} className="self-center">
+                                    <Box sx={{ flexGrow: 1 }}>
+                                        Tools: {tools?.map((data, index) => (<Chip key={index} label={data.tool || ''} className="m-0.5 capitalize" variant="outlined" />))}
+
+                                    </Box>
+                                </Box>
+                            </Box>
+                            <Typography variant="body2" color="text.secondary" className="pt-20">{project.content || ''}</Typography>
+                        </CardContent>
+                        <Box px={'10px'}>
+                            <Box sx={{ flexGrow: 1 }}>
+                                Tags: {tags?.map((data, index) => (<Chip key={index} label={data.tag || ''} className="m-0.5 capitalize" variant="outlined" />))}
+
+                            </Box>
+                        </Box>
+                        <CardActions>
+                            <IconButton aria-label="add to favorites">
+                                <FavoriteIcon />
+                            </IconButton>
+                            <IconButton aria-label="share">
+                                <ShareIcon />
+                            </IconButton>
+                            <IconButton aria-label="comment">
+                                <CommentIcon />
+                            </IconButton>
+                        </CardActions>
+                    </Card>
+                </Box>
+            </Box>
             <Footer />
         </React.Fragment>
     )
