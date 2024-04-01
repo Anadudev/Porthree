@@ -22,7 +22,6 @@ class UserDetails(AbstractUser):
     bio = models.TextField(blank=True, null=True)
     location = models.CharField(max_length=255, blank=True, null=True)
     about = models.TextField(blank=True, null=True)
-    resume = models.FileField(upload_to="resumes/", blank=True, null=True)
     phone = models.CharField(max_length=20, blank=True, null=True)
     primary_color = models.CharField(max_length=50, blank=True, null=True)
     secondary_color = models.CharField(max_length=50, blank=True, null=True)
@@ -55,7 +54,7 @@ class Tag(models.Model):
 
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
-    tag = models.CharField(max_length=255)
+    tag = models.CharField(unique=True,max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -99,7 +98,7 @@ class Tool(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
     icon = models.ImageField(upload_to="tool_icons/", blank=True)
-    tool = models.CharField(max_length=255)
+    tool = models.CharField(unique=True,max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

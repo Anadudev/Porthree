@@ -5,6 +5,8 @@ from rest_framework import routers
 from api import views
 from .views import GetUserByUsernameView
 
+
+
 router = routers.DefaultRouter()
 # users route definition
 router.register(r"users", views.UserDetailsViewSet)

@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Typography, Button, TextField, Avatar } from '@mui/material';
+import { Grid, Typography, Button, TextField } from '@mui/material';
+
 import Logout from './Logout';
 import axios from 'axios';
+import PhoneNumberInputWithLocation from '../PnoneNumberInput';
+import UserProfileAvatar from './ProfilePicturePlaceholder';
+import UserProfileDisplay from '../UserProfileDisplay';
 
 const UserComponent = () => {
- const [user, setUser] = useState({}); // State to store user data
+ const [user, setUser] = useState(new FormData()); // State to store user data
  const [isEdit, setIsEdit] = useState(false); // Flag for edit mode
  const [isLoading, setIsLoading] = useState(false); // Flag for loading state
  const [error, setError] = useState(null); // State to store errors
@@ -33,26 +37,46 @@ const UserComponent = () => {
  const handleCancelEdit = () => setIsEdit(false);
 
  const handleChange = (event) => {
-    setUser({ ...user, [event.target.name]: event.target.value });
- };
+  // Create a copy of the user object
+  const updatedUser = { ...user };
+
+  // Check if files are present and handle accordingly
+  if (event.target.files && event.target.files.length > 0) {
+    updatedUser[event.target.name] = event.target.files[0];
+  } else {
+    updatedUser[event.target.name] = event.target.value;
+  }
+  // Update the state using functional updates
+  setUser(prevUser => ({ ...prevUser, ...updatedUser }));
+  console.log(updatedUser);
+};
+
+
 
  const handleSave = async () => {
     setIsLoading(true);
     setError(null); // Clear previous errors
+    console.log(user)
     try {
       // Retrieve the access token from local storage
       const token = localStorage.getItem('access_token');
 
-      // Include the token in the request headers
+      // ensure only a file is sent
+      if (!(user.picture instanceof File)) {
+        delete user.picture
+      }
+      console.log(user)
       const response = await axios.put(`http://localhost:8000/api/users/${userId}/`, user, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data', // Set the content type to multipart/form-data
+      },
+    });
       setUser(response.data); // Update state with updated user data
       setIsEdit(false); // Exit edit mode
     } catch (error) {
       setError(error);
+      console.log(error)
     } finally {
       setIsLoading(false);
     }
@@ -68,57 +92,137 @@ const UserComponent = () => {
         <>
           <Grid container spacing={2} justifyContent="center">
             <Grid item xs={12} textAlign="center">
-              <Avatar
-                alt="Profile Picture"
-                src={user.picture || 'https://via.placeholder.com/150'} // Dummy image URL
-                sx={{ width: 100, height: 100, margin: '0 auto' }}
-              />
+
+              <UserProfileAvatar imageUrl={user.picture} />
+
               {isEdit ? (
                 <>
-                 <TextField
-                    label="Username"
-                    name="username"
-                    value={user.username}
-                    onChange={handleChange}
-                    fullWidth
-                 />
-                 <TextField
-                    label="First Name"
-                    name="first_name"
-                    value={user.first_name}
-                    onChange={handleChange}
-                    fullWidth
-                 />
-                 <TextField
-                    label="Last Name"
-                    name="last_name"
-                    value={user.last_name}
-                    onChange={handleChange}
-                    fullWidth
-                 />
-                 <TextField
-                    label="Email"
-                    name="email"
-                    value={user.email}
-                    onChange={handleChange}
-                    fullWidth
-                 />
-                 <TextField
-                    label="Bio"
-                    name="bio"
-                    value={user.bio || ''}
-                    onChange={handleChange}
-                    fullWidth
-                    multiline
-                    rows={4}
-                 />
-                 <TextField
-                    label="Location"
-                    name="location"
-                    value={user.location || ''}
-                    onChange={handleChange}
-                    fullWidth
-                 />
+                   <Grid container spacing={3}>
+                     <Grid item xs={12} >
+                      <input
+                        accept="image/*"
+                        id="profile-picture"
+                        name="picture"
+                        type="file"
+                        style={{ display: 'none' }}
+                        onChange={handleChange}
+                      />
+                      <label htmlFor="profile-picture">
+                        <Button variant="contained" component="span">
+                          Upload/Change Profile Picture
+                        </Button>
+                      </label>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Username"
+                        name="username"
+                        value={user.username }
+                        onChange={handleChange}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="First Name"
+                        name="first_name"
+                        value={user.first_name }
+                        onChange={handleChange}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Middle Name"
+                        name="middle_name"
+                        value={user.middle_name }
+                        onChange={handleChange}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Last Name"
+                        name="last_name"
+                        value={user.last_name }
+                        onChange={handleChange}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Email"
+                        name="email"
+                        value={user.email }
+                        onChange={handleChange}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <PhoneNumberInputWithLocation value={user.phone } onChange={handleChange}/>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Career"
+                        name="career"
+                        value={user.career }
+                        onChange={handleChange}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Bio"
+                        name="bio"
+                        value={user.bio }
+                        onChange={handleChange}
+                        fullWidth
+                        multiline
+                        rows={4}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Location"bbffgh
+
+
+                        name="location"
+                        value={user.location }
+                        onChange={handleChange}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="About"
+                        name="about"
+                        value={user.about }
+                        onChange={handleChange}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Primary Color"
+                        name="primary_color"
+                        type='color'
+                        value={user.primary_color || '#008000'}
+                        onChange={handleChange}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Secondary Color"
+                        name="secondary_color"
+                        type='color'
+                        value={user.secondary_color || '#660099'}
+                        onChange={handleChange}
+                        fullWidth
+                      />
+                    </Grid>
+                  </Grid>
+                  <br></br>
                  <Button variant="contained" color="primary" onClick={handleSave}>
                     Save
                  </Button>
@@ -128,21 +232,10 @@ const UserComponent = () => {
                 </>
               ) : (
                 <>
-                 <Typography variant="body1">Username:</Typography>
-                 <Typography variant="body2">{user.username}</Typography>
-                 <Typography variant="body1">First Name:</Typography>
-                 <Typography variant="body2">{user.first_name}</Typography>
-                 <Typography variant="body1">Last Name:</Typography>
-                 <Typography variant="body2">{user.last_name}</Typography>
-                 <Typography variant="body1">Email:</Typography>
-                 <Typography variant="body2">{user.email}</Typography>
-                 <Typography variant="body1">Bio:</Typography>
-                 <Typography variant="body2">{user.bio || 'No bio provided'}</Typography>
-                 <Typography variant="body1">Location:</Typography>
-                 <Typography variant="body2">{user.location || 'No location provided'}</Typography>
-                 <Button variant="contained" onClick={handleEdit}>
+                  <UserProfileDisplay user={user} />
+                  <Button variant="contained" onClick={handleEdit}>
                     Edit Profile
-                 </Button>
+                  </Button>
                 </>
               )}
             </Grid>
@@ -155,5 +248,6 @@ const UserComponent = () => {
     </div>
  );
 };
+
 
 export default UserComponent;

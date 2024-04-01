@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Outlet } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { Outlet, useNavigate } from "react-router-dom";
 import DrawerAppBar from "../components/Nav";
 import Footer from '../components/Footer';
 import { UserNavLinks } from '../data/NavLinks';
@@ -19,6 +19,7 @@ import ProjectsComponent from '../components/Projects';
 import EducationComponent from '../components/Projects';
 import PostsComponent from '../components/Dashboard/Posts';
 import PageTitle from './PageTitle';
+
 const boardStructure = {
   user: <UserComponent />,
   tools: <ToolsComponent />,
@@ -30,7 +31,22 @@ const boardStructure = {
 
 
 const Dashboard = () => {
-    PageTitle("Dashboard");
+  const navigation = useLocation();
+  // console.log(JSON.stringify(JSON.parse(localStorage.getItem("user")).username));
+  const currentUser = JSON.parse(localStorage.getItem("user")).username;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if the pathname matches the current user
+    if (navigation.pathname.split('/')[2] !== currentUser) {
+      // If not, navigate to the login page
+      navigate('/login');
+      return;
+    }
+  }, [currentUser, navigation.pathname, navigate]); // useEffect dependencies
+
+
+  PageTitle("Dashboard");
   const [activeLink, setActiveLink] = useState('user'); // Default active link
 
   const handleLinkClick = (link) => {
@@ -41,41 +57,39 @@ const Dashboard = () => {
     <React.Fragment>
       <DrawerAppBar pages={UserNavLinks} />
       <Breadcrumb path={useLocation()} />
-      <div>
-        <Container>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <Typography variant="h3" gutterBottom>
-                Dashboard
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <nav>
-                <List component="nav" sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                  {Object.keys(boardStructure).map((link) => (
-                    <ListItem key={link} button onClick={() => handleLinkClick(link)} selected={activeLink === link}>
-                      <ListItemIcon>
-                        {link === 'user' && <UserIcon />}
-                        {link === 'tools' && <ToolsIcon />}
-                        {link === 'projects' && <ProjectsIcon />}
-                        {link === 'education' && <EducationIcon />}
-                        {link === 'posts' && <PostsIcon />}
-                      </ListItemIcon>
-                      <ListItemText primary={link} />
-                    </ListItem>
-                  ))}
-                </List>
-              </nav>
-            </Grid>
-            <Grid item xs={12}>
-              {boardStructure[activeLink]}
-            </Grid>
-            <Grid item xs={12}>
-              <Outlet />
-            </Grid>
+      <Container>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Typography variant="h3" gutterBottom>
+              Dashboard
+            </Typography>
           </Grid>
-        </Container>
-      </div>
+          <Grid item xs={12}>
+            <nav>
+              <List component="nav" sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                {Object.keys(boardStructure).map((link) => (
+                  <ListItem key={link} button onClick={() => handleLinkClick(link)} selected={activeLink === link}>
+                    <ListItemIcon>
+                      {link === 'profile' && <UserIcon />}
+                      {link === 'tools' && <ToolsIcon />}
+                      {link === 'projects' && <ProjectsIcon />}
+                      {link === 'education' && <EducationIcon />}
+                      {link === 'posts' && <PostsIcon />}
+                    </ListItemIcon>
+                    <ListItemText primary={link} />
+                  </ListItem>
+                ))}
+              </List>
+            </nav>
+          </Grid>
+          <Grid item xs={12}>
+            {boardStructure[activeLink]}
+          </Grid>
+          <Grid item xs={12}>
+            <Outlet />
+          </Grid>
+        </Grid>
+      </Container>
       <Footer />
     </React.Fragment >
   );
