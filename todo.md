@@ -6,5 +6,5 @@
 <!-- Implement projects page -->
 Implement user posts page
 Implement user projects page
-Fix style issue with mobile navigation on menu toggle
+<TODO: caused by Mbang -- Fix style issue with mobile navigation on menu toggle -->
 Handle dynamic  route validation ([https://reactrouter.com/en/main/route/route])
