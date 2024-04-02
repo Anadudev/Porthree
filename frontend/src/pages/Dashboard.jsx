@@ -16,7 +16,7 @@ import Logout from '../components/Dashboard/Logout';
 import UserComponent from '../components/Dashboard/User';
 import ToolsComponent from '../components/Dashboard/Tools';
 import ProjectsComponent from '../components/Projects';
-import EducationComponent from '../components/Projects';
+import EducationsComponent from '../components/Dashboard/Education';
 import PostsComponent from '../components/Dashboard/Posts';
 import PageTitle from './PageTitle';
 
@@ -24,7 +24,7 @@ const boardStructure = {
   user: <UserComponent />,
   tools: <ToolsComponent />,
   projects: <ProjectsComponent />,
-  education: <EducationComponent />,
+  education: <EducationsComponent />,
   posts: <PostsComponent />,
 };
 
