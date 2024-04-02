@@ -17,6 +17,23 @@ async function GetUser(user) {
     }
 }
 
+export async function GetDatas(data) {
+    try {
+        const response = await axios.get(`http://localhost:8000/api/${data}/`);
+        if (response && response.status === 200 && response.data) {
+            return response.data;
+        }
+    } catch (error) {
+        if (error.response) {
+            // console.log(error.response)
+            return error.response
+            // throw new Error("User not found");
+        } else {
+            throw new Error("Failed to fetch user data");
+        }
+    }
+}
+
 const assembleData = (id, dataList) => {
     return dataList.filter(data => data.user === id);
 }

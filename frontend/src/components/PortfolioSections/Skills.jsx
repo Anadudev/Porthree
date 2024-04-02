@@ -42,7 +42,7 @@ const Skills = ({ skills }) => {
           {skills.map((data, index) => (
             <Grid key={index} {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
               {/* <div> */}
-              <Box className=" p-2" onClick={() => handleOpen(index)}>
+              <Box className=" p-2 cursor-pointer" onClick={() => handleOpen(index)}>
                 <Typography component='p' className='uppercase' sx={{ fontWeight: '900' }}>{data.skill}</Typography>
                 <Typography variant='p' component='p'>{Limiter(data.detail, 200)}</Typography>
               </Box>

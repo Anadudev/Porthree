@@ -11,10 +11,10 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-// import { Link } from "react-router-dom";
-import { Link } from '@mui/material';
+import { Link } from "react-router-dom";
+// import { Link } from '@mui/material';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import Logout from './Dashboard/Logout';
+// import Logout from './Dashboard/Logout';
 import { userTools } from '../data/NavLinks';
 
 const settings = userTools();
@@ -28,43 +28,45 @@ function ResponsiveAppBar({ pages }) {
     <Button component={Link} to='/login' color="inherit">Login</Button>
     <Button component={Link} to='/signup' color="inherit">SignUp</Button>
   </ButtonGroup>)
-  const InUser = () => (<Box sx={{ flexGrow: 0 }}>
-    <Tooltip title="Open settings">
-      <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-        <Avatar alt="U" src={settings[0].user.picture} />
-      </IconButton>
-    </Tooltip>
-    <Menu
-      sx={{ mt: '45px' }}
-      id="menu-appbar"
-      anchorEl={anchorElUser}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      open={Boolean(anchorElUser)}
-      onClose={handleCloseUserMenu}
-    >
-      {settings?.map((setting, index) => (
-        <MenuItem key={index} onClick={handleCloseUserMenu}>
-          {setting.item || <Button
-            Link
-            href={setting.url}
-            onClick={handleCloseNavMenu}
-          // sx={{ my: 2, color: 'white', display: 'block' }}
-          >
-            {setting.title}
-          </Button>
-          }
-        </MenuItem>
-      ))}
-    </Menu>
-  </Box>)
+  const InUser = () => (
+    <Box sx={{ flexGrow: 0 }}>
+      <Tooltip title="Open settings">
+        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+          <Avatar alt="U" src={settings[0].user.picture} />
+        </IconButton>
+      </Tooltip>
+      <Menu
+        sx={{ mt: '45px' }}
+        id="menu-appbar"
+        anchorEl={anchorElUser}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        keepMounted
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        open={Boolean(anchorElUser)}
+        onClose={handleCloseUserMenu}
+      >
+        {settings?.map((setting, index) => (
+          <MenuItem key={index} onClick={handleCloseUserMenu}>
+            {setting.item || <Button
+              component={Link}
+              to={setting.url}
+              onClick={handleCloseNavMenu}
+            // sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+              {setting.title}
+            </Button>
+            }
+          </MenuItem>
+        ))}
+      </Menu>
+    </Box>
+  )
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -137,8 +139,8 @@ function ResponsiveAppBar({ pages }) {
               {pages.map((page) => (
                 <MenuItem key={page.id} onClick={handleCloseNavMenu}>
                   <Button
-                    Link
-                    href={page.url}
+                    component={Link}
+                    to={page.url}
                   // onClick={handleCloseNavMenu}
                   // sx={{ my: 2, color: 'white', display: 'block' }}
                   >
@@ -173,8 +175,8 @@ function ResponsiveAppBar({ pages }) {
             {pages.map((page) => (
               <Button
                 key={page.id}
-                Link
-                href={page.url}
+                component={Link}
+                to={page.url}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
