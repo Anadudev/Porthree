@@ -54,6 +54,11 @@ export const UserNavLinks = (data) => (
             title: "Contact",
             url: `/${data.username}#contact` || "#",
         },
+        {
+            id: 7,
+            title: "Portfolios",
+            url: `/portfolios` || "#",
+        },
     ]);
 
 
