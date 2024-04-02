@@ -1,10 +1,8 @@
 import * as React from 'react';
 import Grid from '@mui/material/Unstable_Grid2';
-import { Paper, Card, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import SectionHeader from './SectionHeader';
-import { About as ab, Experience, Education } from '../../data/Info';
-
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
@@ -13,6 +11,17 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import AboutCard from './AboutCard';
 
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 export function ToolsList({ tools }) {
   if (!tools || tools.length === 0) {
