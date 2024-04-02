@@ -75,7 +75,7 @@ class Post(models.Model):
     slug = models.SlugField(unique=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    post_image = models.ImageField(upload_to="post_images/", blank=True)
+    post_image = models.ImageField(upload_to="post_images/", blank=True, null=True)
     content = models.TextField(blank=True, null=True)
     publish = models.BooleanField(default=False)
     tags = models.ManyToManyField(
