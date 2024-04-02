@@ -37,9 +37,10 @@ const Dashboard = () => {
   const currentUser = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
   const [user, setUser] = useState([]);
+  // console.log(localStorage.getItem("access_token"));
   useEffect(() => {
     // Check if the pathname matches the current user
-    if (navigation.pathname.split('/')[2] !== currentUser.username) {
+    if (!localStorage.getItem("access_token") || navigation.pathname.split('/')[2] !== currentUser.username) {
       // If not, navigate to the login page
       navigate('/login');
     }
