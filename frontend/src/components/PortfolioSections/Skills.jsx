@@ -22,7 +22,7 @@ const Skills = ({ skills }) => {
     transform: 'translate(-50%, -50%)',
     maxWidth: '600rem',
     bgcolor: 'background.paper',
-    // border: '2px solid #000',
+    border: '2px solid #000',
     borderRadius: '10px',
     boxShadow: 2,
     p: 2,
