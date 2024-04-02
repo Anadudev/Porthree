@@ -98,7 +98,7 @@ class Tool(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
     icon = models.ImageField(upload_to="tool_icons/", blank=True)
-    tool = models.CharField(unique=True,max_length=255)
+    tool = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -192,10 +192,6 @@ class Education(models.Model):
     start_date = models.DateField()
     end_date = models.DateField(blank=True, null=True)
     detail = models.TextField()
-
-    class Meta:
-        # Ensure that a user cannot have duplicate institute
-        unique_together = ["user", "institute"]
 
     def __str__(self):
         return f"{self.degree} at {self.institute}"

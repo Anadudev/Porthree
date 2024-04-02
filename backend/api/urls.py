@@ -4,6 +4,8 @@ from django.urls import include, path
 from rest_framework import routers
 from api import views
 from .views import GetUserByUsernameView
+from .views import UserToolsListView
+from .views import UserEducationsListView
 
 
 
@@ -47,4 +49,8 @@ urlpatterns = [
         GetUserByUsernameView.as_view(),
         name="get_user_by_username",
     ),
+    path('users/<int:user_id>/tools/', UserToolsListView.as_view(), name='user-tools-list'),
+    path('users/<int:user_id>/educations/', UserEducationsListView.as_view(), name='user-educations-list'),
+
 ]
+

@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+from rest_framework import generics
 from django.http import JsonResponse
 from django.views import View
 from django.core.exceptions import ObjectDoesNotExist
@@ -105,6 +106,13 @@ class ToolViewSet(viewsets.ModelViewSet):
     queryset = Tool.objects.all().order_by("created_at")
     serializer_class = ToolSerializer
 
+class UserToolsListView(generics.ListAPIView):
+    """ manage tools associated with specific users"""
+    serializer_class = ToolSerializer
+
+    def get_queryset(self):
+        user_id = self.kwargs['user_id']  # assuming you pass user_id in URL
+        return Tool.objects.filter(user_id=user_id)
 
 class SocialViewSet(viewsets.ModelViewSet):
     """adds representations of the Social to the API view"""
@@ -129,6 +137,13 @@ class EducationViewSet(viewsets.ModelViewSet):
     queryset = Education.objects.all().order_by("created_at")
     serializer_class = EducationSerializer
 
+class UserEducationsListView(generics.ListAPIView):
+    """ manage educations associated with specific user"""
+    serializer_class = EducationSerializer
+
+    def get_queryset(self):
+        user_id = self.kwargs['user_id']  # assuming you pass user_id in URL
+        return Education.objects.filter(user_id=user_id)
 
 class ExperienceViewSet(viewsets.ModelViewSet):
     """adds representations of the Experience to the API view"""
