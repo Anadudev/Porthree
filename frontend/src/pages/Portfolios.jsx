@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import { Skills as sk } from '../data/Info';
@@ -15,6 +15,9 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { GetDatas, getUserData } from '../data/GetUser';
+import { Link } from 'react-router-dom';
+import Limiter from '../components/Limiter';
 
 const options = [
     'None',
@@ -35,7 +38,7 @@ const options = [
 
 const ITEM_HEIGHT = 48;
 
-export function SkillMenu() {
+export function SkillMenu({ skills }) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -74,9 +77,9 @@ export function SkillMenu() {
                     },
                 }}
             >
-                {options.map((option) => (
-                    <MenuItem key={option} /* selected={option === 'Pyxis'} */ onClick={handleClose}>
-                        {option}
+                {skills?.map((skill, index) => (
+                    <MenuItem key={index} /* selected={option === 'Pyxis'} */ onClick={handleClose}>
+                        {skill.skill}
                     </MenuItem>
                 ))}
             </Menu>
@@ -115,7 +118,46 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 
 const Portfolios = () => {
     PageTitle("Portfolios");
+    const [results, setResults] = useState([]);
+    const [users, setUsers] = useState([]);
+    /*     const [projects, setProjects] = useState([]);
+        const [posts, setPosts] = useState([]);
+        const [skills, setSkills] = useState([]); */
 
+    useEffect(() => {
+        const fetchData = async () => {
+            const result = await GetDatas('users');
+            setResults(result);
+            // let collection = [];
+            const userList = result.results
+            for (const i in userList) {
+                const data = await getUserData(userList[i].id, 'projects');
+                if (data[0] === undefined) { continue }
+                userList[i]["projects"] = data.length;
+                // console.log(userList);
+            }
+            for (const i in userList) {
+                const data = await getUserData(userList[i].id, 'posts');
+                if (data[0] === undefined) { continue }
+                userList[i]["posts"] = data.length;
+                // console.log(userList);
+            }
+            for (const i in userList) {
+                const data = await getUserData(userList[i].id, 'skills');
+                if (data[0] === undefined) { continue }
+                userList[i]["skills"] = data;
+                // console.log(userList);
+            }
+            setUsers(userList);
+        };
+
+        fetchData();
+    }, []);
+
+    if (!users || users.length < 1) {
+        return null;
+    }
+    // console.log(users)
     return (
         <Box component="section" id="skills">
 
@@ -129,8 +171,8 @@ const Portfolios = () => {
                         alignItems={'center'}
                         justifyContent={'center'}
                     >
-                        {sk.map((data) => (
-                            <Grid key={data.id} {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+                        {users?.map((user, index) => (
+                            <Grid key={index} {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
                                 <Box className=" p-2">
                                     <Box sx={{ display: 'flex', justifyContent: 'center', mb: '-20px' }}>
                                         <StyledBadge
@@ -138,32 +180,32 @@ const Portfolios = () => {
                                             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                                             variant="dot"
                                         >
-                                            <Avatar alt="Remy Sharp" src={BgImage} sx={{ width: 70, height: 70 }} />
+                                            <Avatar alt={user.username} src={user.picture} sx={{ width: 70, height: 70 }} />
                                         </StyledBadge>
                                     </Box>
                                     <Paper elevation={6} sx={{ pt: '40px', px: '10px', pb: '10px', borderRadius: '20px' }}>
                                         <Box sx={{ display: "flex", justifyContent: 'space-between' }}>
                                             <Box>
-                                                <Typography component='p' className='capitalize text-center pr-2' >projects <br /> <b>10</b>+</Typography>
+                                                <Typography component='p' className='capitalize text-center pr-2' >projects <br /> <b>{user.projects ? `${user.projects}+` : 0}</b></Typography>
                                             </Box>
-                                            <Box><Typography component='p' className='capitalize text-center border-x' sx={{ fontWeight: '900' }}>First_name Last_name</Typography>
-                                                <Typography component='p' className='capitalize text-center' >career</Typography></Box>
-                                            <Box><Typography component='p' className='capitalize text-center pl-2' >posts <br /> <b>1K</b>+</Typography>
+                                            <Box><Typography component='p' className='capitalize text-center border-x px-1' sx={{ fontWeight: '900' }}>{user.first_name && user.last_name ? `${user.first_name} ${user.last_name}` : user.username}</Typography>
+                                                <Typography component='p' className='capitalize text-center' >{user.career}</Typography></Box>
+                                            <Box><Typography component='p' className='capitalize text-center pl-2' >posts <br /> <b>{user.posts ? `${user.posts}+` : 0}</b></Typography>
                                             </Box>
                                         </Box>
                                         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                                             <Typography variant='p' component='p' sx={{ fontWeight: '700' }}>Bio:</Typography>
                                             <Box sx={{ display: "flex", alignItems: "center" }}>
-                                                <SkillMenu />
+                                                {user.skills && <SkillMenu skills={user.skills} />}
                                             </Box>
                                         </Box>
-                                        <Typography variant='p' component='p'>{data.detail}</Typography>
+                                        <Typography variant='p' component='p'>{Limiter(user.bio, 100)}</Typography>
                                         <Box className="mt-3 flex justify-center">
                                             <Chip
                                                 label="Portfolio"
                                                 color="success"
-                                                component="a"
-                                                href="http://localhost:5173/admin"
+                                                component={Link}
+                                                to={`/${user.username}`}
                                                 variant="outlined"
                                                 clickable
                                             />
