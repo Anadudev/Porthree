@@ -6,6 +6,7 @@ from api import views
 from .views import GetUserByUsernameView
 from .views import UserToolsListView
 from .views import UserEducationsListView
+from .views import UserPostsListView
 
 
 
@@ -51,6 +52,7 @@ urlpatterns = [
     ),
     path('users/<int:user_id>/tools/', UserToolsListView.as_view(), name='user-tools-list'),
     path('users/<int:user_id>/educations/', UserEducationsListView.as_view(), name='user-educations-list'),
+    path('users/<int:user_id>/posts/', UserPostsListView.as_view(), name='user-posts-list'),
 
 ]
 

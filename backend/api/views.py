@@ -72,6 +72,13 @@ class PostViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(slug=slug)
         return queryset
 
+class UserPostsListView(generics.ListAPIView):
+    """ manage posts associated with specific user"""
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        user_id = self.kwargs['user_id']  # assuming you pass user_id in URL
+        return Post.objects.filter(user_id=user_id)
 
 class ProjectViewSet(viewsets.ModelViewSet):
     """adds representations of the Project to the API view"""
