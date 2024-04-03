@@ -23,11 +23,11 @@ import ExperienceComponent from '../components/Dashboard/Experience';
 import PageTitle from './PageTitle';
 
 const boardStructure = {
-  profile: <UserComponent />, // Add profile to the boardStructure
+  profile: <UserComponent />,
   tools: <ToolsComponent />,
   projects: <ProjectsComponent />,
   education: <EducationsComponent />,
-  experience: <ExperienceComponent />, // Add ExperienceComponent
+  experience: <ExperienceComponent />,
   posts: <PostsComponent />,
 };
 
@@ -44,7 +44,7 @@ const Dashboard = () => {
   }, [currentUser, navigation.pathname, navigate]);
 
   PageTitle("Dashboard");
-  const [activeLink, setActiveLink] = useState('user');
+  const [activeLink, setActiveLink] = useState('profile');
 
   const handleLinkClick = (link) => {
     setActiveLink(link);
@@ -56,11 +56,6 @@ const Dashboard = () => {
       <Breadcrumb path={useLocation()} />
       <Container>
         <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <Typography variant="h3" gutterBottom>
-              Dashboard
-            </Typography>
-          </Grid>
           <Grid item xs={12}>
             <nav>
               <List component="nav" sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
