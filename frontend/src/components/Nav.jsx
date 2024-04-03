@@ -136,7 +136,7 @@ function ResponsiveAppBar({ pages }) {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
+              {pages?.map((page) => (
                 <MenuItem key={page.id} onClick={handleCloseNavMenu}>
                   <Button
                     component={Link}
