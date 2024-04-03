@@ -87,7 +87,10 @@ const Post = () => {
                                     <Typography sx={{ fontWeight: 700 }}>{user.career || ''}</Typography>
                                 </Box>
                             </Box>
-                            <Typography variant="body2" color="text.secondary" className="pt-20">{post.content || ''}</Typography>
+                            <Typography variant="p"
+                                component='p'
+                                color="text.secondary"
+                                className="py-10 font-semibold text-lg">{post.content || ''}</Typography>
                         </CardContent>
                         <Box px={'10px'}>
                             <Box sx={{ flexGrow: 1 }}>

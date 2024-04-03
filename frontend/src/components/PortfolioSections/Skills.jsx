@@ -58,7 +58,10 @@ const Skills = ({ skills }) => {
                     {data.skill || ''}
                     </Typography>
                   <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                    <b>
+
                     {data.detail || ''}
+                    </b>
                   </Typography>
                 </Box>
               </Modal>

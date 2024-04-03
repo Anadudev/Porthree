@@ -9,9 +9,6 @@ import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import BgImage from "/src/assets/image.jpg";
@@ -71,7 +68,7 @@ export default function PostCard({ post, mode }) {
     }, [post]);
     // console.log(tools)
     return (
-        <Card sx={{ maxWidth: 345 }}>
+        <Card sx={{ maxWidth: 345 }} className="border">
             <CardHeader
                 avatar={
                     <Avatar /* sx={{ bgcolor: red[500] }} */ alt={user.username} aria-label="recipe" src={user.picture}>
@@ -95,9 +92,9 @@ export default function PostCard({ post, mode }) {
                 <p className='font-bold text-center primary'>{mode}:</p>
 
                 <Link component={RL} to={`/${user.username}/${mode === "Project" ? "projects" : "posts"}/${post.slug}`} gutterBottom underline="always" variant="h5">
-                    {post.title || ""}
+                    {Limiter(post.title) || ""}
                 </Link>
-                <Typography variant="body2" color="text.secondary">{Limiter(post.content, 150)}
+                <Typography variant="body2" color="text.secondary"><b>{Limiter(post.content, 150)}</b>
                 </Typography>
             </CardContent>
             <CardActions disableSpacing onClick={handleExpandClick} className='cursor-pointer'>

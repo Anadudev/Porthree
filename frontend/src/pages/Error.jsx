@@ -1,52 +1,38 @@
-import React from 'react';
-import { useRouteError } from "react-router-dom";
-import DrawerAppBar from '../components/Nav';
-import { NavLinks } from '../data/NavLinks';
+import * as React from 'react';
 import Footer from '../components/Footer';
 import PageTitle from './PageTitle';
+import DrawerAppBar from "../components/Nav";
+import { NavLinks } from '../data/NavLinks';
+import { Typography } from '@mui/material';
+import { useRouteError } from 'react-router-dom';
 
-const Error = ({ err }) => {
-    try {
-        // Validate the err prop
-        err = err || useRouteError();
-        if (!err || !err.status || !err.statusText || !err.request) {
-            throw new Error("Invalid err prop");
-        }
-
-        // Validate the useRouteError() function
-        if (typeof useRouteError !== "function") {
-            throw new Error("useRouteError() is not a function");
-        }
-
-        const error = {
-            ...err,
-            statusText:
-                err.statusText ||
-                (err.status === 0 ? "Network Error" : "Unknown Error"),
-            request: err.request || { responseURL: window.location.href },
-        };
-
-        return (
-            <React.Fragment>
-                <DrawerAppBar pages={NavLinks} />
-                <div>
-                    Error <b className="text-blue">{error.status} {error.statusText} @ {error.request.responseURL}</b>
+export const ErrorCard = ({ error, code, content, nav }) => {
+    return (
+        <React.Fragment>
+            {nav && <DrawerAppBar pages={NavLinks} />}
+            <div className="w-full h-[70vh] flex justify-center align-middle">
+                <div className='capitalize h-fit self-center'>
+                    <Typography variant='h6' component='h1'>Error: </Typography>
+                    <Typography variant='h1' sx={{ fontWeight: 900 }} component='h1'>{code || ''} {error || ''}</Typography>
+                    <Typography variant='h6' component='h1'>{content || ''}</Typography>
                 </div>
-                <Footer />
-            </React.Fragment>
-        );
-    } catch (e) {
-        // Handle any unexpected errors
-        console.error(e);
-        return (
-            <React.Fragment>
-                <DrawerAppBar pages={NavLinks} />
-                <div>
-                    Error <b className="text-blue">{e.message}</b>
-                </div>
-                <Footer />
-            </React.Fragment>
-        );
-    }
-};
+            </div>
+        </React.Fragment>
+    )
+}
+
+const Error = () => {
+    PageTitle("Error");
+    const error = useRouteError();
+    // console.log(error);
+    return (
+        <React.Fragment>
+            <DrawerAppBar pages={NavLinks} />
+            {error && <ErrorCard content={error.error.message} code={error.statusText} error={error.status} />}
+            <Footer />
+        </React.Fragment>
+    )
+}
+
+
 export default Error;
