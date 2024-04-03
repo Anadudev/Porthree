@@ -11,6 +11,7 @@ import UserIcon from '@mui/icons-material/Person';
 import ToolsIcon from '@mui/icons-material/Build';
 import ProjectsIcon from '@mui/icons-material/Work';
 import EducationIcon from '@mui/icons-material/School';
+import WorkIcon from '@mui/icons-material/Work';
 import PostsIcon from '@mui/icons-material/PostAdd';
 import Logout from '../components/Dashboard/Logout';
 import UserComponent from '../components/Dashboard/User';
@@ -18,36 +19,32 @@ import ToolsComponent from '../components/Dashboard/Tools';
 import ProjectsComponent from '../components/Projects';
 import EducationsComponent from '../components/Dashboard/Education';
 import PostsComponent from '../components/Dashboard/Posts';
+import ExperienceComponent from '../components/Dashboard/Experience';
 import PageTitle from './PageTitle';
 
 const boardStructure = {
-  user: <UserComponent />,
+  profile: <UserComponent />, // Add profile to the boardStructure
   tools: <ToolsComponent />,
   projects: <ProjectsComponent />,
   education: <EducationsComponent />,
+  experience: <ExperienceComponent />, // Add ExperienceComponent
   posts: <PostsComponent />,
 };
 
-
-
 const Dashboard = () => {
   const navigation = useLocation();
-  // console.log(JSON.stringify(JSON.parse(localStorage.getItem("user")).username));
   const currentUser = JSON.parse(localStorage.getItem("user")).username;
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if the pathname matches the current user
     if (navigation.pathname.split('/')[2] !== currentUser) {
-      // If not, navigate to the login page
       navigate('/login');
       return;
     }
-  }, [currentUser, navigation.pathname, navigate]); // useEffect dependencies
-
+  }, [currentUser, navigation.pathname, navigate]);
 
   PageTitle("Dashboard");
-  const [activeLink, setActiveLink] = useState('user'); // Default active link
+  const [activeLink, setActiveLink] = useState('user');
 
   const handleLinkClick = (link) => {
     setActiveLink(link);
@@ -74,6 +71,7 @@ const Dashboard = () => {
                       {link === 'tools' && <ToolsIcon />}
                       {link === 'projects' && <ProjectsIcon />}
                       {link === 'education' && <EducationIcon />}
+                      {link === 'experience' && <WorkIcon />}
                       {link === 'posts' && <PostsIcon />}
                     </ListItemIcon>
                     <ListItemText primary={link} />
