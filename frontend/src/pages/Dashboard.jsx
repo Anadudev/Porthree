@@ -58,9 +58,9 @@ const Dashboard = () => {
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <nav>
-              <List component="nav" sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+              <List component="nav" sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
                 {Object.keys(boardStructure).map((link) => (
-                  <ListItem key={link} button onClick={() => handleLinkClick(link)} selected={activeLink === link}>
+                  <ListItem key={link} button onClick={() => handleLinkClick(link)} selected={activeLink === link} sx={{ minWidth: '120px' }}>
                     <ListItemIcon>
                       {link === 'profile' && <UserIcon />}
                       {link === 'tools' && <ToolsIcon />}
