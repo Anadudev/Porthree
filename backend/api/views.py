@@ -77,7 +77,7 @@ class UserPostsListView(generics.ListAPIView):
     serializer_class = PostSerializer
 
     def get_queryset(self):
-        user_id = self.kwargs['user_id']  # assuming you pass user_id in URL
+        user_id = self.kwargs['user_id'] 
         return Post.objects.filter(user_id=user_id)
 
 class ProjectViewSet(viewsets.ModelViewSet):
@@ -96,7 +96,13 @@ class ProjectViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(slug=slug)
         return queryset
 
+class UserProjectsListView(generics.ListAPIView):
+    """ manage projects associated with specific user"""
+    serializer_class = ProjectSerializer
 
+    def get_queryset(self):
+        user_id = self.kwargs['user_id'] 
+        return Project.objects.filter(user_id=user_id)
 
 class TagViewSet(viewsets.ModelViewSet):
     """adds representations of the Tag to the API view"""
@@ -118,7 +124,7 @@ class UserToolsListView(generics.ListAPIView):
     serializer_class = ToolSerializer
 
     def get_queryset(self):
-        user_id = self.kwargs['user_id']  # assuming you pass user_id in URL
+        user_id = self.kwargs['user_id']
         return Tool.objects.filter(user_id=user_id)
 
 class SocialViewSet(viewsets.ModelViewSet):
@@ -149,7 +155,7 @@ class UserEducationsListView(generics.ListAPIView):
     serializer_class = EducationSerializer
 
     def get_queryset(self):
-        user_id = self.kwargs['user_id']  # assuming you pass user_id in URL
+        user_id = self.kwargs['user_id']
         return Education.objects.filter(user_id=user_id)
 
 class ExperienceViewSet(viewsets.ModelViewSet):
@@ -164,7 +170,7 @@ class UserExperienceListView(generics.ListAPIView):
     serializer_class = ExperienceSerializer
 
     def get_queryset(self):
-        user_id = self.kwargs['user_id']  # assuming you pass user_id in URL
+        user_id = self.kwargs['user_id']
         return Experience.objects.filter(user_id=user_id)
 
 class RatingViewSet(viewsets.ModelViewSet):

@@ -8,7 +8,7 @@ from .views import UserToolsListView
 from .views import UserEducationsListView
 from .views import UserPostsListView
 from .views import UserExperienceListView
-
+from .views import UserProjectsListView
 
 
 router = routers.DefaultRouter()
@@ -55,6 +55,7 @@ urlpatterns = [
     path('users/<int:user_id>/educations/', UserEducationsListView.as_view(), name='user-educations-list'),
     path('users/<int:user_id>/posts/', UserPostsListView.as_view(), name='user-posts-list'),
     path('users/<int:user_id>/experiences/', UserExperienceListView.as_view(), name='user-expereinces-list'),
+    path('users/<int:user_id>/projects/', UserProjectsListView.as_view(), name='user-projects-list'),
 
 ]
 
