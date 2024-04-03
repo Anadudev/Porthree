@@ -24,11 +24,11 @@ export const ErrorCard = ({ error, code, content, nav }) => {
 const Error = () => {
     PageTitle("Error");
     const error = useRouteError();
-    // console.log(error);
+    console.log(error);
     return (
         <React.Fragment>
             <DrawerAppBar pages={NavLinks} />
-            {error && <ErrorCard content={error.error.message} code={error.statusText} error={error.status} />}
+            {error && <ErrorCard content={error.error && error.error.message} code={error.statusText} error={error.status} />}
             <Footer />
         </React.Fragment>
     )

@@ -1,11 +1,14 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
+import { GetDatas } from '../../data/GetUser';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { Typography, Grid } from '@mui/material';
 import Box from '@mui/material/Box';
-import SectionHeader from './SectionHeader';
-import PostCard from './PostCard';
+import PostCard from '../PortfolioSections/PostCard';
+import SectionTitle from './SectionTitle';
+
+
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -39,19 +42,34 @@ function a11yProps(index) {
   };
 }
 
-const Projects = ({ projects }) => {
-  if (!projects || projects.length <= 0) {
-    return null;
-  }
-  const [value, setValue] = React.useState(0);
+
+const Blog = () => {
+
+  const [posts, setPosts] = useState(null);
+
+  useEffect(() => {
+    const data = async () => {
+      const result = await GetDatas('posts');
+      setPosts(result.results)
+    }
+    data();
+  }, [])
+  const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  if (!posts || posts.length <= 0) {
+    return null;
+  }
+
+
+  // console.log(posts)
+
   return (
-    <Box id='projects'>
-      <SectionHeader title={'awesome works'} />
+    <Box id='posts'>
+      <SectionTitle title={'posts'} caption={'some posts by users on our platform'}/>
       <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs
@@ -75,10 +93,10 @@ const Projects = ({ projects }) => {
               alignItems={'center'}
               justifyContent={'center'}
             >
-              {projects && projects.slice(0, 6).map((data, index) => (
+              {posts && posts.slice(0, 8).map((data, index) => (
                 <Grid item key={index}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
                   <Box className=" p-2">
-                    <PostCard type='Project' post={data} mode={"Project"} />
+                    <PostCard type='Post' post={data} mode={"Post"} />
                   </Box>
                 </Grid>
               ))}
@@ -93,10 +111,10 @@ const Projects = ({ projects }) => {
               alignItems={'center'}
               justifyContent={'center'}
             >
-              {projects.map((data) => (
+              {posts.map((data) => (
                 <Grid item key={data.id}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
                   <Box className=" p-2">
-                    <PostCard type='Project' />
+                    <PostCard type='Post' />
                   </Box>
                 </Grid>
               ))}
@@ -111,10 +129,10 @@ const Projects = ({ projects }) => {
               alignItems={'center'}
               justifyContent={'center'}
             >
-              {projects.map((data) => (
+              {posts.map((data) => (
                 <Grid item key={data.id}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
                   <Box className=" p-2">
-                    <PostCard type='Project' />
+                    <PostCard type='Post' />
                   </Box>
                 </Grid>
               ))}
@@ -123,7 +141,7 @@ const Projects = ({ projects }) => {
         </CustomTabPanel>
       </Box>
     </Box>
-  );
+  )
 }
 
-export default Projects;
+export default Blog;
