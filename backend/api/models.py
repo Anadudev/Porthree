@@ -122,9 +122,9 @@ class Project(models.Model):
     slug = models.SlugField(unique=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    image = models.ImageField(upload_to="project_images/", blank=True)
-    demo = models.URLField(blank=True)
-    video = models.FileField(upload_to="project_videos/", blank=True)
+    image = models.ImageField(upload_to="project_images/", blank=True, null=True)
+    demo = models.URLField(blank=True, null=True)
+    video = models.URLField(blank=True, null=True)
     content = models.TextField(blank=True, null=True)
     publish = models.BooleanField(default=False)
     tags = models.ManyToManyField(

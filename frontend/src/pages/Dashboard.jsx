@@ -16,7 +16,7 @@ import PostsIcon from '@mui/icons-material/PostAdd';
 import Logout from '../components/Dashboard/Logout';
 import UserComponent from '../components/Dashboard/User';
 import ToolsComponent from '../components/Dashboard/Tools';
-import ProjectsComponent from '../components/Projects';
+import ProjectsComponent from '../components/Dashboard/Projects';
 import EducationsComponent from '../components/Dashboard/Education';
 import PostsComponent from '../components/Dashboard/Posts';
 import ExperienceComponent from '../components/Dashboard/Experience';
