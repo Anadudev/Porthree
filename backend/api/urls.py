@@ -4,7 +4,11 @@ from django.urls import include, path
 from rest_framework import routers
 from api import views
 from .views import GetUserByUsernameView
-
+from .views import UserToolsListView
+from .views import UserEducationsListView
+from .views import UserPostsListView
+from .views import UserExperienceListView
+from .views import UserProjectsListView
 
 
 router = routers.DefaultRouter()
@@ -47,4 +51,11 @@ urlpatterns = [
         GetUserByUsernameView.as_view(),
         name="get_user_by_username",
     ),
+    path('users/<int:user_id>/tools/', UserToolsListView.as_view(), name='user-tools-list'),
+    path('users/<int:user_id>/educations/', UserEducationsListView.as_view(), name='user-educations-list'),
+    path('users/<int:user_id>/posts/', UserPostsListView.as_view(), name='user-posts-list'),
+    path('users/<int:user_id>/experiences/', UserExperienceListView.as_view(), name='user-expereinces-list'),
+    path('users/<int:user_id>/projects/', UserProjectsListView.as_view(), name='user-projects-list'),
+
 ]
+

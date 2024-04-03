@@ -11,13 +11,15 @@ import UserIcon from '@mui/icons-material/Person';
 import ToolsIcon from '@mui/icons-material/Build';
 import ProjectsIcon from '@mui/icons-material/Work';
 import EducationIcon from '@mui/icons-material/School';
+import WorkIcon from '@mui/icons-material/Work';
 import PostsIcon from '@mui/icons-material/PostAdd';
 import Logout from '../components/Dashboard/Logout';
 import UserComponent from '../components/Dashboard/User';
 import ToolsComponent from '../components/Dashboard/Tools';
-import ProjectsComponent from '../components/Projects';
-import EducationComponent from '../components/Projects';
+import ProjectsComponent from '../components/Dashboard/Projects';
+import EducationsComponent from '../components/Dashboard/Education';
 import PostsComponent from '../components/Dashboard/Posts';
+import ExperienceComponent from '../components/Dashboard/Experience';
 import PageTitle from './PageTitle';
 import { GetItem } from '../data/GetUser';
 
@@ -25,10 +27,11 @@ import { GetItem } from '../data/GetUser';
  * Object containing the structure of the dashboard with keys as section names and values as React components.
  */
 const boardStructure = {
-  user: <UserComponent />,
+  profile: <UserComponent />,
   tools: <ToolsComponent />,
   projects: <ProjectsComponent />,
-  education: <EducationComponent />,
+  education: <EducationsComponent />,
+  experience: <ExperienceComponent />,
   posts: <PostsComponent />,
 };
 
@@ -41,23 +44,17 @@ const boardStructure = {
  */
 const Dashboard = () => {
   const navigation = useLocation();
-  const currentUser = JSON.parse(localStorage.getItem("user"));
+  const currentUser = JSON.parse(localStorage.getItem("user")).username;
   const navigate = useNavigate();
   const [user, setUser] = useState([]);
   useEffect(() => {
-    // Check if the pathname matches the current user
-    if (!localStorage.getItem("access_token") || navigation.pathname.split('/')[2] !== currentUser.username) {
-      // If not, navigate to the login page
+    if (navigation.pathname.split('/')[2] !== currentUser) {
       navigate('/login');
     }
-
-    const getter = async () => (setUser(await GetItem('users', currentUser.id)));
-    getter();
-  }, [currentUser.username, currentUser.id, navigation.pathname, navigate]); // useEffect dependencies
-
+  }, [currentUser, navigation.pathname, navigate]);
 
   PageTitle("Dashboard");
-  const [activeLink, setActiveLink] = useState('user'); // Default active link
+  const [activeLink, setActiveLink] = useState('profile');
 
   /**
    * Handles the click event to set the active link in the dashboard navigation.
@@ -74,20 +71,16 @@ const Dashboard = () => {
       <Container>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <Typography variant="h3" gutterBottom>
-              Dashboard
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
             <nav>
-              <List component="nav" sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+              <List component="nav" sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
                 {Object.keys(boardStructure).map((link) => (
-                  <ListItem key={link} button onClick={() => handleLinkClick(link)} selected={activeLink === link}>
+                  <ListItem key={link} button onClick={() => handleLinkClick(link)} selected={activeLink === link} sx={{ minWidth: '120px' }}>
                     <ListItemIcon>
                       {link === 'profile' && <UserIcon />}
                       {link === 'tools' && <ToolsIcon />}
                       {link === 'projects' && <ProjectsIcon />}
                       {link === 'education' && <EducationIcon />}
+                      {link === 'experience' && <WorkIcon />}
                       {link === 'posts' && <PostsIcon />}
                     </ListItemIcon>
                     <ListItemText primary={link} />
