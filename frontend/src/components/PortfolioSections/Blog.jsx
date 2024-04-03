@@ -77,7 +77,7 @@ const Blogs = ({ blog }) => {
     <Box id='blog'>
       <SectionHeader title={'Helpful writings'} />
       <Box sx={{ width: '100%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        {/* <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs
             value={value}
             onChange={handleChange}
@@ -90,7 +90,7 @@ const Blogs = ({ blog }) => {
             <Tab label="Item Two" {...a11yProps(1)} />
             <Tab label="Item Three" {...a11yProps(2)} />
           </Tabs>
-        </Box>
+        </Box> */}
         <CustomTabPanel value={value} index={0}>
           <Box sx={{ flexGrow: 1, p: 2 }}>
             <Grid

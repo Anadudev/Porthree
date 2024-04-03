@@ -55,9 +55,7 @@ const Post = () => {
         };
         fetchDataForUser();
     }, [post]);
-    // console.log(tags)
 
-    // console.log(postList.results);
     return (
         <React.Fragment>
             <DrawerAppBar pages={UserNavLinks(user)} />

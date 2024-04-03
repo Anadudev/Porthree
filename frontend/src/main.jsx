@@ -84,7 +84,6 @@ const router = createBrowserRouter([
         const user = await userPath.json();
         const slug = await slugPath.json();
 
-        // console.log(slug.results[0].user === user.id)
         return slug.results[0].user === user.id ? slug : null
       } catch (error) {
         return null

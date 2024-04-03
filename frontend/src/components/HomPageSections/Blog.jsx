@@ -65,13 +65,11 @@ const Blog = () => {
   }
 
 
-  // console.log(posts)
-
   return (
-    <Box id='posts'>
-      <SectionTitle title={'posts'} caption={'some posts by users on our platform'}/>
+    <Box id='blog'>
+      <SectionTitle title={'posts'} caption={'some posts by users on our platform'} />
       <Box sx={{ width: '100%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        {/* <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs
             value={value}
             onChange={handleChange}
@@ -84,7 +82,7 @@ const Blog = () => {
             <Tab label="Item Two" {...a11yProps(1)} />
             <Tab label="Item Three" {...a11yProps(2)} />
           </Tabs>
-        </Box>
+        </Box> */}
         <CustomTabPanel value={value} index={0}>
           <Box sx={{ flexGrow: 1, p: 2 }}>
             <Grid

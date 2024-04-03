@@ -40,11 +40,9 @@ const Login = () => {
           // The login was successful
           const token = response.data.access; // The JWT token
           const user = response.data.user;
-          // console.log('Login successful, token saved');
           // Store the token in local storage or a cookie for future use
           localStorage.setItem('access_token', token);
           localStorage.setItem('user', JSON.stringify(user));
-          // console.log(response);
           // Redirect the user to a protected page or the home page
           navigate(`/dashboard/${user.username}`);
         } else {
@@ -52,7 +50,6 @@ const Login = () => {
         }
       } catch (error) {
         setErrorMessage(<Alert severity="error">{error.response.data.detail}.</Alert>);
-        // console.error('Error logging in:', error.response.data);
         // setErrorMessage('Login failed. Please check username and password and try again.');
       }
     }

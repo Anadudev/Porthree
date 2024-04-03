@@ -64,13 +64,11 @@ const Projects = () => {
     return null;
   }
 
-  // console.log(projects)
-
   return (
     <Box id='projects'>
-      <SectionTitle title={'projects'} caption={'some projects by users on our platform'}/>
+      <SectionTitle title={'projects'} caption={'some projects by users on our platform'} />
       <Box sx={{ width: '100%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        {/* <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs
             value={value}
             onChange={handleChange}
@@ -83,7 +81,7 @@ const Projects = () => {
             <Tab label="Item Two" {...a11yProps(1)} />
             <Tab label="Item Three" {...a11yProps(2)} />
           </Tabs>
-        </Box>
+        </Box> */}
         <CustomTabPanel value={value} index={0}>
           <Box sx={{ flexGrow: 1, p: 2 }}>
             <Grid

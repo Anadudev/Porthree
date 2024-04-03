@@ -39,7 +39,6 @@ const Signup = () => {
       username: Yup.string().matches(/^[a-zA-Z0-9]+$/, 'Username can only contain letters and numbers').required('Username is required'),
     }),
     onSubmit: async (values, { setErrors }) => {
-      // console.log(values);
       try {
         const response = await axios.post(`${api.apiHost}/auth_app/signup/`, values);
         const success_message = `Account successfully created ${response.data.username}`;
@@ -55,8 +54,6 @@ const Signup = () => {
           Object.entries(errorMessage).forEach(([key, value]) => {
             setErrors({ [key]: value[0] })
           });
-          // setErrors({ username: fieldError[0] });
-          // console.log(error.response.data);
         }
       }
     }

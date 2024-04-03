@@ -21,6 +21,9 @@ import PostsComponent from '../components/Dashboard/Posts';
 import PageTitle from './PageTitle';
 import { GetItem } from '../data/GetUser';
 
+/**
+ * Object containing the structure of the dashboard with keys as section names and values as React components.
+ */
 const boardStructure = {
   user: <UserComponent />,
   tools: <ToolsComponent />,
@@ -31,19 +34,23 @@ const boardStructure = {
 
 
 
+
+/**
+ * Dashboard component for displaying the user's dashboard.
+ * @returns {JSX.Element} The JSX element representing the dashboard.
+ */
 const Dashboard = () => {
   const navigation = useLocation();
-  // console.log(JSON.stringify(JSON.parse(localStorage.getItem("user")).username));
   const currentUser = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
   const [user, setUser] = useState([]);
-  // console.log(localStorage.getItem("access_token"));
   useEffect(() => {
     // Check if the pathname matches the current user
     if (!localStorage.getItem("access_token") || navigation.pathname.split('/')[2] !== currentUser.username) {
       // If not, navigate to the login page
       navigate('/login');
     }
+
     const getter = async () => (setUser(await GetItem('users', currentUser.id)));
     getter();
   }, [currentUser.username, currentUser.id, navigation.pathname, navigate]); // useEffect dependencies
@@ -52,6 +59,10 @@ const Dashboard = () => {
   PageTitle("Dashboard");
   const [activeLink, setActiveLink] = useState('user'); // Default active link
 
+  /**
+   * Handles the click event to set the active link in the dashboard navigation.
+   * @param {string} link - The name of the link to be set as active.
+   */
   const handleLinkClick = (link) => {
     setActiveLink(link);
   };

@@ -31,12 +31,21 @@ const ExpandMore = styled((props) => {
 
 
 
-export default function PostCard({ post, mode }) {
+/**
+ * PostCard component for displaying a post in a card format.
+ * @param {Object} post - The post object containing post details.
+ * @param {string} mode - The mode of the post, e.g., "Project" or "Blog".
+ * @returns {JSX.Element} The JSX element representing the post card.
+ */
+const PostCard = ({ post, mode }) => {
     if (!post || post.length <= 0) {
         return null;
     }
     const [expanded, setExpanded] = React.useState(false);
 
+    /**
+     * Handles the click event to expand or collapse the post card details.
+     */
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
@@ -44,17 +53,22 @@ export default function PostCard({ post, mode }) {
     const [tools, setTools] = useState([]);
     const [tags, setTags] = useState([]);
     useEffect(() => {
+        /**
+         * Fetches user data for the post and updates the component state.
+         */
         const fetchDataForUser = async () => {
 
             setUser(await GetItem("users", post.user));
             // collect post tools
             let collection = []
             const tools = post.tools;
+
             for (const tool in tools) {
                 const data = await GetItem("tools", tools[tool]);
                 collection.push(data)
             }
             setTools(collection);
+
             // collect post tags
             collection = []
             const tags = post.tags || blog.tags;
@@ -66,7 +80,7 @@ export default function PostCard({ post, mode }) {
         }
         fetchDataForUser()
     }, [post]);
-    // console.log(tools)
+
     return (
         <Card sx={{ maxWidth: 345 }} className="border">
             <CardHeader
@@ -125,3 +139,5 @@ export default function PostCard({ post, mode }) {
         </Card>
     );
 }
+
+export default PostCard;

@@ -19,11 +19,11 @@ import SkillImage from '../../assets/HomeAssets/undraw_services_re_hu5n.svg'
 
 export function TabBody({ value, index, body, image }) {
   return (
-    <TabPanel value={value} index={index}>
+    <TabPanel value={value} index={index} id='features'>
       <Box sx={{ flexGrow: 1 }}>
         <Grid pb={2} container px={2}
           spacing={3} height={{ xs: 'fit-content', lg: '37rem' }}
-          direction={index%2?'':"row-reverse"}>
+          direction={index % 2 ? '' : "row-reverse"}>
           <Grid item xs>
             <Box className="flex justify-center align-middle h-full">
               <img src={image} alt="Hero illustration" />

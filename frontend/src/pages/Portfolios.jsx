@@ -103,9 +103,6 @@ const Portfolios = () => {
     PageTitle("Portfolios");
     const [results, setResults] = useState([]);
     const [users, setUsers] = useState([]);
-    /*     const [projects, setProjects] = useState([]);
-        const [posts, setPosts] = useState([]);
-        const [skills, setSkills] = useState([]); */
 
     useEffect(() => {
         const fetchData = async () => {
@@ -113,23 +110,22 @@ const Portfolios = () => {
             setResults(result);
             // let collection = [];
             const userList = result.results
+
             for (const i in userList) {
                 const data = await getUserData(userList[i].id, 'projects');
                 if (data[0] === undefined) { continue }
                 userList[i]["projects"] = data.length;
-                // console.log(userList);
             }
             for (const i in userList) {
                 const data = await getUserData(userList[i].id, 'posts');
                 if (data[0] === undefined) { continue }
                 userList[i]["posts"] = data.length;
-                // console.log(userList);
             }
+
             for (const i in userList) {
                 const data = await getUserData(userList[i].id, 'skills');
                 if (data[0] === undefined) { continue }
                 userList[i]["skills"] = data;
-                // console.log(userList);
             }
             setUsers(userList);
         };
@@ -140,7 +136,6 @@ const Portfolios = () => {
     if (!users || users.length < 1) {
         return null;
     }
-    // console.log(users)
     return (
         <Box component="section" id="skills">
 

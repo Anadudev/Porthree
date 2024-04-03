@@ -89,11 +89,11 @@ function Portfolio() {
         email: user?.email,
         location: user?.location,
     };
-    // console.log(blog)
+
     return (
         <React.Fragment>
-            <DrawerAppBar pages={UserNavLinks(user)} />
-            <Box p="50px">
+            <DrawerAppBar pages={UserNavLinks(user)}/>
+            <Box p="50px" className='scroll-smooth'>
                 {!user ? (
                     <Typography variant="h1" component="h1">
                         Portfolio not in Porthree

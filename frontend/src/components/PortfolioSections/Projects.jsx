@@ -53,7 +53,7 @@ const Projects = ({ projects }) => {
     <Box id='projects'>
       <SectionHeader title={'awesome works'} />
       <Box sx={{ width: '100%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        {/* <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs
             value={value}
             onChange={handleChange}
@@ -66,7 +66,7 @@ const Projects = ({ projects }) => {
             <Tab label="Item Two" {...a11yProps(1)} />
             <Tab label="Item Three" {...a11yProps(2)} />
           </Tabs>
-        </Box>
+        </Box> */}
         <CustomTabPanel value={value} index={0}>
           <Box sx={{ flexGrow: 1, p: 2 }}>
             <Grid

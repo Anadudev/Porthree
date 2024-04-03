@@ -45,7 +45,6 @@ const HtmlTooltip = styled(({ className, ...props }) => (
 const Project = () => {
   PageTitle("Project");
   const projectList = useLoaderData();
-  // console.log(projectList)
   if (!projectList) {
     return <ErrorCard
       error={'not found'}
@@ -97,11 +96,11 @@ const Project = () => {
     };
     fetchDataForUser();
   }, [project]);
-  // console.log(tools)
+
   if (project.length < 1) {
     return <h1>Project Not Found</h1>;
   }
-  // console.log(projectList.results);
+
   return (
     <React.Fragment>
       <DrawerAppBar pages={UserNavLinks(user)} />

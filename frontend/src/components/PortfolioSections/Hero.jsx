@@ -1,22 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Box, Grid, Typography, CardMedia, Button, ButtonGroup, Link } from '@mui/material';
-import BgImage from "/src/assets/image.jpg";
 
 
 const Hero = ({ props }) => {
   return (
     <Box component="section" sx={{ width: '100%' }} id='hero'>
-      <Grid container className='mb-8' rowSpacing={1} columnSpacing={{ xs: 2, sm: 2, md: 3 }} textAlign={{ xs: "center", sm: "left", md: "left" }} columns={{ xs: 4, sm: 8, md: 12 }} sx={{ flexGrow: 1 }}>
-        <Grid item xs={5} sm={8} md={6}>
-          <Typography variant="h3" component="h2" sx={{ fontWeight: '900' }} >{props.first_name || 'props'} {props.last_name || ''}</Typography>
-          <Typography variant="h1" component="h1" sx={{ fontWeight: '900', marginBottom: "30px" }}>{props.career || ''}</Typography>
-          <Typography variant="p" mb={'20px'} component="p" className='text-2xl italic'>{props.bio || ''}</Typography>
+      <Grid pb={2} container px={2} spacing={3} height={{ xs: 'fit-content', lg: '37rem' }}>
+        <Grid item xs>
+          <Box className="flex justify-center align-middle h-full">
+            <Box className="self-center h-fit">
+              <Box className='mb-10' textAlign={{ xs: 'center', sm: 'left' }}>
+                <Typography variant="h4" component="h2" sx={{ fontWeight: '900' }} >{props.first_name || 'props'} {props.last_name || ''}</Typography>
+                <Typography variant="h2" component="h1" sx={{ fontWeight: '900', marginBottom: "30px" }}>{props.career || ''}</Typography>
+                <Typography variant="p" mb={'20px'} component="p" className='text-2xl italic'>{props.bio || ''}</Typography>
+              </Box>
+            </Box>
+          </Box>
         </Grid>
-        <Grid item xs={5} sm={8} md={6}>
-          <Box sx={{
-            display: "flex", alignItems: "center", justifyContent: "center"
-          }} p={"10px"} className="h-full  md:w-full">
-            <CardMedia component="img" image={props.picture || ''} sx={{
+        <Grid item xs={12} sm={12} md lg={6}>
+          <Box className="flex justify-center align-middle h-full">
+          <CardMedia component="img" image={props.picture || ''} sx={{
               borderRadius: '10px', height: `${props.picture ? "30rem" : ''}`
             }} />
           </Box>

@@ -1,6 +1,6 @@
 
 
-import GetUser, { GetItem } from "./GetUser";
+import { GetItem } from "./GetUser";
 import Logout from "../components/Dashboard/Logout";
 
 
@@ -18,7 +18,7 @@ export const NavLinks = [
     {
         id: 3,
         title: "About",
-        url: "/about",
+        url: "/#about",
     },
 ];
 
@@ -64,7 +64,7 @@ export const UserNavLinks = (data) => (
 
 const id = JSON.parse(localStorage.getItem("user")).id;
 const authUser = await GetItem('users', id);
-// console.log(authUser)
+
 export const userTools = () => (
     [
         {
