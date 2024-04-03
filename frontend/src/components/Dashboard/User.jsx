@@ -8,15 +8,15 @@ import UserProfileAvatar from './ProfilePicturePlaceholder';
 import UserProfileDisplay from '../UserProfileDisplay';
 
 const UserComponent = () => {
- const [user, setUser] = useState(new FormData()); // State to store user data
- const [isEdit, setIsEdit] = useState(false); // Flag for edit mode
- const [isLoading, setIsLoading] = useState(false); // Flag for loading state
- const [error, setError] = useState(null); // State to store errors
+  const [user, setUser] = useState(new FormData()); // State to store user data
+  const [isEdit, setIsEdit] = useState(false); // Flag for edit mode
+  const [isLoading, setIsLoading] = useState(false); // Flag for loading state
+  const [error, setError] = useState(null); // State to store errors
 
- const userId = JSON.parse(localStorage.getItem('user')).id; // Assuming userId is stored in localStorage
-  
- // Fetch user data on component mount
- useEffect(() => {
+  const userId = JSON.parse(localStorage.getItem('user')).id; // Assuming userId is stored in localStorage
+
+  // Fetch user data on component mount
+  useEffect(() => {
     const fetchUser = async () => {
       setIsLoading(true);
       try {
@@ -30,30 +30,30 @@ const UserComponent = () => {
     };
 
     fetchUser();
- }, [userId]); // Dependency array to trigger refetch on userId change
+  }, [userId]); // Dependency array to trigger refetch on userId change
 
- // CRUD operations (edit only)
- const handleEdit = () => setIsEdit(true);
- const handleCancelEdit = () => setIsEdit(false);
+  // CRUD operations (edit only)
+  const handleEdit = () => setIsEdit(true);
+  const handleCancelEdit = () => setIsEdit(false);
 
- const handleChange = (event) => {
-  // Create a copy of the user object
-  const updatedUser = { ...user };
+  const handleChange = (event) => {
+    // Create a copy of the user object
+    const updatedUser = { ...user };
 
-  // Check if files are present and handle accordingly
-  if (event.target.files && event.target.files.length > 0) {
-    updatedUser[event.target.name] = event.target.files[0];
-  } else {
-    updatedUser[event.target.name] = event.target.value;
-  }
-  // Update the state using functional updates
-  setUser(prevUser => ({ ...prevUser, ...updatedUser }));
-  console.log(updatedUser);
-};
+    // Check if files are present and handle accordingly
+    if (event.target.files && event.target.files.length > 0) {
+      updatedUser[event.target.name] = event.target.files[0];
+    } else {
+      updatedUser[event.target.name] = event.target.value;
+    }
+    // Update the state using functional updates
+    setUser(prevUser => ({ ...prevUser, ...updatedUser }));
+    console.log(updatedUser);
+  };
 
 
 
- const handleSave = async () => {
+  const handleSave = async () => {
     setIsLoading(true);
     setError(null); // Clear previous errors
     console.log(user)
@@ -67,11 +67,11 @@ const UserComponent = () => {
       }
       console.log(user)
       const response = await axios.put(`http://localhost:8000/api/users/${userId}/`, user, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'multipart/form-data', // Set the content type to multipart/form-data
-      },
-    });
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data', // Set the content type to multipart/form-data
+        },
+      });
       setUser(response.data); // Update state with updated user data
       setIsEdit(false); // Exit edit mode
     } catch (error) {
@@ -80,9 +80,9 @@ const UserComponent = () => {
     } finally {
       setIsLoading(false);
     }
- };
+  };
 
- return (
+  return (
     <div>
       {error ? (
         <Typography variant="error">{error.message}</Typography>
@@ -97,8 +97,8 @@ const UserComponent = () => {
 
               {isEdit ? (
                 <>
-                   <Grid container spacing={3}>
-                     <Grid item xs={12} >
+                  <Grid container spacing={3}>
+                    <Grid item xs={12} >
                       <input
                         accept="image/*"
                         id="profile-picture"
@@ -117,7 +117,7 @@ const UserComponent = () => {
                       <TextField
                         label="Username"
                         name="username"
-                        value={user.username }
+                        value={user.username}
                         onChange={handleChange}
                         fullWidth
                       />
@@ -126,7 +126,7 @@ const UserComponent = () => {
                       <TextField
                         label="First Name"
                         name="first_name"
-                        value={user.first_name }
+                        value={user.first_name}
                         onChange={handleChange}
                         fullWidth
                       />
@@ -135,7 +135,7 @@ const UserComponent = () => {
                       <TextField
                         label="Middle Name"
                         name="middle_name"
-                        value={user.middle_name }
+                        value={user.middle_name}
                         onChange={handleChange}
                         fullWidth
                       />
@@ -144,7 +144,7 @@ const UserComponent = () => {
                       <TextField
                         label="Last Name"
                         name="last_name"
-                        value={user.last_name }
+                        value={user.last_name}
                         onChange={handleChange}
                         fullWidth
                       />
@@ -153,19 +153,19 @@ const UserComponent = () => {
                       <TextField
                         label="Email"
                         name="email"
-                        value={user.email }
+                        value={user.email}
                         onChange={handleChange}
                         fullWidth
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                      <PhoneNumberInputWithLocation value={user.phone } onChange={handleChange}/>
+                      <PhoneNumberInputWithLocation value={user.phone} onChange={handleChange} />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <TextField
                         label="Career"
                         name="career"
-                        value={user.career }
+                        value={user.career}
                         onChange={handleChange}
                         fullWidth
                       />
@@ -174,7 +174,7 @@ const UserComponent = () => {
                       <TextField
                         label="Bio"
                         name="bio"
-                        value={user.bio }
+                        value={user.bio}
                         onChange={handleChange}
                         fullWidth
                         multiline
@@ -183,11 +183,11 @@ const UserComponent = () => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <TextField
-                        label="Location"bbffgh
+                        label="Location" bbffgh
 
 
                         name="location"
-                        value={user.location }
+                        value={user.location}
                         onChange={handleChange}
                         fullWidth
                       />
@@ -196,7 +196,7 @@ const UserComponent = () => {
                       <TextField
                         label="About"
                         name="about"
-                        value={user.about }
+                        value={user.about}
                         onChange={handleChange}
                         fullWidth
                       />
@@ -223,12 +223,12 @@ const UserComponent = () => {
                     </Grid>
                   </Grid>
                   <br></br>
-                 <Button variant="contained" color="primary" onClick={handleSave}>
+                  <Button variant="contained" color="primary" onClick={handleSave}>
                     Save
-                 </Button>
-                 <Button variant="contained" onClick={handleCancelEdit}>
+                  </Button>
+                  <Button variant="contained" onClick={handleCancelEdit}>
                     Cancel
-                 </Button>
+                  </Button>
                 </>
               ) : (
                 <>
@@ -246,7 +246,7 @@ const UserComponent = () => {
         </>
       )}
     </div>
- );
+  );
 };
 
 

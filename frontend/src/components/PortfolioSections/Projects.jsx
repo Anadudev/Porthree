@@ -77,7 +77,7 @@ const Projects = ({ projects }) => {
               alignItems={'center'}
               justifyContent={'center'}
             >
-              {projects.map((data, index) => (
+              {projects && projects.slice(0, 6).map((data, index) => (
                 <Grid item key={index}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
                   <Box className=" p-2">
                     <PostCard type='Project' post={data} mode={"Project"} />

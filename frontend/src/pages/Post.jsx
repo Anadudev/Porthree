@@ -28,6 +28,9 @@ import { Link as RL } from 'react-router-dom';
 const Post = () => {
     PageTitle("Post");
     const postList = useLoaderData();
+    if (!postList) {
+        return <Error />
+    }
     if (postList.results.length < 1) {
         return (<h1>Post Not Found</h1>);
     }
@@ -75,12 +78,12 @@ const Post = () => {
                             <Box className="border-y flex py-2 my-4">
                                 <Avatar className="capitalize"
                                     alt={user.username}
-                                    src={user.image||"/static/images/avatar/1.jpg"}
+                                    src={user.image || "/static/images/avatar/1.jpg"}
                                     sx={{ width: 56, height: 56, margin: '5px', marginRight: "10px" }}
                                 />
                                 <Box>
                                     <Typography sx={{ fontWeight: 700 }}>{user.first_name} {user.last_name || ''}</Typography>
-                                    <Link  component={RL} to={`/${user.username}`}  sx={{ fontWeight: 700 }} className="capitalize">{user.username || ''}</Link>
+                                    <Link component={RL} to={`/${user.username}`} sx={{ fontWeight: 700 }} className="capitalize">{user.username || ''}</Link>
                                     <Typography sx={{ fontWeight: 700 }}>{user.career || ''}</Typography>
                                 </Box>
                             </Box>
@@ -88,7 +91,7 @@ const Post = () => {
                         </CardContent>
                         <Box px={'10px'}>
                             <Box sx={{ flexGrow: 1 }}>
-                                {tags?.map((data, index) => (<Chip key={index} label={data.tag||''} className="m-0.5 capitalize" variant="outlined" />))}
+                                {tags?.map((data, index) => (<Chip key={index} label={data.tag || ''} className="m-0.5 capitalize" variant="outlined" />))}
 
                             </Box>
                         </Box>

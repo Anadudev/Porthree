@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -64,15 +64,15 @@ function TabData() {
 
 
 const Blogs = ({ blog }) => {
-  if (!blog || blog.length <= 0 ) {
+  if (!blog || blog.length <= 0) {
     return null;
   }
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-// console.log(blog)
+  // console.log(blog)
   return (
     <Box id='blog'>
       <SectionHeader title={'Helpful writings'} />
@@ -92,14 +92,14 @@ const Blogs = ({ blog }) => {
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
-        <Box sx={{ flexGrow: 1, p: 2 }}>
+          <Box sx={{ flexGrow: 1, p: 2 }}>
             <Grid
               container
               spacing={2}
               alignItems={'center'}
               justifyContent={'center'}
             >
-              {blog.map((data, index) => (
+              {blog && blog.slice(0, 6).map((data, index) => (
                 <Grid item key={index}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
                   <Box className=" p-2">
                     <PostCard type='Project' post={data} mode={"Blog Post"} />

@@ -19,23 +19,6 @@ import { GetDatas, getUserData } from '../data/GetUser';
 import { Link } from 'react-router-dom';
 import Limiter from '../components/Limiter';
 
-const options = [
-    'None',
-    'Atria',
-    'Callisto',
-    'Dione',
-    'Ganymede',
-    'Hangouts Call',
-    'Luna',
-    'Oberon',
-    'Phobos',
-    'Pyxis',
-    'Sedna',
-    'Titania',
-    'Triton',
-    'Umbriel',
-];
-
 const ITEM_HEIGHT = 48;
 
 export function SkillMenu({ skills }) {
