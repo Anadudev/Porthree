@@ -159,6 +159,13 @@ class ExperienceViewSet(viewsets.ModelViewSet):
     queryset = Experience.objects.all().order_by("created_at")
     serializer_class = ExperienceSerializer
 
+class UserExperienceListView(generics.ListAPIView):
+    """ manage experiences associated with specific user"""
+    serializer_class = ExperienceSerializer
+
+    def get_queryset(self):
+        user_id = self.kwargs['user_id']  # assuming you pass user_id in URL
+        return Experience.objects.filter(user_id=user_id)
 
 class RatingViewSet(viewsets.ModelViewSet):
     """adds representations of the Rating to the API view"""
