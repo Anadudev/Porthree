@@ -64,7 +64,6 @@ const Projects = () => {
     return null;
   }
 
-
   // console.log(projects)
 
   return (

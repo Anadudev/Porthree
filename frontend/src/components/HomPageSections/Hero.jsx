@@ -5,7 +5,7 @@ import HeroImage from '../../assets/HomeAssets/undraw_working_remotely_re_6b3a.s
 
 const Hero = () => {
     return (
-        <Box sx={{ flexGrow: 1 }} mb={10} pt={{xs:0, md:10}} px={{xs:0, sm:7}}>
+        <Box sx={{ flexGrow: 1 }} mb={10} pt={{xs:0, md:5}} px={{xs:0, sm:7}}>
             <Grid pb={2} container component={Paper} px={2} elevation={6} spacing={3} height={{xs:'fit-content', lg:'37rem'}}>
                 <Grid item xs>
                     <Box className="flex justify-center align-middle h-full">
