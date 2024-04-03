@@ -50,11 +50,12 @@ const router = createBrowserRouter([
   {
     path: "/:username",
     element: <Portfolio />,
-    loader: async ({ params }) => { return fetch(`http://127.0.0.1:8000/api/user/${params.username}`) },
+    loader: async ({ params }) => ( fetch(`http://127.0.0.1:8000/api/user/${params.username}`)),
   },
   {
     path: "/:username/posts",
     element: <Posts />,
+    loader: async ({params}) => (await fetch(`http://127.0.0.1:8000/api/user/${params.username}`)),
   },
   {
     path: "/:username/about",
@@ -63,16 +64,33 @@ const router = createBrowserRouter([
   {
     path: "/:username/posts/:slug",
     element: <Post />,
-    loader: async ({ params }) => { return fetch(`http://127.0.0.1:8000/api/posts/?slug=${params.slug}`) },
+    loader: async ({ params }) => {
+      const userPath = await fetch(`http://127.0.0.1:8000/api/user/${params.username}`)
+      const slugPath = await fetch(`http://127.0.0.1:8000/api/posts/?slug=${params.slug}`)
+      const user = await userPath.json();
+      const slug = await slugPath.json();
+
+      // console.log(slug.results[0].user === user.id)
+      return slug.results[0].user === user.id ? slug : null
+    },
   },
   {
     path: "/:username/projects",
     element: <Projects />,
+    loader: async ({params}) => (await fetch(`http://127.0.0.1:8000/api/user/${params.username}`)),
   },
   {
     path: "/:username/projects/:slug",
     element: <Project />,
-    loader: async ({ params }) => { return fetch(`http://127.0.0.1:8000/api/projects/?slug=${params.slug}`) },
+    loader: async ({ params }) => {
+      const userPath = await fetch(`http://127.0.0.1:8000/api/user/${params.username}`)
+      const slugPath = await fetch(`http://127.0.0.1:8000/api/projects/?slug=${params.slug}`)
+      const user = await userPath.json();
+      const slug = await slugPath.json();
+
+      // console.log(slug.results[0].user === user.id)
+      return slug.results[0].user === user.id ? slug : null
+    },
   },
   {
     path: "/signup",
