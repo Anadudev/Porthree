@@ -6,6 +6,7 @@ const Logout = () => {
    const logout = () => {
       // Remove the authentication token from local storage
       localStorage.removeItem('access_token');
+      localStorage.removeItem('user');
 
       // Redirect the user to the login page
       navigate('/login');
