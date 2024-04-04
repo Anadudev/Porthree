@@ -204,8 +204,8 @@ const ExperienceComponent = () => {
                 </DialogContent>
               </Dialog>
               <List>
-                {experiences.map((experience) => (
-                  <ListItem key={experience.id}>
+                {experiences.map((experience, index) => (
+                  <ListItem key={index}>
                     <ListItemText primary={`${experience.company} - ${experience.position}`} secondary={experience.detail} />
                     <Button variant="contained" color="secondary" onClick={() => handleEditExperience(experience)}>
                       Edit

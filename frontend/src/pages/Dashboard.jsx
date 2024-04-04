@@ -73,36 +73,38 @@ const Dashboard = () => {
   return (
     <React.Fragment>
       <DrawerAppBar pages={UserNavLinks(user)} />
-      <Breadcrumb path={useLocation()} />
-      <Container>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <nav>
-              <List component="nav" sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
-                {Object.keys(boardStructure).map((link) => (
-                  <ListItem key={link} button onClick={() => handleLinkClick(link)} selected={activeLink === link} sx={{ minWidth: '120px' }}>
-                    <ListItemIcon>
-                      {link === 'profile' && <UserIcon />}
-                      {link === 'tools' && <ToolsIcon />}
-                      {link === 'projects' && <ProjectsIcon />}
-                      {link === 'education' && <EducationIcon />}
-                      {link === 'experience' && <WorkIcon />}
-                      {link === 'posts' && <PostsIcon />}
-                    </ListItemIcon>
-                    <ListItemText primary={link} />
-                  </ListItem>
-                ))}
-              </List>
-            </nav>
+      <div className='p-[50px]'>
+        <Breadcrumb path={useLocation()} />
+        <Container>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <nav>
+                <List component="nav" sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  {Object.keys(boardStructure).map((link, index) => (
+                    <ListItem key={index} button onClick={() => handleLinkClick(link)} selected={activeLink === link} sx={{ minWidth: '120px' }}>
+                      <ListItemIcon>
+                        {link === 'profile' && <UserIcon />}
+                        {link === 'tools' && <ToolsIcon />}
+                        {link === 'projects' && <ProjectsIcon />}
+                        {link === 'education' && <EducationIcon />}
+                        {link === 'experience' && <WorkIcon />}
+                        {link === 'posts' && <PostsIcon />}
+                      </ListItemIcon>
+                      <ListItemText primary={link} />
+                    </ListItem>
+                  ))}
+                </List>
+              </nav>
+            </Grid>
+            <Grid item xs={12}>
+              {boardStructure[activeLink]}
+            </Grid>
+            <Grid item xs={12}>
+              <Outlet />
+            </Grid>
           </Grid>
-          <Grid item xs={12}>
-            {boardStructure[activeLink]}
-          </Grid>
-          <Grid item xs={12}>
-            <Outlet />
-          </Grid>
-        </Grid>
-      </Container>
+        </Container>
+      </div>
       <Footer />
     </React.Fragment >
   );

@@ -3,18 +3,18 @@ import { Grid, Typography, Button, TextField, List, ListItem, ListItemText } fro
 import axios from 'axios';
 
 const ToolsComponent = () => {
- const [tools, setTools] = useState([]); // State to store tools data
- const [isLoading, setIsLoading] = useState(false); // Flag for loading state
- const [error, setError] = useState(null); // State to store errors
- const [newTool, setNewTool] = useState(''); // State for new tool input
+  const [tools, setTools] = useState([]); // State to store tools data
+  const [isLoading, setIsLoading] = useState(false); // Flag for loading state
+  const [error, setError] = useState(null); // State to store errors
+  const [newTool, setNewTool] = useState(''); // State for new tool input
 
- // Retrieve the userId from local storage
- const userId = JSON.parse(localStorage.getItem('user')).id;
-// Retrieve the access token from local storage
-const token = localStorage.getItem('access_token');
+  // Retrieve the userId from local storage
+  const userId = JSON.parse(localStorage.getItem('user')).id;
+  // Retrieve the access token from local storage
+  const token = localStorage.getItem('access_token');
 
- // Fetch tools data on component mount
- useEffect(() => {
+  // Fetch tools data on component mount
+  useEffect(() => {
     const fetchTools = async () => {
       setIsLoading(true);
       try {
@@ -28,9 +28,9 @@ const token = localStorage.getItem('access_token');
     };
 
     fetchTools();
- }, [userId]); // Dependency array includes userId to refetch if it changes
+  }, [userId]); // Dependency array includes userId to refetch if it changes
 
- const handleAddTool = async () => {
+  const handleAddTool = async () => {
     setIsLoading(true);
     setError(null); // Clear previous errors
     try {
@@ -54,9 +54,9 @@ const token = localStorage.getItem('access_token');
     } finally {
       setIsLoading(false);
     }
- };
+  };
 
- const handleDeleteTool = async (toolId) => {
+  const handleDeleteTool = async (toolId) => {
     setIsLoading(true);
     setError(null); // Clear previous errors
     try {
@@ -74,9 +74,9 @@ const token = localStorage.getItem('access_token');
     } finally {
       setIsLoading(false);
     }
- };
+  };
 
- return (
+  return (
     <div>
       {error ? (
         <Typography variant="error">{error.message}</Typography>
@@ -96,13 +96,13 @@ const token = localStorage.getItem('access_token');
                 Add Tool
               </Button>
               <List>
-                {tools.map((tool) => (
-                 <ListItem key={tool.id}>
+                {tools.map((tool, index) => (
+                  <ListItem key={index}>
                     <ListItemText primary={tool.tool} />
                     <Button variant="contained" color="error" onClick={() => handleDeleteTool(tool.id)}>
                       Delete
                     </Button>
-                 </ListItem>
+                  </ListItem>
                 ))}
               </List>
             </Grid>
@@ -110,7 +110,7 @@ const token = localStorage.getItem('access_token');
         </>
       )}
     </div>
- );
+  );
 };
 
 export default ToolsComponent;

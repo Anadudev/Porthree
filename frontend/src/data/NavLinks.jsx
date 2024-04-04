@@ -62,7 +62,7 @@ export const UserNavLinks = (data) => (
     ]);
 
 
-const id = JSON.parse(localStorage.getItem("user")).id;
+const id = JSON.parse(localStorage.getItem("user"))?.id;
 const authUser = await GetItem('users', id);
 
 export const userTools = () => (

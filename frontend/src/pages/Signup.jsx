@@ -14,7 +14,7 @@ import Alert from '@mui/material/Alert';
 import PageTitle from './PageTitle';
 
 const Signup = () => {
-      PageTitle("SignUp");
+  PageTitle("SignUp");
   const navigate = useNavigate();
   const signupRef = useRef(null);
   const [success, setSuccess] = useState('');
@@ -62,89 +62,91 @@ const Signup = () => {
   return (
     <div>
       <DrawerAppBar pages={NavLinks} />
-      <Breadcrumb path={useLocation()} />
-      <Container>
-        {success}
-        <form onSubmit={formik.handleSubmit}>
-          <Grid container spacing={3} justifyContent="center" style={{ marginTop: '20px' }}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                {...formik.getFieldProps('first_name')}
-                label="first_name"
-                variant="outlined"
-                fullWidth
-                margin="normal"
-                error={formik.touched.first_name && formik.errors.first_name}
-                helperText={formik.touched.first_name && formik.errors.first_name}
-              />
+      <div className='p-[50px]'>
+        <Breadcrumb path={useLocation()} />
+        <Container>
+          {success}
+          <form onSubmit={formik.handleSubmit}>
+            <Grid container spacing={3} justifyContent="center" style={{ marginTop: '20px' }}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  {...formik.getFieldProps('first_name')}
+                  label="first_name"
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  error={formik.touched.first_name && formik.errors.first_name}
+                  helperText={formik.touched.first_name && formik.errors.first_name}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  {...formik.getFieldProps('last_name')}
+                  label="last_name"
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  error={formik.touched.last_name && formik.errors.last_name}
+                  helperText={formik.touched.last_name && formik.errors.last_name}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  {...formik.getFieldProps('username')}
+                  ref={signupRef}
+                  label="Username"
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  error={formik.touched.username && formik.errors.username}
+                  helperText={formik.touched.username && formik.errors.username}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  {...formik.getFieldProps('email')}
+                  label="Email"
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  error={formik.touched.email && formik.errors.email}
+                  helperText={formik.touched.email && formik.errors.email}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  {...formik.getFieldProps('password')}
+                  label="Password"
+                  type="password"
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  error={formik.touched.password && formik.errors.password}
+                  helperText={formik.touched.password && formik.errors.password}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  {...formik.getFieldProps('confirmPassword')}
+                  label="Confirm Password"
+                  type="password"
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  error={formik.touched.confirmPassword && formik.errors.confirmPassword}
+                  helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Button variant="contained" color="primary" fullWidth type="submit">
+                  Sign Up
+                </Button>
+              </Grid>
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                {...formik.getFieldProps('last_name')}
-                label="last_name"
-                variant="outlined"
-                fullWidth
-                margin="normal"
-                error={formik.touched.last_name && formik.errors.last_name}
-                helperText={formik.touched.last_name && formik.errors.last_name}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                {...formik.getFieldProps('username')}
-                ref={signupRef}
-                label="Username"
-                variant="outlined"
-                fullWidth
-                margin="normal"
-                error={formik.touched.username && formik.errors.username}
-                helperText={formik.touched.username && formik.errors.username}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                {...formik.getFieldProps('email')}
-                label="Email"
-                variant="outlined"
-                fullWidth
-                margin="normal"
-                error={formik.touched.email && formik.errors.email}
-                helperText={formik.touched.email && formik.errors.email}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                {...formik.getFieldProps('password')}
-                label="Password"
-                type="password"
-                variant="outlined"
-                fullWidth
-                margin="normal"
-                error={formik.touched.password && formik.errors.password}
-                helperText={formik.touched.password && formik.errors.password}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                {...formik.getFieldProps('confirmPassword')}
-                label="Confirm Password"
-                type="password"
-                variant="outlined"
-                fullWidth
-                margin="normal"
-                error={formik.touched.confirmPassword && formik.errors.confirmPassword}
-                helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Button variant="contained" color="primary" fullWidth type="submit">
-                Sign Up
-              </Button>
-            </Grid>
-          </Grid>
-        </form>
-      </Container>
-      <Footer />
+          </form>
+        </Container>
+        <Footer />
+      </div>
     </div>
   );
 };

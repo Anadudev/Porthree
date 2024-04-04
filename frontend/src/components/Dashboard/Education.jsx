@@ -151,61 +151,61 @@ const EducationsComponent = () => {
                 <DialogTitle>{editingEducation ? 'Edit Education' : 'Add Education'}</DialogTitle>
                 <DialogContent>
                   <form onSubmit={handleSubmit}>
-                      <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                          <TextField
-                            label="Institute"
-                            name="institute"
-                            value={newEducation.institute}
-                            onChange={(e) => setNewEducation({ ...newEducation, institute: e.target.value })}
-                            required
-                            fullWidth
-                          />
-                        </Grid>
-                        <Grid item xs={12}>
-                          <TextField
-                            label="Degree"
-                            name="degree"
-                            value={newEducation.degree}
-                            onChange={(e) => setNewEducation({ ...newEducation, degree: e.target.value })}
-                            required
-                            fullWidth
-                          />
-                        </Grid>
-                        <Grid item xs={12}>
-                          <TextField
-                            label="Start Date"
-                            type="date"
-                            name="start_date"
-                            value={newEducation.start_date}
-                            onChange={(e) => setNewEducation({ ...newEducation, start_date: e.target.value })}
-                            InputLabelProps={{ shrink: true }}
-                            required
-                            fullWidth
-                          />
-                        </Grid>
-                        <Grid item xs={12}>
-                          <TextField
-                            label="End Date"
-                            type="date"
-                            name="end_date"
-                            value={newEducation.end_date || null}
-                            onChange={(e) => setNewEducation({ ...newEducation, end_date: e.target.value })}
-                            InputLabelProps={{ shrink: true }}
-                            fullWidth
-                          />
-                        </Grid>
-                        <Grid item xs={12}>
-                          <TextField
-                            label="Detail"
-                            name="detail"
-                            value={newEducation.detail}
-                            onChange={(e) => setNewEducation({ ...newEducation, detail: e.target.value })}
-                            required
-                            fullWidth
-                          />
-                        </Grid>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12}>
+                        <TextField
+                          label="Institute"
+                          name="institute"
+                          value={newEducation.institute}
+                          onChange={(e) => setNewEducation({ ...newEducation, institute: e.target.value })}
+                          required
+                          fullWidth
+                        />
                       </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          label="Degree"
+                          name="degree"
+                          value={newEducation.degree}
+                          onChange={(e) => setNewEducation({ ...newEducation, degree: e.target.value })}
+                          required
+                          fullWidth
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          label="Start Date"
+                          type="date"
+                          name="start_date"
+                          value={newEducation.start_date}
+                          onChange={(e) => setNewEducation({ ...newEducation, start_date: e.target.value })}
+                          InputLabelProps={{ shrink: true }}
+                          required
+                          fullWidth
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          label="End Date"
+                          type="date"
+                          name="end_date"
+                          value={newEducation.end_date || null}
+                          onChange={(e) => setNewEducation({ ...newEducation, end_date: e.target.value })}
+                          InputLabelProps={{ shrink: true }}
+                          fullWidth
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          label="Detail"
+                          name="detail"
+                          value={newEducation.detail}
+                          onChange={(e) => setNewEducation({ ...newEducation, detail: e.target.value })}
+                          required
+                          fullWidth
+                        />
+                      </Grid>
+                    </Grid>
                     <DialogActions>
                       <Button onClick={handleCloseDialog} color="primary">
                         Cancel
@@ -219,13 +219,13 @@ const EducationsComponent = () => {
               </Dialog>
               {/* List of educations */}
               <List>
-                {educations.map((education) => (
-                  <ListItem key={education.id}>
+                {educations.map((education, index) => (
+                  <ListItem key={index}>
                     <ListItemText primary={`${education.institute} - ${education.degree}`} secondary={education.detail} />
                     {/* Buttons for editing and deleting educations */}
                     <Button variant="contained" color="secondary" onClick={() => handleEditEducation(education)}>
                       Edit
-                    </Button><br/>
+                    </Button><br />
                     <Button variant="contained" color="error" onClick={() => handleDeleteEducation(education.id)}>
                       Delete
                     </Button>

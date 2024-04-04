@@ -1,6 +1,7 @@
 import React from 'react';
 import { Grid, Paper, Box, Typography, Button, ButtonGroup } from '@mui/material';
 import HeroImage from '../../assets/HomeAssets/undraw_working_remotely_re_6b3a.svg'
+import {Link} from 'react-router-dom';
 
 const Hero = () => {
     return (
@@ -16,8 +17,8 @@ const Hero = () => {
                             </Box>
                             <Box mt={7} >
                                 <ButtonGroup variant="text" aria-label="Basic button group">
-                                    <Button>Visit portfolio</Button>
-                                    <Button>Create portfolio</Button>
+                                    <Button component={Link} to={localStorage.length < 1?'/login':`/${JSON.parse(localStorage.getItem("user"))?.username}`}>Visit portfolio</Button>
+                                    <Button component={Link} to='/signup'>Create portfolio</Button>
                                 </ButtonGroup>
                             </Box>
                         </Box>

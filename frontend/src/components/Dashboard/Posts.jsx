@@ -142,9 +142,9 @@ const PostsComponent = () => {
               </Button>
               <Typography variant="h6">Published Posts</Typography><hr></hr>
               <List>
-                {publishedPosts.map((post) => (
-                  <ListItem key={post.id}>
-                    <ListItemText primary={post.title} secondary={(<HTMLRenderer htmlContent={Limiter(post.content, 50 )} />)} />
+                {publishedPosts.map((post, index) => (
+                  <ListItem key={index}>
+                    <ListItemText primary={post.title} secondary={(<HTMLRenderer htmlContent={Limiter(post.content, 50)} />)} />
                     <Button variant="contained" color="secondary" onClick={() => handleEditPost(post)}>
                       Edit
                     </Button>
@@ -159,7 +159,7 @@ const PostsComponent = () => {
                 {unpublishedPosts.map((post) => (
                   <div key={post.id}>
                     <ListItem>
-                      <ListItemText primary={post.title} secondary={(<HTMLRenderer htmlContent={Limiter(post.content, 50 )} />)} />
+                      <ListItemText primary={post.title} secondary={(<HTMLRenderer htmlContent={Limiter(post.content, 50)} />)} />
                       <Button variant="contained" color="secondary" onClick={() => handleEditPost(post)}>
                         Edit
                       </Button>
@@ -217,6 +217,7 @@ const PostsComponent = () => {
         </>
       )}
     </div>
-  );}
+  );
+}
 
 export default PostsComponent;
