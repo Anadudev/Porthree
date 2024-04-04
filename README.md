@@ -1,7 +1,3 @@
-<!-- ![Image description](/Porthree/MainApp/static/MainApp/img/logo.png) -->
-# Porthree
-<img src="/Porthree/MainApp/static/MainApp/img/logo.png" alt="drawing" width="100%"/>
-
 
 **Porthree**, built by aspiring software engineers at **Holberton** School (**ALX**), is a personal portfolio management platform designed to empower individuals to showcase their skills, achievements, and experiences in a captivating and professional manner. It aims to simplify the process of creating and maintaining a portfolio, freeing users to focus on career growth and personal development.
 
@@ -111,4 +107,3 @@ Here's how you can contribute:
 
 
 It's as simple as that! By contributing, you can help make **Porthree** even better for everyone.
-
