@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Typography, Button, TextField, List, ListItem, ListItemText, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Grid, Typography, Button, TextField, List, ListItem, ListItemText, Dialog, DialogTitle, DialogContent, DialogActions, FormControlLabel, Switch } from '@mui/material';
 import axios from 'axios';
 
 const ProjectsComponent = () => {
@@ -11,6 +11,7 @@ const ProjectsComponent = () => {
     content: '',
     demo: '',
     video: '',
+    publish: false, // New field for publish status
   });
   const [editingProject, setEditingProject] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
@@ -47,7 +48,7 @@ const ProjectsComponent = () => {
       });
 
       setProjects([...projects, response.data]);
-      setNewProject({ title: '', content: '', demo: '', video: '' });
+      setNewProject({ title: '', content: '', demo: '', video: '', publish: false }); // Reset publish status
       setOpenDialog(false);
     } catch (error) {
       console.log(error);
@@ -77,7 +78,7 @@ const ProjectsComponent = () => {
 
   const handleEditProject = (project) => {
     setEditingProject(project);
-    setNewProject(project);
+    setNewProject({ ...project }); // Set the project details
     setOpenDialog(true);
   };
 
@@ -96,7 +97,7 @@ const ProjectsComponent = () => {
 
       setProjects(projects.map(project => project.id === editingProject.id ? response.data : project));
       setEditingProject(null);
-      setNewProject({ title: '', content: '', demo: '', video: '' });
+      setNewProject({ title: '', content: '', demo: '', video: '', publish: false }); // Reset publish status
       setOpenDialog(false);
     } catch (error) {
       console.log(error);
@@ -117,7 +118,7 @@ const ProjectsComponent = () => {
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
-    setNewProject({ title: '', content: '', demo: '', video: '' });
+    setNewProject({ title: '', content: '', demo: '', video: '', publish: false }); // Reset publish status
     setEditingProject(null);
   };
 
@@ -177,6 +178,19 @@ const ProjectsComponent = () => {
                           fullWidth
                         />
                       </Grid>
+                      <Grid item xs={12}>
+                        <FormControlLabel
+                          control={
+                            <Switch
+                              checked={newProject.publish}
+                              onChange={(e) => setNewProject({ ...newProject, publish: e.target.checked })}
+                              name="publish"
+                              color="primary"
+                            />
+                          }
+                          label="Publish"
+                        />
+                      </Grid>
                     </Grid>
                     <DialogActions>
                       <Button onClick={handleCloseDialog} color="primary">
@@ -190,8 +204,8 @@ const ProjectsComponent = () => {
                 </DialogContent>
               </Dialog>
               <List>
-                {projects.map((project, index) => (
-                  <ListItem key={index}>
+                {projects.map((project) => (
+                  <ListItem key={project.id}>
                     <ListItemText primary={project.title} secondary={project.content} />
                     <Button variant="contained" color="secondary" onClick={() => handleEditProject(project)}>
                       Edit
