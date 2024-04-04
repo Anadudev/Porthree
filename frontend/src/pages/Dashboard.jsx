@@ -44,13 +44,19 @@ const boardStructure = {
  */
 const Dashboard = () => {
   const navigation = useLocation();
-  const currentUser = JSON.parse(localStorage.getItem("user")).username;
+  const currentUser = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
   const [user, setUser] = useState([]);
   useEffect(() => {
-    if (navigation.pathname.split('/')[2] !== currentUser) {
+    // Check if the pathname matches the current user
+    if (!localStorage.getItem("access_token") || navigation.pathname.split('/')[2] !== currentUser.username) {
+      // If not, navigate to the login page
       navigate('/login');
     }
+
+    const getter = async () => (setUser(await GetItem('users', currentUser.id)));
+    getter();
+
   }, [currentUser, navigation.pathname, navigate]);
 
   PageTitle("Dashboard");

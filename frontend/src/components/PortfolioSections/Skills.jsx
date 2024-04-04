@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import { Typography, Modal } from '@mui/material';
 import Limiter from '../Limiter';
+import HTMLRenderer from '../HtmlRender';
 
 const Skills = ({ skills }) => {
   if (!skills || skills.length < 1) {
@@ -44,7 +45,7 @@ const Skills = ({ skills }) => {
               {/* <div> */}
               <Box className=" p-2 cursor-pointer" onClick={() => handleOpen(index)}>
                 <Typography component='p' className='uppercase' sx={{ fontWeight: '900' }}>{data.skill}</Typography>
-                <Typography variant='p' component='p'>{Limiter(data.detail, 200)}</Typography>
+                <Typography variant='p' component='p'>{(<HTMLRenderer htmlContent={Limiter(data.detail, 200)}/>)}</Typography>
               </Box>
               {/* </Grid> */}
               <Modal

@@ -16,7 +16,7 @@ import TimeAgo from 'react-timeago';
 import Limiter from '../Limiter';
 import { GetItem } from '../../data/GetUser';
 import { Link as RL } from 'react-router-dom';
-
+import HTMLRenderer from '../HtmlRender';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -38,7 +38,7 @@ const ExpandMore = styled((props) => {
  * @returns {JSX.Element} The JSX element representing the post card.
  */
 const PostCard = ({ post, mode }) => {
-    if (!post || post.length <= 0) {
+    if (!post || post.length <= 0 || post.publish == false) {
         return null;
     }
     const [expanded, setExpanded] = React.useState(false);
@@ -99,16 +99,16 @@ const PostCard = ({ post, mode }) => {
             <CardMedia
                 component="img"
                 height="194"
-                image={post.post_image || post.image || BgImage}
+                image={/* post.post_image || post.image || */ BgImage}
                 alt={"Post thumbnail"}
             />
             <CardContent>
                 <p className='font-bold text-center primary'>{mode}:</p>
 
                 <Link component={RL} to={`/${user.username}/${mode === "Project" ? "projects" : "posts"}/${post.slug}`} gutterBottom underline="always" variant="h5">
-                    {Limiter(post.title) || ""}
+                    {(<HTMLRenderer htmlContent={Limiter(post.title)}/>) || ""}
                 </Link>
-                <Typography variant="body2" color="text.secondary"><b>{Limiter(post.content, 150)}</b>
+                <Typography my={2} variant="body2" color="text.secondary"><b>{(<HTMLRenderer htmlContent={Limiter(post.content, 150)}/>)}</b>
                 </Typography>
             </CardContent>
             <CardActions disableSpacing onClick={handleExpandClick} className='cursor-pointer'>

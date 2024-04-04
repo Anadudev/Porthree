@@ -24,6 +24,7 @@ import BgImage from '/src/assets/image.jpg';
 import Error from './Error';
 import { GetItem } from '../data/GetUser';
 import { Link as RL } from 'react-router-dom';
+import HTMLRenderer from '../components/HtmlRender';
 
 const Post = () => {
     PageTitle("Post");
@@ -71,7 +72,7 @@ const Post = () => {
                         />
                         <CardContent>
                             <Typography gutterBottom variant="h2" component="h1" sx={{ fontWeight: '900' }} className="text-center">
-                                {post.title || ''}
+                                {(<HTMLRenderer htmlContent={post.title}/>) || ''}
                             </Typography>
                             <Box className="border-y flex py-2 my-4">
                                 <Avatar className="capitalize"
@@ -88,7 +89,7 @@ const Post = () => {
                             <Typography variant="p"
                                 component='p'
                                 color="text.secondary"
-                                className="py-10 font-semibold text-lg">{post.content || ''}</Typography>
+                                className="py-10 font-semibold text-lg">{(<HTMLRenderer htmlContent={post.content}/>) || ''}</Typography>
                         </CardContent>
                         <Box px={'10px'}>
                             <Box sx={{ flexGrow: 1 }}>

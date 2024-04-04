@@ -29,6 +29,7 @@ import { GetItem } from "../data/GetUser";
 import { styled } from "@mui/material/styles";
 import Limiter from "../components/Limiter";
 import { Link as RL } from "react-router-dom";
+import HTMLRenderer from "../components/HtmlRender";
 
 const HtmlTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -122,7 +123,7 @@ const Project = () => {
                 sx={{ fontWeight: "900" }}
                 className="text-center"
               >
-                {project.title || ""}
+                {(<HTMLRenderer htmlContent={project.title}/>) || ""}
               </Typography>
               <Box className="border-y flex-col py-2 my-4 align-middle justify-center">
                 <Box className="flex py-2 my-4 justify-between">
@@ -216,7 +217,7 @@ const Project = () => {
                 color="text.secondary"
                 className="py-10 font-semibold text-lg"
               >
-                {project.content || ""}
+                {(<HTMLRenderer htmlContent={project.content}/>) || ""}
               </Typography>
             </CardContent>
             <Box px={"10px"}>
