@@ -54,7 +54,7 @@ class Tag(models.Model):
 
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
-    tag = models.CharField(unique=True,max_length=255)
+    tag = models.CharField(unique=True, max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

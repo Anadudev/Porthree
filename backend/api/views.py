@@ -61,48 +61,56 @@ class PostViewSet(viewsets.ModelViewSet):
 
     permission_classes = [IsAuthenticated | ReadOnly]
     serializer_class = PostSerializer
+
     def get_queryset(self):
         """
         Optionally restricts the returned purchases to a given post,
         by filtering against a `slug` query parameter in the URL.
         """
         queryset = Post.objects.all().order_by("created_at")
-        slug = self.request.query_params.get('slug')
+        slug = self.request.query_params.get("slug")
         if slug is not None:
             queryset = queryset.filter(slug=slug)
         return queryset
 
+
 class UserPostsListView(generics.ListAPIView):
-    """ manage posts associated with specific user"""
+    """manage posts associated with specific user"""
+
     serializer_class = PostSerializer
 
     def get_queryset(self):
-        user_id = self.kwargs['user_id'] 
+        user_id = self.kwargs["user_id"]
         return Post.objects.filter(user_id=user_id)
+
 
 class ProjectViewSet(viewsets.ModelViewSet):
     """adds representations of the Project to the API view"""
 
     permission_classes = [IsAuthenticated | ReadOnly]
     serializer_class = ProjectSerializer
+
     def get_queryset(self):
         """
         Optionally restricts the returned purchases to a given project,
         by filtering against a `slug` query parameter in the URL.
         """
         queryset = Project.objects.all().order_by("created_at")
-        slug = self.request.query_params.get('slug')
+        slug = self.request.query_params.get("slug")
         if slug is not None:
             queryset = queryset.filter(slug=slug)
         return queryset
 
+
 class UserProjectsListView(generics.ListAPIView):
-    """ manage projects associated with specific user"""
+    """manage projects associated with specific user"""
+
     serializer_class = ProjectSerializer
 
     def get_queryset(self):
-        user_id = self.kwargs['user_id'] 
+        user_id = self.kwargs["user_id"]
         return Project.objects.filter(user_id=user_id)
+
 
 class TagViewSet(viewsets.ModelViewSet):
     """adds representations of the Tag to the API view"""
@@ -119,13 +127,16 @@ class ToolViewSet(viewsets.ModelViewSet):
     queryset = Tool.objects.all().order_by("created_at")
     serializer_class = ToolSerializer
 
+
 class UserToolsListView(generics.ListAPIView):
-    """ manage tools associated with specific users"""
+    """manage tools associated with specific users"""
+
     serializer_class = ToolSerializer
 
     def get_queryset(self):
-        user_id = self.kwargs['user_id']
+        user_id = self.kwargs["user_id"]
         return Tool.objects.filter(user_id=user_id)
+
 
 class SocialViewSet(viewsets.ModelViewSet):
     """adds representations of the Social to the API view"""
@@ -150,13 +161,16 @@ class EducationViewSet(viewsets.ModelViewSet):
     queryset = Education.objects.all().order_by("created_at")
     serializer_class = EducationSerializer
 
+
 class UserEducationsListView(generics.ListAPIView):
-    """ manage educations associated with specific user"""
+    """manage educations associated with specific user"""
+
     serializer_class = EducationSerializer
 
     def get_queryset(self):
-        user_id = self.kwargs['user_id']
+        user_id = self.kwargs["user_id"]
         return Education.objects.filter(user_id=user_id)
+
 
 class ExperienceViewSet(viewsets.ModelViewSet):
     """adds representations of the Experience to the API view"""
@@ -165,13 +179,16 @@ class ExperienceViewSet(viewsets.ModelViewSet):
     queryset = Experience.objects.all().order_by("created_at")
     serializer_class = ExperienceSerializer
 
+
 class UserExperienceListView(generics.ListAPIView):
-    """ manage experiences associated with specific user"""
+    """manage experiences associated with specific user"""
+
     serializer_class = ExperienceSerializer
 
     def get_queryset(self):
-        user_id = self.kwargs['user_id']
+        user_id = self.kwargs["user_id"]
         return Experience.objects.filter(user_id=user_id)
+
 
 class RatingViewSet(viewsets.ModelViewSet):
     """adds representations of the Rating to the API view"""
@@ -212,14 +229,17 @@ class LikeViewSet(viewsets.ModelViewSet):
     queryset = Like.objects.all().order_by("created_at")
     serializer_class = LikeSerializer
 
+
 class GetUserByUsernameView(View):
+    """this class get a user based on user name passed to the url endpoint"""
+
     def get(self, request, username):
         try:
             user = UserDetails.objects.get(username=username)
             serialized_user = {
-                'id': user.id,
-                'username': user.username,
+                "id": user.id,
+                "username": user.username,
             }
             return JsonResponse(serialized_user)
         except ObjectDoesNotExist:
-            return JsonResponse({'error': 'User not found'}, status=404)
+            return JsonResponse({"error": "User not found"}, status=404)
