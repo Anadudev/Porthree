@@ -156,8 +156,8 @@ const PostsComponent = () => {
               </List>
               <Typography variant="h6">Draft Posts</Typography><hr></hr>
               <List>
-                {unpublishedPosts.map((post) => (
-                  <div key={post.id}>
+                {unpublishedPosts.map((post, index) => (
+                  <div key={index}>
                     <ListItem>
                       <ListItemText primary={post.title} secondary={(<HTMLRenderer htmlContent={Limiter(post.content, 50)} />)} />
                       <Button variant="contained" color="secondary" onClick={() => handleEditPost(post)}>

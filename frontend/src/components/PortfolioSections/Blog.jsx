@@ -50,8 +50,8 @@ function TabData() {
         alignItems={'center'}
         justifyContent={'center'}
       >
-        {pj.map((data) => (
-          <Grid item key={data.id}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+        {pj.map((data, index) => (
+          <Grid item key={index}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
             <Box className=" p-2">
               <PostCard mode={'Blog Post'} />
             </Box>

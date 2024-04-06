@@ -204,8 +204,8 @@ const ProjectsComponent = () => {
                 </DialogContent>
               </Dialog>
               <List>
-                {projects.map((project) => (
-                  <ListItem key={project.id}>
+                {projects.map((project, index) => (
+                  <ListItem key={index}>
                     <ListItemText primary={project.title} secondary={project.content} />
                     <Button variant="contained" color="secondary" onClick={() => handleEditProject(project)}>
                       Edit

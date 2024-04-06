@@ -9,7 +9,10 @@
 <!-- custom error display -->
 <!-- implement homepage (index page) -->
 
+update default django url field validation to accept urls starting with www.
+
 write project readme file
+
 <TODO: caused by Mbang -- Fix style issue with mobile navigation on menu toggle -->
 
 <!-- Handle dynamic  route validation ([https://reactrouter.com/en/main/route/route]) -->

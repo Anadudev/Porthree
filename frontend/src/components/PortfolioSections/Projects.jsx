@@ -93,8 +93,8 @@ const Projects = ({ projects }) => {
               alignItems={'center'}
               justifyContent={'center'}
             >
-              {projects.map((data) => (
-                <Grid item key={data.id}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+              {projects.map((data, index) => (
+                <Grid item key={index}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
                   <Box className=" p-2">
                     <PostCard type='Project' />
                   </Box>
@@ -111,8 +111,8 @@ const Projects = ({ projects }) => {
               alignItems={'center'}
               justifyContent={'center'}
             >
-              {projects.map((data) => (
-                <Grid item key={data.id}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+              {projects.map((data, index) => (
+                <Grid item key={index}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
                   <Box className=" p-2">
                     <PostCard type='Project' />
                   </Box>

@@ -109,8 +109,8 @@ const Blog = () => {
               alignItems={'center'}
               justifyContent={'center'}
             >
-              {posts.map((data) => (
-                <Grid item key={data.id}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+              {posts.map((data, index) => (
+                <Grid item key={index}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
                   <Box className=" p-2">
                     <PostCard type='Post' />
                   </Box>
@@ -127,8 +127,8 @@ const Blog = () => {
               alignItems={'center'}
               justifyContent={'center'}
             >
-              {posts.map((data) => (
-                <Grid item key={data.id}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+              {posts.map((data, index) => (
+                <Grid item key={index}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
                   <Box className=" p-2">
                     <PostCard type='Post' />
                   </Box>

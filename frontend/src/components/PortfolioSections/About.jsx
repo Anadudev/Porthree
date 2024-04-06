@@ -31,7 +31,7 @@ export function ToolsList({ tools }) {
   return (
     <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
       {tools.slice(0, 4).map((data, index) => (
-        <div key={data.id}>
+        <div key={index}>
           <ListItem alignItems="flex-start">
             <ListItemAvatar>
               <Avatar alt={data.tool || ''} src="/static/images/avatar/1.jpg" />

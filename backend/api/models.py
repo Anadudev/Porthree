@@ -103,7 +103,8 @@ class Tool(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        # Ensure that a user cannot have duplicate tools
+        """Ensure that a user cannot have duplicate tools"""
+
         unique_together = ["user", "tool"]
 
     def __str__(self):
