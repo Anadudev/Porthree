@@ -13,3 +13,4 @@ Porthree/main/migrations/__pycache__/
 get-pip.py
 */*/test_image_*.png
 */*/test_image_*.jpg
+backend/db.sqlite3
