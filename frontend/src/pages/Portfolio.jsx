@@ -12,31 +12,23 @@ import Projects from "../components/PortfolioSections/Projects";
 import Blog from "../components/PortfolioSections/Blog";
 import Contact from "../components/PortfolioSections/Contact";
 import PageTitle from "./PageTitle";
-import GetUser from "../data/GetUser";
 import { useLoaderData } from "react-router-dom";
-import { getUserData } from "../data/GetUser";
-import {ErrorCard} from "./Error";
-
-
-const fetchData = async (id, fn, endPoint) => {
-    try {
-        const fetchedData = await fn(id, endPoint);
-        return fetchedData;
-    } catch (error) {
-        console.error(`Error fetching ${endPoint} data:`, error);
-        return null;
-    }
-};
+import GetUser, { getUserData, GetRelation } from "../data/GetUser";
+import { ErrorCard } from "./Error";
+import Loading from "../components/PageLoad";
 
 function Portfolio() {
     const id = useLoaderData();
+    PageTitle(id?.username);
+    const currLoc = useLocation();
+
     if (id.error) {
         return <ErrorCard
-        error={'not found'}
-        code={404}
-        content={id.error+" in porthree"}
-        nav={true}
-         />
+            error={'not found'}
+            code={404}
+            content={id.error + " in porthree"}
+            nav={true}
+        />
     }
     const [user, setUser] = useState([]);
     const [tools, setTools] = useState(null);
@@ -46,28 +38,60 @@ function Portfolio() {
     const [socials, setSocials] = useState(null);
     const [projects, setProjects] = useState(null);
     const [blog, setBlog] = useState(null);
+    const [loading, setLoading] = useState(true);
+
 
     useEffect(() => {
         const fetchDataForUser = async () => {
-            const fetchedUser = await fetchData(id, GetUser, "");
-            setUser(fetchedUser);
+            // console.log(id)
+            const fetchedUser = await GetUser(id);
+            if (!fetchedUser.loading) {
+                // setData(result.data);
+                setLoading(false);
+                setUser(fetchedUser);
+
+            }
+            let dataResult = [];
+            let relationList = [];
             if (fetchedUser) {
-                setTools(await fetchData(fetchedUser.id, getUserData, "tools"));
-                setEducations(
-                    await fetchData(fetchedUser.id, getUserData, "educations")
-                );
-                setExperiences(
-                    await fetchData(fetchedUser.id, getUserData, "experiences")
-                );
-                setSkills(await fetchData(fetchedUser.id, getUserData, "skills"));
-                setSocials(await fetchData(fetchedUser.id, getUserData, "socials"));
-                setProjects(await fetchData(fetchedUser.id, getUserData, "projects"));
-                setBlog(await fetchData(fetchedUser.id, getUserData, "posts"));
-                PageTitle(fetchedUser.username);
+
+                /* fetch all users tools  */
+                for (const tool of fetchedUser.tools) {
+                    const data = await GetRelation(tool);
+                    relationList.push(data)
+                }
+
+                setTools(relationList);
+                /* fetch all users educations  */
+                dataResult = await GetRelation(fetchedUser.url + "educations/");
+                setEducations(dataResult.results);
+                /* fetch all users experiences  */
+                dataResult = await GetRelation(fetchedUser.url + "experiences/");
+                setExperiences(dataResult.results);
+
+                /* fetch all users skills  */
+                relationList = [];
+                for (const skill of fetchedUser.skills) {
+                    const data = await GetRelation(skill);
+                    relationList.push(data)
+                }
+
+                setSkills(relationList);
+                /* fetch all users socials  */
+                setSocials(await getUserData(fetchedUser.id, "socials"));
+                /* fetch all users projects  */
+                dataResult = await GetRelation(fetchedUser.url + "projects/");
+                setProjects(dataResult.results);
+                /* fetch all users posts  */
+                dataResult = await GetRelation(fetchedUser.url + "posts/");
+                setBlog(dataResult.results);
             }
         };
         fetchDataForUser();
     }, [id]);
+    if (loading) { return <Loading /> }
+
+    // console.log(skills)
     const errHandle = [
         user,
         tools,
@@ -83,7 +107,6 @@ function Portfolio() {
         }
     }
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const currLoc = useLocation();
     const contacts = {
         phone: user?.phone,
         email: user?.email,
@@ -92,8 +115,8 @@ function Portfolio() {
 
     return (
         <React.Fragment>
-            <DrawerAppBar pages={UserNavLinks(user)}/>
-            <Box p="50px" className='scroll-smooth'>
+            <DrawerAppBar pages={UserNavLinks(user)} />
+            <Box padding={{xs:"10px", sm:"50px"}} className='scroll-smooth'>
                 {!user ? (
                     <Typography variant="h1" component="h1">
                         Portfolio not in Porthree

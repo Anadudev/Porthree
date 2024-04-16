@@ -15,10 +15,10 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { GetDatas, getUserData } from '../data/GetUser';
+import { GetDatas, getUserData, GetRelation } from '../data/GetUser';
 import { Link } from 'react-router-dom';
 import Limiter from '../components/Limiter';
-
+import Loading from "../components/PageLoad";
 const ITEM_HEIGHT = 48;
 
 export function SkillMenu({ skills }) {
@@ -99,48 +99,71 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
     },
 }));
 
+
 const Portfolios = () => {
     PageTitle("Portfolios");
-    const [results, setResults] = useState([]);
     const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(true);
+    let relationList = [];
+
+    async function gatterRelations(relation) {
+        if (relation && relation[0]) {
+            for (const tool of relation) {
+                const data = await GetRelation(tool);
+                relationList.push(data);
+            }
+            return relationList;
+        }
+    }
 
     useEffect(() => {
         const fetchData = async () => {
             const result = await GetDatas('users');
-            setResults(result);
-            // let collection = [];
-            const userList = result.results
 
-            for (const i in userList) {
-                const data = await getUserData(userList[i].id, 'projects');
-                if (data[0] === undefined) { continue }
-                userList[i]["projects"] = data.length;
-            }
-            for (const i in userList) {
-                const data = await getUserData(userList[i].id, 'posts');
-                if (data[0] === undefined) { continue }
-                userList[i]["posts"] = data.length;
-            }
+            if (!result.loading) {
+                const userList = result.results;
+                const promises = [];
 
-            for (const i in userList) {
-                const data = await getUserData(userList[i].id, 'skills');
-                if (data[0] === undefined) { continue }
-                userList[i]["skills"] = data;
+                for (const user of userList) {
+                    promises.push(
+                        GetRelation(user.url + 'projects/').then(data => {
+                            user.projects = data.count;
+                        })
+                    );
+                    // console.log(await GetRelation(user.url+'projects/'));
+
+                    promises.push(
+                        GetRelation(user.url + 'posts/').then(data => {
+                            user.posts = data.count;
+                        })
+                    );
+
+                    promises.push(
+                        user.dataSkills = await gatterRelations(user.skills)
+                    );
+                    relationList = [];
+                    // console.log(user);
+                }
+
+                await Promise.all(promises);
+                setLoading(false);
+                setUsers(userList);
             }
-            setUsers(userList);
         };
 
         fetchData();
     }, []);
 
+    if (loading) { return <Loading /> }
     if (!users || users.length < 1) {
         return null;
     }
+    // console.log(users);
     return (
         <Box component="section" id="skills">
 
             <DrawerAppBar pages={NavLinks} />
-            <Box p={"50px"}>
+            <Box padding={{xs:"10px", sm:"50px"}}>
                 <Breadcrumb path={useLocation()} />
                 <Box sx={{ flexGrow: 1, p: 2 }}>
                     <Grid
@@ -151,17 +174,17 @@ const Portfolios = () => {
                     >
                         {users?.map((user, index) => (
                             <Grid key={index} {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-                                <Box className=" p-2">
+                                <Box>
                                     <Box sx={{ display: 'flex', justifyContent: 'center', mb: '-20px' }}>
                                         <StyledBadge
                                             overlap="circular"
                                             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                                             variant="dot"
                                         >
-                                            <Avatar alt={user.username} src={user.picture} sx={{ width: 70, height: 70 }} />
+                                            <Avatar component={Paper} elevation={6} alt={user.username} src={user.picture} sx={{ width: 70, height: 70 }} />
                                         </StyledBadge>
                                     </Box>
-                                    <Paper elevation={6} sx={{ pt: '40px', px: '10px', pb: '10px', borderRadius: '20px' }}>
+                                    <Paper elevation={5} sx={{ pt: '40px', px: '10px', pb: '10px', borderRadius: '10px' }}>
                                         <Box sx={{ display: "flex", justifyContent: 'space-between' }}>
                                             <Box>
                                                 <Typography component='p' className='capitalize text-center pr-2' >projects <br /> <b>{user.projects ? `${user.projects}+` : 0}</b></Typography>
@@ -174,7 +197,7 @@ const Portfolios = () => {
                                         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                                             <Typography variant='p' component='p' sx={{ fontWeight: '700' }}>Bio:</Typography>
                                             <Box sx={{ display: "flex", alignItems: "center" }}>
-                                                {user.skills && <SkillMenu skills={user.skills} />}
+                                                {user.dataSkills && <SkillMenu skills={user.dataSkills} />}
                                             </Box>
                                         </Box>
                                         <Typography variant='p' component='p'>{Limiter(user.bio, 100)}</Typography>
@@ -198,7 +221,5 @@ const Portfolios = () => {
         </Box>
     );
 }
-
-
 
 export default Portfolios;

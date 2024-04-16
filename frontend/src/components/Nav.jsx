@@ -30,7 +30,7 @@ function ResponsiveAppBar({ pages }) {
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip title="Open settings">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar alt="U" src={settings[0].user.picture} />
+          <Avatar alt="U" src={settings[0].user.picture||''} />
         </IconButton>
       </Tooltip>
       <Menu
@@ -134,8 +134,8 @@ function ResponsiveAppBar({ pages }) {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages?.map((page) => (
-                <MenuItem key={page.id} onClick={handleCloseNavMenu}>
+              {pages?.map((page, index) => (
+                <MenuItem key={index} onClick={handleCloseNavMenu}>
                   <Button
                     component={Link}
                     to={page.url}
@@ -170,9 +170,9 @@ function ResponsiveAppBar({ pages }) {
           </Typography>
           {/* large screen nav links */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
+            {pages.map((page, index) => (
               <Button
-                key={page.id}
+                key={index}
                 component={Link}
                 to={page.url}
                 onClick={handleCloseNavMenu}

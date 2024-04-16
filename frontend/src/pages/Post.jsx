@@ -25,6 +25,7 @@ import Error from './Error';
 import { GetItem } from '../data/GetUser';
 import { Link as RL } from 'react-router-dom';
 import HTMLRenderer from '../components/HtmlRender';
+import { GetRelation } from '../data/GetUser';
 
 const Post = () => {
     PageTitle("Post");
@@ -45,10 +46,11 @@ const Post = () => {
     useEffect(() => {
         const fetchDataForUser = async () => {
             async function handler() {
-                setUser(await GetItem('users', post.user));
+                let relate = await GetRelation(post.user);
+                setUser(await GetItem('users', Number(post.user.split('/')[5])));
                 const tagCollection = []
                 for (const tag in post.tags) {
-                    tagCollection.push(await GetItem('tags', post.tags[tag]))
+                    tagCollection.push(await GetItem('tags', Number(post.tags[tag].split('/')[5])))
                 }
                 setTags(tagCollection)
             }
@@ -60,7 +62,7 @@ const Post = () => {
     return (
         <React.Fragment>
             <DrawerAppBar pages={UserNavLinks(user)} />
-            <Box p={"50px"}>
+            <Box padding={{xs:"10px", sm:"50px"}}>
                 <Breadcrumb path={useLocation()} />
                 <Box className="flex justify-center">
                     <Card sx={{ maxWidth: 1000 }}>
@@ -72,7 +74,7 @@ const Post = () => {
                         />
                         <CardContent>
                             <Typography gutterBottom variant="h2" component="h1" sx={{ fontWeight: '900' }} className="text-center">
-                                {(<HTMLRenderer htmlContent={post.title}/>) || ''}
+                                {(<HTMLRenderer htmlContent={post.title} />) || ''}
                             </Typography>
                             <Box className="border-y flex py-2 my-4">
                                 <Avatar className="capitalize"
@@ -89,7 +91,7 @@ const Post = () => {
                             <Typography variant="p"
                                 component='p'
                                 color="text.secondary"
-                                className="py-10 font-semibold text-lg">{(<HTMLRenderer htmlContent={post.content}/>) || ''}</Typography>
+                                className="py-10 font-semibold text-lg">{(<HTMLRenderer htmlContent={post.content} />) || ''}</Typography>
                         </CardContent>
                         <Box px={'10px'}>
                             <Box sx={{ flexGrow: 1 }}>

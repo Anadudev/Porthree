@@ -3,43 +3,45 @@
 from django.urls import include, path
 from rest_framework import routers
 from api import views
-from .views import GetUserByUsernameView
-from .views import UserToolsListView
-from .views import UserEducationsListView
-from .views import UserPostsListView
-from .views import UserExperienceListView
-from .views import UserProjectsListView
+from .views import (
+    GetUserByUsernameView,
+    UserEducationsListView,
+    UserPostsListView,
+    UserExperienceListView,
+    UserProjectsListView,
+    ToolViewSet,
+)
 
 
 router = routers.DefaultRouter()
 # users route definition
-router.register(r"users", views.UserDetailsViewSet)
+router.register(r"users", views.UserDetailsViewSet, basename="userdetails")
 # posts route definition
-router.register(r"posts", views.PostViewSet, basename="posts")
+router.register(r"posts", views.PostViewSet, basename="post")
 # projects route definition
-router.register(r"projects", views.ProjectViewSet, basename='projects')
+router.register(r"projects", views.ProjectViewSet, basename="project")
 # Tag route definition
-router.register(r"tags", views.TagViewSet)
+router.register(r"tags", views.TagViewSet, basename="tag")
 # Tool route definition
-router.register(r"tools", views.ToolViewSet)
+router.register(r"tools", views.ToolViewSet, basename="tool")
 # Social route definition
-router.register(r"socials", views.SocialViewSet)
+router.register(r"socials", views.SocialViewSet, basename="social")
 # Skill route definition
-router.register(r"skills", views.SkillViewSet)
+router.register(r"skills", views.SkillViewSet, basename="skill")
 # Education route definition
-router.register(r"educations", views.EducationViewSet)
+router.register(r"educations", views.EducationViewSet, basename="education")
 # Experience route definition
-router.register(r"experiences", views.ExperienceViewSet)
+router.register(r"experiences", views.ExperienceViewSet, basename="experience")
 # Rating route definition
-router.register(r"ratings", views.RatingViewSet)
+router.register(r"ratings", views.RatingViewSet, basename="rating")
 # Comment route definition
-router.register(r"comments", views.CommentViewSet)
+router.register(r"comments", views.CommentViewSet, basename="comment")
 # Reply route definition
-router.register(r"replies", views.ReplyViewSet)
+router.register(r"replies", views.ReplyViewSet, basename="replie")
 # Share route definition
-router.register(r"shares", views.ShareViewSet)
+router.register(r"shares", views.ShareViewSet, basename="share")
 # Like route definition
-router.register(r"likes", views.LikeViewSet)
+router.register(r"likes", views.LikeViewSet, basename="like")
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
@@ -51,11 +53,25 @@ urlpatterns = [
         GetUserByUsernameView.as_view(),
         name="get_user_by_username",
     ),
-    path('users/<int:user_id>/tools/', UserToolsListView.as_view(), name='user-tools-list'),
-    path('users/<int:user_id>/educations/', UserEducationsListView.as_view(), name='user-educations-list'),
-    path('users/<int:user_id>/posts/', UserPostsListView.as_view(), name='user-posts-list'),
-    path('users/<int:user_id>/experiences/', UserExperienceListView.as_view(), name='user-expereinces-list'),
-    path('users/<int:user_id>/projects/', UserProjectsListView.as_view(), name='user-projects-list'),
-
+    path(
+        "users/<int:user_id>/educations/",
+        UserEducationsListView.as_view(),
+        name="user-educations-list",
+    ),
+    path(
+        "users/<int:user_id>/posts/",
+        UserPostsListView.as_view(),
+        name="user-posts-list",
+    ),
+    path(
+        "users/<int:user_id>/experiences/",
+        UserExperienceListView.as_view(),
+        name="user-expereinces-list",
+    ),
+    path(
+        "users/<int:user_id>/projects/",
+        UserProjectsListView.as_view(),
+        name="user-projects-list",
+    ),
+    # path("tools/", ToolViewSet.as_view(), name="tools-detail"),
 ]
-

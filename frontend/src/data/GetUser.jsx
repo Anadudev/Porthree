@@ -6,6 +6,7 @@ import axios from 'axios';
  * @returns {Promise<Object>} The user data if successful, or an error response if unsuccessful.
  */
 async function GetUser(user) {
+    // console.log(user);
     try {
         const response = await axios.get(`http://localhost:8000/api/users/${user.id}/`);
         if (response && response.status === 200 && response.data) {
@@ -19,7 +20,27 @@ async function GetUser(user) {
             throw new Error("Failed to fetch user data");
         }
     }
+    return { loading: true };
 }
+
+export async function GetRelation(UrlLink) {
+    try {
+        const response = await axios.get(UrlLink);
+        if (response && response.status === 200 && response.data) {
+            return response.data;
+        }
+    } catch (error) {
+        if (error.response) {
+            return error.response
+            // throw new Error("User not found");
+        } else {
+            console.log(error);
+            throw new Error("Failed to fetch user data");
+        }
+    }
+    return { loading: true };
+}
+
 
 /**
  * Fetches data from the backend API based on the provided endpoint.
@@ -40,6 +61,7 @@ export async function GetDatas(data) {
             throw new Error("Failed to fetch user data");
         }
     }
+    return { loading: true };
 }
 
 /**
@@ -48,9 +70,24 @@ export async function GetDatas(data) {
  * @param {Array} dataList - The list of data items to filter.
  * @returns {Array} The filtered list of data items.
  */
-const assembleData = (id, dataList) => {
-    return dataList.filter(data => data.user === id);
+const assembleData = async (id, dataList) => {
+    const collection = [];
+    // Use Promise.all to fetch all relations concurrently
+    const relations = await Promise.all(dataList.map(async (data) => {
+        const relate = await GetRelation(data.user);
+        return { data: relate, item: data };
+    }));
+
+    // Filter the relations to find matches and extract the items
+    for (const relation of relations) {
+        if (relation.data.id === id) {
+            collection.push(relation.item);
+        }
+    }
+
+    return collection;
 }
+
 
 /**
  * Fetches specific user data from the backend API based on the provided endpoint and user ID.
@@ -62,8 +99,9 @@ export const getUserData = async (userId, data) => {
     try {
         const response = await axios.get(`http://localhost:8000/api/${data}/`);
         if (response && response.status === 200 && response.data) {
-
-            return assembleData(userId, response.data.results);
+            const assembled = await assembleData(userId, response.data.results);
+            // console.log(assembled);
+            return assembled;
         }
     } catch (error) {
         if (error.response) {
@@ -73,7 +111,9 @@ export const getUserData = async (userId, data) => {
             throw new Error("Failed to fetch user data");
         }
     }
+    return { loading: true };
 }
+
 
 /**
  * Fetches a specific item from the backend API based on the provided endpoint and item ID.
@@ -94,7 +134,7 @@ export async function GetItem(item, id) {
             throw new Error("Failed to fetch user data");
         }
     }
+    return { loading: true };
 }
-
 
 export default GetUser;

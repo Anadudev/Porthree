@@ -23,8 +23,8 @@ const UserProfileDisplay = ({ user }) => (
             ['Bio:', user.bio || 'No bio provided'],
             ['About:', user.about || 'No about set'],
             ['Location:', user.location || 'No location provided'],
-          ].map(([label, value]) => (
-            <TableRow key={label}>
+          ].map(([label, value], index) => (
+            <TableRow key={index}>
               <TableCell>
                 <Typography variant="body1">{label}</Typography>
               </TableCell>

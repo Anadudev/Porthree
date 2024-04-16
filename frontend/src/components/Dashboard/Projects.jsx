@@ -16,14 +16,14 @@ const ProjectsComponent = () => {
   const [editingProject, setEditingProject] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
 
-  const userId = JSON.parse(localStorage.getItem('user')).id;
+  const userId = JSON.parse(localStorage.getItem('user'));
   const token = localStorage.getItem('access_token');
 
   useEffect(() => {
     const fetchProjects = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get(`http://localhost:8000/api/users/${userId}/projects/`);
+        const response = await axios.get(`http://localhost:8000/api/users/${userId.id}/projects/`);
         setProjects(response.data.results);
       } catch (error) {
         setError(error);
@@ -33,13 +33,13 @@ const ProjectsComponent = () => {
     };
 
     fetchProjects();
-  }, [userId]);
+  }, [userId.id]);
 
   const handleAddProject = async () => {
     setIsLoading(true);
     setError(null);
     try {
-      const projectData = { ...newProject, user: userId };
+      const projectData = { ...newProject, user: userId.url };
       const response = await axios.post(`http://localhost:8000/api/projects/`, projectData, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -51,7 +51,7 @@ const ProjectsComponent = () => {
       setNewProject({ title: '', content: '', demo: '', video: '', publish: false }); // Reset publish status
       setOpenDialog(false);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       setError(error);
     } finally {
       setIsLoading(false);
@@ -86,7 +86,7 @@ const ProjectsComponent = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const projectData = { ...newProject, user: userId };
+      const projectData = { ...newProject, user: userId.url };
 
       const response = await axios.put(`http://localhost:8000/api/projects/${editingProject.id}/`, projectData, {
         headers: {
@@ -100,7 +100,7 @@ const ProjectsComponent = () => {
       setNewProject({ title: '', content: '', demo: '', video: '', publish: false }); // Reset publish status
       setOpenDialog(false);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       setError(error);
     } finally {
       setIsLoading(false);
@@ -204,8 +204,8 @@ const ProjectsComponent = () => {
                 </DialogContent>
               </Dialog>
               <List>
-                {projects.map((project) => (
-                  <ListItem key={project.id}>
+                {projects.map((project, index) => (
+                  <ListItem key={index}>
                     <ListItemText primary={project.title} secondary={project.content} />
                     <Button variant="contained" color="secondary" onClick={() => handleEditProject(project)}>
                       Edit

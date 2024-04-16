@@ -10,8 +10,9 @@ import GetUser from "../data/GetUser";
 import Box from "@mui/material/Box";
 import Masonry from "@mui/lab/Masonry";
 import PostCard from "../components/PortfolioSections/PostCard";
-import { getUserData } from "../data/GetUser";
+import { GetRelation } from "../data/GetUser";
 import Error from "./Error";
+import Loading from "../components/PageLoad";
 
 const Projects = () => {
   PageTitle("Projects");
@@ -22,22 +23,27 @@ const Projects = () => {
   }
   const [user, setUser] = useState("");
   const [projects, setProjects] = useState("");
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     async function getter() {
       setUser(await GetUser(id));
-      setProjects(await getUserData(id.id, "projects"));
+      const projectList = await GetRelation(user.url + "projects/")
+      if (!projectList.loading) {
+        setLoading(false);
+      }
+      setProjects(projectList.results);
     }
     getter();
-  }, [id]);
-
-  if (projects.length < 1) {
-    return <h1>Projects Not Found</h1>;
+  }, [id, user]);
+  if (loading) {
+    return <Loading />;
   }
   return (
     <React.Fragment>
       <DrawerAppBar pages={UserNavLinks(user)} />
-      <Box p="50px">
-      <Breadcrumb path={useLocation()} />
+      <Box padding={{xs:"10px", sm:"50px"}}>
+        <Breadcrumb path={useLocation()} />
         <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={2}>
           {projects &&
             projects.map((project, index) => (

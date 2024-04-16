@@ -16,14 +16,14 @@ const ExperienceComponent = () => {
   const [editingExperience, setEditingExperience] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
 
-  const userId = JSON.parse(localStorage.getItem('user')).id;
+  const userId = JSON.parse(localStorage.getItem('user'));
   const token = localStorage.getItem('access_token');
 
   useEffect(() => {
     const fetchExperiences = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get(`http://localhost:8000/api/users/${userId}/experiences/`);
+        const response = await axios.get(`http://localhost:8000/api/users/${userId.id}/experiences/`);
         setExperiences(response.data.results);
       } catch (error) {
         setError(error);
@@ -33,13 +33,13 @@ const ExperienceComponent = () => {
     };
 
     fetchExperiences();
-  }, [userId]);
+  }, [userId.id]);
 
   const handleAddExperience = async () => {
     setIsLoading(true);
     setError(null);
     try {
-      const experienceData = { ...newExperience, user: userId };
+      const experienceData = { ...newExperience, user: userId.url };
       const response = await axios.post(`http://localhost:8000/api/experiences/`, experienceData, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -85,7 +85,7 @@ const ExperienceComponent = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const experienceData = { ...newExperience, user: userId };
+      const experienceData = { ...newExperience, user: userId.url };
 
       const response = await axios.put(`http://localhost:8000/api/experiences/${editingExperience.id}/`, experienceData, {
         headers: {

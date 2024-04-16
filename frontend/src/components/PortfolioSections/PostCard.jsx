@@ -14,9 +14,10 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import BgImage from "/src/assets/image.jpg";
 import TimeAgo from 'react-timeago';
 import Limiter from '../Limiter';
-import { GetItem } from '../../data/GetUser';
+import { GetItem, GetRelation } from '../../data/GetUser';
 import { Link as RL } from 'react-router-dom';
 import HTMLRenderer from '../HtmlRender';
+
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -42,7 +43,7 @@ const PostCard = ({ post, mode }) => {
         return null;
     }
     const [expanded, setExpanded] = React.useState(false);
-
+    // console.log(post);
     /**
      * Handles the click event to expand or collapse the post card details.
      */
@@ -57,14 +58,18 @@ const PostCard = ({ post, mode }) => {
          * Fetches user data for the post and updates the component state.
          */
         const fetchDataForUser = async () => {
-
-            setUser(await GetItem("users", post.user));
+            let relate = null;
+            relate = await GetRelation(post.user);
+            // console.log(relate.id);
+            setUser(await GetItem("users", relate.id));
             // collect post tools
             let collection = []
             const tools = post.tools;
 
-            for (const tool in tools) {
-                const data = await GetItem("tools", tools[tool]);
+            for (const i in tools) {
+                // console.log(tools[i])
+                relate = await GetRelation(tools[i]);
+                const data = await GetItem("tools", relate.id);
                 collection.push(data)
             }
             setTools(collection);
@@ -72,15 +77,17 @@ const PostCard = ({ post, mode }) => {
             // collect post tags
             collection = []
             const tags = post.tags || blog.tags;
-            for (const tag in tags) {
-                const data = await GetItem("tags", tags[tag]);
+            for (const i in tags) {
+                // console.log(tags[i]);
+                relate = await GetRelation(tags[i]);
+                const data = await GetItem("tags", relate.id);
                 collection.push(data)
             }
             setTags(collection);
         }
         fetchDataForUser()
     }, [post]);
-
+    // console.log(user);
     return (
         <Card sx={{ maxWidth: 345 }} className="border">
             <CardHeader
@@ -106,9 +113,9 @@ const PostCard = ({ post, mode }) => {
                 <p className='font-bold text-center primary'>{mode}:</p>
 
                 <Link component={RL} to={`/${user.username}/${mode === "Project" ? "projects" : "posts"}/${post.slug}`} gutterBottom underline="always" variant="h5">
-                    {(<HTMLRenderer htmlContent={Limiter(post.title)}/>) || ""}
+                    {(<HTMLRenderer htmlContent={Limiter(post.title)} />) || ""}
                 </Link>
-                <Typography my={2} variant="body2" color="text.secondary"><b>{(<HTMLRenderer htmlContent={Limiter(post.content, 150)}/>)}</b>
+                <Typography my={2} variant="body2" color="text.secondary"><b>{(<HTMLRenderer htmlContent={Limiter(post.content, 150)} />)}</b>
                 </Typography>
             </CardContent>
             <CardActions disableSpacing onClick={handleExpandClick} className='cursor-pointer'>
