@@ -14,7 +14,7 @@ const PhoneNumberInputWithLocation = ({ value, onChange }) => {
       try {
         const response = await axios.get('https://ipinfo.io/json');
         const data = response.data;
-        console.log(response)
+        // console.log(response)
         const countryCode = data.country.toLowerCase();
         setDefaultCountry(countryCode); // Set default country based on user's location
       } catch (error) {

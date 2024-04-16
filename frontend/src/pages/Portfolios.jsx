@@ -20,6 +20,17 @@ import { Link } from 'react-router-dom';
 import Limiter from '../components/Limiter';
 import Loading from "../components/PageLoad";
 const ITEM_HEIGHT = 48;
+let relationList = [];
+
+export async function gatterRelations(relation) {
+    if (relation && relation[0]) {
+        for (const tool of relation) {
+            const data = await GetRelation(tool);
+            relationList.push(data);
+        }
+        return relationList;
+    }
+}
 
 export function SkillMenu({ skills }) {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -104,17 +115,6 @@ const Portfolios = () => {
     PageTitle("Portfolios");
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
-    let relationList = [];
-
-    async function gatterRelations(relation) {
-        if (relation && relation[0]) {
-            for (const tool of relation) {
-                const data = await GetRelation(tool);
-                relationList.push(data);
-            }
-            return relationList;
-        }
-    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -122,30 +122,18 @@ const Portfolios = () => {
 
             if (!result.loading) {
                 const userList = result.results;
-                const promises = [];
 
                 for (const user of userList) {
-                    promises.push(
-                        GetRelation(user.url + 'projects/').then(data => {
-                            user.projects = data.count;
-                        })
-                    );
+                    user.projects = await GetRelation(user.url + 'projects/');
                     // console.log(await GetRelation(user.url+'projects/'));
 
-                    promises.push(
-                        GetRelation(user.url + 'posts/').then(data => {
-                            user.posts = data.count;
-                        })
-                    );
+                    user.posts = await GetRelation(user.url + 'posts/');
 
-                    promises.push(
-                        user.dataSkills = await gatterRelations(user.skills)
-                    );
-                    relationList = [];
+                    user.dataSkills = await gatterRelations(user.skills);
                     // console.log(user);
+                    relationList = [];
                 }
 
-                await Promise.all(promises);
                 setLoading(false);
                 setUsers(userList);
             }
@@ -158,12 +146,12 @@ const Portfolios = () => {
     if (!users || users.length < 1) {
         return null;
     }
-    // console.log(users);
+    console.log(users);
     return (
         <Box component="section" id="skills">
 
             <DrawerAppBar pages={NavLinks} />
-            <Box padding={{xs:"10px", sm:"50px"}}>
+            <Box padding={{ xs: "10px", sm: "50px" }}>
                 <Breadcrumb path={useLocation()} />
                 <Box sx={{ flexGrow: 1, p: 2 }}>
                     <Grid
