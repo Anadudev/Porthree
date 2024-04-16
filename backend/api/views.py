@@ -4,6 +4,8 @@ from django.http import JsonResponse
 from django.views import View
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.permissions import BasePermission, IsAuthenticated, SAFE_METHODS
+from django_filters import rest_framework as filters
+
 from .models import (
     UserDetails,
     Post,
@@ -52,8 +54,10 @@ class UserDetailsViewSet(viewsets.ModelViewSet):
     """adds representations of the to to the API view"""
 
     permission_classes = [IsAuthenticated | ReadOnly]
-    queryset = UserDetails.objects.all().order_by("date_joined")
+    queryset = UserDetails.objects.all().order_by("-date_joined")
     serializer_class = UserDetailsSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ["username", "id"]
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -61,17 +65,9 @@ class PostViewSet(viewsets.ModelViewSet):
 
     permission_classes = [IsAuthenticated | ReadOnly]
     serializer_class = PostSerializer
-
-    def get_queryset(self):
-        """
-        Optionally restricts the returned purchases to a given post,
-        by filtering against a `slug` query parameter in the URL.
-        """
-        queryset = Post.objects.all().order_by("created_at")
-        slug = self.request.query_params.get("slug")
-        if slug is not None:
-            queryset = queryset.filter(slug=slug)
-        return queryset
+    queryset = Post.objects.all().order_by("-created_at")
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ["slug", "id"]
 
 
 class UserPostsListView(generics.ListAPIView):
@@ -89,17 +85,9 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
     permission_classes = [IsAuthenticated | ReadOnly]
     serializer_class = ProjectSerializer
-
-    def get_queryset(self):
-        """
-        Optionally restricts the returned purchases to a given project,
-        by filtering against a `slug` query parameter in the URL.
-        """
-        queryset = Project.objects.all().order_by("created_at")
-        slug = self.request.query_params.get("slug")
-        if slug is not None:
-            queryset = queryset.filter(slug=slug)
-        return queryset
+    queryset = Project.objects.all().order_by("-created_at")
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ["slug", "id"]
 
 
 class UserProjectsListView(generics.ListAPIView):
@@ -116,50 +104,50 @@ class TagViewSet(viewsets.ModelViewSet):
     """adds representations of the Tag to the API view"""
 
     permission_classes = [IsAuthenticated | ReadOnly]
-    queryset = Tag.objects.all().order_by("created_at")
+    queryset = Tag.objects.all().order_by("-created_at")
     serializer_class = TagSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ["tag", "id"]
 
 
 class ToolViewSet(viewsets.ModelViewSet):
     """adds representations of the Tool to the API view"""
 
     permission_classes = [IsAuthenticated | ReadOnly]
-    queryset = Tool.objects.all().order_by("created_at")
+    queryset = Tool.objects.all().order_by("-created_at")
     serializer_class = ToolSerializer
-
-
-class UserToolsListView(generics.ListAPIView):
-    """manage tools associated with specific users"""
-
-    serializer_class = ToolSerializer
-
-    def get_queryset(self):
-        user_id = self.kwargs["user_id"]
-        return Tool.objects.filter(user_id=user_id)
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ["tool", "id"]
 
 
 class SocialViewSet(viewsets.ModelViewSet):
     """adds representations of the Social to the API view"""
 
     permission_classes = [IsAuthenticated | ReadOnly]
-    queryset = Social.objects.all().order_by("created_at")
+    queryset = Social.objects.all().order_by("-created_at")
     serializer_class = SocialSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ["social", "id"]
 
 
 class SkillViewSet(viewsets.ModelViewSet):
     """adds representations of the Skill to the API view"""
 
     permission_classes = [IsAuthenticated | ReadOnly]
-    queryset = Skill.objects.all().order_by("created_at")
+    queryset = Skill.objects.all().order_by("-created_at")
     serializer_class = SkillSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ["skill", "id"]
 
 
 class EducationViewSet(viewsets.ModelViewSet):
     """adds representations of the Education to the API view"""
 
     permission_classes = [IsAuthenticated | ReadOnly]
-    queryset = Education.objects.all().order_by("created_at")
+    queryset = Education.objects.all().order_by("-created_at")
     serializer_class = EducationSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ["institute", "id"]
 
 
 class UserEducationsListView(generics.ListAPIView):
@@ -169,15 +157,17 @@ class UserEducationsListView(generics.ListAPIView):
 
     def get_queryset(self):
         user_id = self.kwargs["user_id"]
-        return Education.objects.filter(user_id=user_id)
+        return Education.objects.filter(user_id=user_id).order_by("-created_at")
 
 
 class ExperienceViewSet(viewsets.ModelViewSet):
     """adds representations of the Experience to the API view"""
 
     permission_classes = [IsAuthenticated | ReadOnly]
-    queryset = Experience.objects.all().order_by("created_at")
+    queryset = Experience.objects.all().order_by("-created_at")
     serializer_class = ExperienceSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ["company", "id"]
 
 
 class UserExperienceListView(generics.ListAPIView):
@@ -187,47 +177,57 @@ class UserExperienceListView(generics.ListAPIView):
 
     def get_queryset(self):
         user_id = self.kwargs["user_id"]
-        return Experience.objects.filter(user_id=user_id)
+        return Experience.objects.filter(user_id=user_id).order_by("-created_at")
 
 
 class RatingViewSet(viewsets.ModelViewSet):
     """adds representations of the Rating to the API view"""
 
     permission_classes = [IsAuthenticated | ReadOnly]
-    queryset = Rating.objects.all().order_by("created_at")
+    queryset = Rating.objects.all().order_by("-created_at")
     serializer_class = RatingSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ["rate", "id"]
 
 
 class CommentViewSet(viewsets.ModelViewSet):
     """adds representations of the Comment to the API view"""
 
     permission_classes = [IsAuthenticated | ReadOnly]
-    queryset = Comment.objects.all().order_by("created_at")
+    queryset = Comment.objects.all().order_by("-created_at")
     serializer_class = CommentSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ["comment", "id"]
 
 
 class ReplyViewSet(viewsets.ModelViewSet):
     """adds representations of the Reply to the API view"""
 
     permission_classes = [IsAuthenticated | ReadOnly]
-    queryset = Reply.objects.all().order_by("created_at")
+    queryset = Reply.objects.all().order_by("-created_at")
     serializer_class = ReplySerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ["reply", "id"]
 
 
 class ShareViewSet(viewsets.ModelViewSet):
     """adds representations of the Share to the API view"""
 
     permission_classes = [IsAuthenticated | ReadOnly]
-    queryset = Share.objects.all().order_by("created_at")
+    queryset = Share.objects.all().order_by("-created_at")
     serializer_class = ShareSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ["id"]
 
 
 class LikeViewSet(viewsets.ModelViewSet):
     """adds representations of the Like to the API view"""
 
     permission_classes = [IsAuthenticated | ReadOnly]
-    queryset = Like.objects.all().order_by("created_at")
+    queryset = Like.objects.all().order_by("-created_at")
     serializer_class = LikeSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ["like", "id"]
 
 
 class GetUserByUsernameView(View):
@@ -239,6 +239,7 @@ class GetUserByUsernameView(View):
             serialized_user = {
                 "id": user.id,
                 "username": user.username,
+                # "url": user.url,
             }
             return JsonResponse(serialized_user)
         except ObjectDoesNotExist:
