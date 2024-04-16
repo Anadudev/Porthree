@@ -7,6 +7,8 @@ import Box from '@mui/material/Box';
 import SectionHeader from './SectionHeader';
 import PostCard from './PostCard';
 import { Blogs as pj } from '../../data/Info';
+import CircularProgress from '@mui/material/CircularProgress';
+
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -67,6 +69,7 @@ const Blogs = ({ blog }) => {
   if (!blog || blog.length <= 0) {
     return null;
   }
+
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -99,13 +102,13 @@ const Blogs = ({ blog }) => {
               alignItems={'center'}
               justifyContent={'center'}
             >
-              {blog && blog.slice(0, 6).map((data, index) => (
+              {blog.loading ? <Typography>Loading posts.<CircularProgress size={18} color="inherit" /> </Typography>: (blog && blog.slice(0, 6).map((data, index) => (
                 <Grid item key={index}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
                   <Box className=" p-2">
                     <PostCard type='Project' post={data} mode={"Blog Post"} />
                   </Box>
                 </Grid>
-              ))}
+              )))}
             </Grid>
           </Box>
         </CustomTabPanel>

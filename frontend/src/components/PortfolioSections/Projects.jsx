@@ -43,6 +43,7 @@ const Projects = ({ projects }) => {
   if (!projects || projects.length <= 0) {
     return null;
   }
+  // console.log(projects)
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {

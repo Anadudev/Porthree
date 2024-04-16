@@ -72,23 +72,23 @@ const Project = () => {
   useEffect(() => {
     const fetchDataForUser = async () => {
       async function handler() {
-        setUser(await GetItem("users", project.user));
+        setUser(await GetItem("users", Number(project.user.split('/')[5])));
         let Collection = [];
         for (const tag in project.tags) {
-          Collection.push(await GetItem("tags", project.tags[tag]));
+          Collection.push(await GetItem("tags", Number(project.tags[tag].split('/')[5])));
         }
         setTags(Collection);
         /* get project tools */
         Collection = [];
         for (const tool in project.tools) {
-          Collection.push(await GetItem("tools", project.tools[tool]));
+          Collection.push(await GetItem("tools", Number(project.tools[tool].split('/')[5])));
         }
         setTools(Collection);
         /* get project contributors */
         Collection = [];
         for (const contributors in project.contributors) {
           Collection.push(
-            await GetItem("users", project.contributors[contributors])
+            await GetItem("users", Number(project.contributors[contributors].split('/')[5]))
           );
         }
         setContributors(Collection);
@@ -105,7 +105,7 @@ const Project = () => {
   return (
     <React.Fragment>
       <DrawerAppBar pages={UserNavLinks(user)} />
-      <Box p={"50px"}>
+      <Box padding={{xs:"10px", sm:"50px"}}>
         <Breadcrumb path={useLocation()} />
         <Box className="flex flex-wrap justify-center">
           <Card sx={{ maxWidth: 1000 }}>

@@ -21,7 +21,7 @@ const PostsComponent = () => {
   const [editingPost, setEditingPost] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
 
-  const userId = JSON.parse(localStorage.getItem('user')).id;
+  const userId = JSON.parse(localStorage.getItem('user'));
   const token = localStorage.getItem('access_token');
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const PostsComponent = () => {
   const fetchPosts = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get(`http://localhost:8000/api/users/${userId}/posts/`);
+      const response = await axios.get(`http://localhost:8000/api/users/${userId.id}/posts/`);
       setPosts(response.data.results);
       setPublishedPosts(response.data.results.filter(post => post.publish));
       setUnpublishedPosts(response.data.results.filter(post => !post.publish));
@@ -46,7 +46,7 @@ const PostsComponent = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const postData = { ...newPost, user: userId };
+      const postData = { ...newPost, user: userId.url };
       const response = await axios.post(`http://localhost:8000/api/posts/`, postData, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -59,6 +59,8 @@ const PostsComponent = () => {
       setOpenDialog(false);
       fetchPosts();
     } catch (error) {
+      // console.log(error);
+
       setError(error);
     } finally {
       setIsLoading(false);
@@ -94,7 +96,7 @@ const PostsComponent = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const postData = { ...newPost, user: userId };
+      const postData = { ...newPost, user: userId.url };
       const response = await axios.put(`http://localhost:8000/api/posts/${editingPost.id}/`, postData, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -108,6 +110,7 @@ const PostsComponent = () => {
       setOpenDialog(false);
       fetchPosts();
     } catch (error) {
+      // console.log(error);
       setError(error);
     } finally {
       setIsLoading(false);

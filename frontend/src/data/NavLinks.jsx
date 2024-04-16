@@ -74,15 +74,15 @@ export const userTools = () => (
         },
         {
             title: "My portfolio",
-            url: `/${authUser.username}` || "#",
+            url: `/${authUser?.username}` || "#",
         },
         {
             title: "My Account",
-            url: `/dashboard/${authUser.username}` || "#",
+            url: `/dashboard/${authUser?.username}` || "#",
         },
         {
             title: "My Dashboard",
-            url: `/dashboard/${authUser.username}` || "#",
+            url: `/dashboard/${authUser?.username}` || "#",
         },
         {
             item: <Logout />,

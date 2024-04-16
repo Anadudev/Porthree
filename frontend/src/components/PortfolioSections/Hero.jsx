@@ -1,7 +1,22 @@
 import React from 'react';
-import { Box, Grid, Typography, CardMedia, Button, ButtonGroup, Link } from '@mui/material';
+import {
+  Box, Grid, Typography,
+  CardMedia, Button, ButtonGroup
+} from '@mui/material';
 
 
+/**
+ * Renders the hero section of a portfolio page.
+ *
+ * @function Hero
+ * @param {Object} props - The properties object containing the user's details.
+ * @param {string} props.first_name - The user's first name.
+ * @param {string} props.last_name - The user's last name.
+ * @param {string} props.career - The user's career title or profession.
+ * @param {string} props.bio - A brief description or bio of the user.
+ * @param {string} props.picture - The URL or path to the user's profile picture.
+ * @returns {JSX.Element} The JSX element representing the hero section of the portfolio page.
+ */
 const Hero = ({ props }) => {
   return (
     <Box component="section" sx={{ width: '100%' }} id='hero'>
@@ -19,7 +34,7 @@ const Hero = ({ props }) => {
         </Grid>
         <Grid item xs={12} sm={12} md lg={6}>
           <Box className="flex justify-center align-middle h-full">
-          <CardMedia component="img" image={props.picture || ''} sx={{
+            <CardMedia component="img" image={props.picture || ''} sx={{
               borderRadius: '10px', height: `${props.picture ? "30rem" : ''}`
             }} />
           </Box>

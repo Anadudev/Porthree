@@ -12,16 +12,22 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Alert from '@mui/material/Alert';
 import PageTitle from './PageTitle';
+import GetUser from '../data/GetUser';
 
 const Login = () => {
-  PageTitle("Login");
   const navigate = useNavigate();
-  const ifUserIsAuthenticated = JSON.parse(localStorage.getItem("user"))
-  if (ifUserIsAuthenticated && localStorage.getItem("access_token")) {
-    useEffect(() => {
-      navigate(`/dashboard/${ifUserIsAuthenticated.username}`);
-    }, [ifUserIsAuthenticated, navigate])
-  }
+  PageTitle("Login");
+  /*
+  const storedUserJson = localStorage.getItem("user")
+  if (storedUserJson && localStorage.getItem("access_token")) {
+    console.log(storedUserJson);
+    const storedUser = JSON.parse(storedUserJson)
+    if (typeof storedUser.username != 'undefined') {
+      useEffect(() => {
+        navigate(`/dashboard/${storedUser.username}`);
+      }, [storedUser, navigate])
+    }
+  } */
 
 
   const [errorMessage, setErrorMessage] = useState('');
@@ -47,12 +53,14 @@ const Login = () => {
         if (response.status === 200) {
           // The login was successful
           const token = response.data.access; // The JWT token
-          const user = response.data.user;
+          const user = await GetUser(response.data.user);
           // Store the token in local storage or a cookie for future use
-          localStorage.setItem('access_token', token);
-          localStorage.setItem('user', JSON.stringify(user));
-          // Redirect the user to a protected page or the home page
-          navigate(`/dashboard/${user.username}`);
+          if (!user.loading) {
+            localStorage.setItem('access_token', token);
+            localStorage.setItem('user', JSON.stringify(user));
+            // Redirect the user to a protected page or the home page
+            navigate(`/dashboard/${user.username}`);
+          }
         } else {
           // setErrorMessage('Login failed. Please check username and password and try again.');
         }
@@ -111,7 +119,7 @@ const Login = () => {
               </Typography>
               {/* Add the "Sign Up" link */}
               <Typography component="div" variant="body2" style={{ marginTop: '10px' }}>
-                Don't have an account? <Link to="/signup" style={{ color: 'blue' }}>Sign Up</Link>
+                Don&apos;t  have an account? <Link to="/signup" style={{ color: 'blue' }}>Sign Up</Link>
               </Typography>
             </form>
           </Box>

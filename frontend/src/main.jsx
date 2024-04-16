@@ -21,18 +21,15 @@ import Signup from './pages/Signup';
 import PasswordReset from './pages/PasswordReset';
 import Dashboard from './pages/Dashboard';
 import Logout from './components/Dashboard/Logout.jsx';
+import Educations from './pages/Educations.jsx';
+import Experiences from './pages/Experiences.jsx';
 import './index.css';
+import { GetRelation } from './data/GetUser.jsx';
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
 
-/* TODO: handle unique url path */
-/* TODO: handle unique url path */
-/* TODO: handle unique url path */
-/* TODO: handle unique url path */
-/* TODO: handle unique url path */
-/* TODO: handle unique url path */
 const router = createBrowserRouter([
   {
     path: "/",
@@ -42,14 +39,17 @@ const router = createBrowserRouter([
   {
     path: "/about",
     element: <About />,
+    errorElement: <Error />,
   },
   {
     path: "/portfolios",
     element: <Portfolios />,
+    errorElement: <Error />,
   },
   {
     path: "/:username",
     element: <Portfolio />,
+    errorElement: <Error />,
     loader: async ({ params }) => {
       try {
         return await fetch(`http://127.0.0.1:8000/api/user/${params.username}`)
@@ -61,9 +61,11 @@ const router = createBrowserRouter([
   {
     path: "/:username/posts",
     element: <Posts />,
+    errorElement: <Error />,
     loader: async ({ params }) => {
       try {
-        return await fetch(`http://127.0.0.1:8000/api/user/${params.username}`)
+        const user = await fetch(`http://127.0.0.1:8000/api/user/${params.username}`)
+        return user.status != 200? null : user
       } catch (error) {
         return null
       }
@@ -77,14 +79,15 @@ const router = createBrowserRouter([
   {
     path: "/:username/posts/:slug",
     element: <Post />,
+    errorElement: <Error />,
     loader: async ({ params }) => {
       try {
         const userPath = await fetch(`http://127.0.0.1:8000/api/user/${params.username}`)
         const slugPath = await fetch(`http://127.0.0.1:8000/api/posts/?slug=${params.slug}`)
         const user = await userPath.json();
         const slug = await slugPath.json();
-
-        return slug.results[0].user === user.id ? slug : null
+        const relate = await GetRelation(slug.results[0].user)
+        return relate.id === user.id ? slug : null
       } catch (error) {
         return null
       }
@@ -93,6 +96,31 @@ const router = createBrowserRouter([
   {
     path: "/:username/projects",
     element: <Projects />,
+    errorElement: <Error />,
+    loader: async ({ params }) => {
+      try {
+        return await fetch(`http://127.0.0.1:8000/api/user/${params.username}`)
+      } catch (error) {
+        return null
+      }
+    },
+  },
+  {
+    path: "/:username/educations",
+    element: <Educations />,
+    errorElement: <Error />,
+    loader: async ({ params }) => {
+      try {
+        return await fetch(`http://127.0.0.1:8000/api/user/${params.username}`)
+      } catch (error) {
+        return null
+      }
+    },
+  },
+  {
+    path: "/:username/experiences",
+    element: <Experiences />,
+    errorElement: <Error />,
     loader: async ({ params }) => {
       try {
         return await fetch(`http://127.0.0.1:8000/api/user/${params.username}`)
@@ -104,38 +132,54 @@ const router = createBrowserRouter([
   {
     path: "/:username/projects/:slug",
     element: <Project />,
+    errorElement: <Error />,
     loader: async ({ params }) => {
       try {
         const userPath = await fetch(`http://127.0.0.1:8000/api/user/${params.username}`);
         const slugPath = await fetch(`http://127.0.0.1:8000/api/projects/?slug=${params.slug}`);
         const user = await userPath.json();
         const slug = await slugPath.json();
-        return slug.results[0].user === user.id ? slug : null;
+        const relate = await GetRelation(slug.results[0].user)
+        return relate.id === user.id ? slug : null;
       } catch (error) {
         return null;
       }
-
     },
   },
   {
     path: "/signup",
     element: <Signup />,
+    errorElement: <Error />,
   },
   {
     path: "/logout",
     element: <Logout />,
+    errorElement: <Error />,
   },
   {
     path: "/password_reset",
     element: <PasswordReset />,
+    errorElement: <Error />,
   },
   {
     path: "/login",
     element: <Login />,
+    errorElement: <Error />,
   },
   {
-    path: "/dashboard/:user_name",
+    path: "/dashboard/:username",
     element: <Dashboard />,
+    errorElement: <Error />,
+    loader: async ({ params }) => {
+      const user = JSON.parse(localStorage.getItem("user"));
+      try {
+        if (params.username === user.username) { return await fetch(`http://127.0.0.1:8000/api/users/?username=${params.username}`) }
+        return null;
+      } catch (error) {
+        return null;
+      }
+      // return { loading: true };
+    },
   },
 ]);
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Grid, Typography, Button, TextField, List, ListItem, ListItemText } from '@mui/material';
 import axios from 'axios';
+import { GetRelation } from '../../data/GetUser';
 
 const ToolsComponent = () => {
   const [tools, setTools] = useState([]); // State to store tools data
@@ -9,7 +10,7 @@ const ToolsComponent = () => {
   const [newTool, setNewTool] = useState(''); // State for new tool input
 
   // Retrieve the userId from local storage
-  const userId = JSON.parse(localStorage.getItem('user')).id;
+  const userId = JSON.parse(localStorage.getItem('user'));
   // Retrieve the access token from local storage
   const token = localStorage.getItem('access_token');
 
@@ -17,9 +18,16 @@ const ToolsComponent = () => {
   useEffect(() => {
     const fetchTools = async () => {
       setIsLoading(true);
+      // console.log(userId);
+      let relationList = [];
       try {
-        const response = await axios.get(`http://localhost:8000/api/users/${userId}/tools/`);
-        setTools(response.data.results);
+        for (const tool of userId.tools) {
+          const data = await GetRelation(tool);
+          relationList.push(data)
+      }
+
+        // const response = await axios.get(`http://localhost:8000/api/users/${userId.id}/tools/`);
+        setTools(relationList);
       } catch (error) {
         setError(error);
       } finally {
@@ -28,7 +36,7 @@ const ToolsComponent = () => {
     };
 
     fetchTools();
-  }, [userId]); // Dependency array includes userId to refetch if it changes
+  }, [userId.id]); // Dependency array includes userId to refetch if it changes
 
   const handleAddTool = async () => {
     setIsLoading(true);
@@ -36,7 +44,7 @@ const ToolsComponent = () => {
     try {
 
       // Prepare the data for the POST request, specifying user
-      const toolData = { tool: newTool, user: userId };
+      const toolData = { tool: newTool};
 
 
       // Send the POST request with the Authorization header
@@ -50,6 +58,7 @@ const ToolsComponent = () => {
       setTools([...tools, response.data]); // Update state with new tool
       setNewTool(''); // Clear input
     } catch (error) {
+      // console.log(error);
       setError(error);
     } finally {
       setIsLoading(false);

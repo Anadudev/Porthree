@@ -30,7 +30,7 @@ function ResponsiveAppBar({ pages }) {
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip title="Open settings">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar alt="U" src={settings[0].user.picture} />
+          <Avatar alt="U" src={settings[0].user.picture||''} />
         </IconButton>
       </Tooltip>
       <Menu

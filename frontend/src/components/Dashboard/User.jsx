@@ -48,7 +48,7 @@ const UserComponent = () => {
     }
     // Update the state using functional updates
     setUser(prevUser => ({ ...prevUser, ...updatedUser }));
-    console.log(updatedUser);
+    // console.log(updatedUser);
   };
 
 
@@ -56,7 +56,7 @@ const UserComponent = () => {
   const handleSave = async () => {
     setIsLoading(true);
     setError(null); // Clear previous errors
-    console.log(user)
+    // console.log(user)
     try {
       // Retrieve the access token from local storage
       const token = localStorage.getItem('access_token');
@@ -65,7 +65,7 @@ const UserComponent = () => {
       if (!(user.picture instanceof File)) {
         delete user.picture
       }
-      console.log(user)
+      // console.log(user)
       const response = await axios.put(`http://localhost:8000/api/users/${userId}/`, user, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -76,7 +76,7 @@ const UserComponent = () => {
       setIsEdit(false); // Exit edit mode
     } catch (error) {
       setError(error);
-      console.log(error)
+      // console.log(error)
     } finally {
       setIsLoading(false);
     }

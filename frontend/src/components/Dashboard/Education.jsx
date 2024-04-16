@@ -17,7 +17,7 @@ const EducationsComponent = () => {
   const [openDialog, setOpenDialog] = useState(false); // State to control dialog visibility
 
   // Retrieve the userId from local storage
-  const userId = JSON.parse(localStorage.getItem('user')).id;
+  const userId = JSON.parse(localStorage.getItem('user'));
   // Retrieve the access token from local storage
   const token = localStorage.getItem('access_token');
 
@@ -26,7 +26,7 @@ const EducationsComponent = () => {
     const fetchEducations = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get(`http://localhost:8000/api/users/${userId}/educations/`);
+        const response = await axios.get(`http://localhost:8000/api/users/${userId.id}/educations/`);
         setEducations(response.data.results);
       } catch (error) {
         setError(error);
@@ -36,15 +36,15 @@ const EducationsComponent = () => {
     };
 
     fetchEducations();
-  }, [userId]); // Dependency array includes userId to refetch if it changes
+  }, [userId.id]); // Dependency array includes userId to refetch if it changes
 
   const handleAddEducation = async () => {
     setIsLoading(true);
     setError(null); // Clear previous errors
     try {
       // Prepare the data for the POST request, specifying user
-      const educationData = { ...newEducation, user: userId };
-      console.log(educationData)
+      const educationData = { ...newEducation, user: userId.url };
+      // console.log(educationData)
       // Send the POST request with the Authorization header
       const response = await axios.post(`http://localhost:8000/api/educations/`, educationData, {
         headers: {
@@ -57,7 +57,7 @@ const EducationsComponent = () => {
       setNewEducation({ institute: '', degree: '', start_date: '', end_date: null, detail: '' }); // Clear input
       setOpenDialog(false); // Close dialog after adding education
     } catch (error) {
-      console.log(error)
+      // console.log(error)
       setError(error);
     } finally {
       setIsLoading(false);
@@ -94,7 +94,7 @@ const EducationsComponent = () => {
     setError(null); // Clear previous errors
     try {
       // Prepare the data for the PUT request, specifying user
-      const educationData = { ...newEducation, user: userId };
+      const educationData = { ...newEducation, user: userId.url };
 
       // Send the PUT request with the Authorization header
       const response = await axios.put(`http://localhost:8000/api/educations/${editingEducation.id}/`, educationData, {
@@ -110,7 +110,7 @@ const EducationsComponent = () => {
       setNewEducation({ institute: '', degree: '', start_date: '', end_date: null, detail: '' }); // Clear input
       setOpenDialog(false); // Close dialog after updating education
     } catch (error) {
-      console.log(error)
+      // console.log(error)
       setError(error);
     } finally {
       setIsLoading(false);

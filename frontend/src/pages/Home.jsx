@@ -17,7 +17,7 @@ const Home = () => {
     return (
     <React.Fragment>
         <DrawerAppBar pages={NavLinks} />
-        <div className='p-[50px]'>
+        <div padding={{xs:"10px", sm:"50px"}}>
             <Hero/>
             <About/>
             <Features/>

@@ -7,6 +7,7 @@ import { Typography, Grid } from '@mui/material';
 import Box from '@mui/material/Box';
 import PostCard from '../PortfolioSections/PostCard';
 import SectionTitle from './SectionTitle';
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 function CustomTabPanel(props) {
@@ -91,13 +92,13 @@ const Blog = () => {
               alignItems={'center'}
               justifyContent={'center'}
             >
-              {posts && posts.slice(0, 8).map((data, index) => (
+              {posts.loading ? <Typography>Loading posts.<CircularProgress size={18} color="inherit" /> </Typography> : (posts && posts.slice(0, 8).map((data, index) => (
                 <Grid item key={index}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
                   <Box className=" p-2">
                     <PostCard type='Post' post={data} mode={"Post"} />
                   </Box>
                 </Grid>
-              ))}
+              )))}
             </Grid>
           </Box>
         </CustomTabPanel>
@@ -109,7 +110,7 @@ const Blog = () => {
               alignItems={'center'}
               justifyContent={'center'}
             >
-              {posts.map((data, index) => (
+              {posts?.map((data, index) => (
                 <Grid item key={index}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
                   <Box className=" p-2">
                     <PostCard type='Post' />
@@ -127,7 +128,7 @@ const Blog = () => {
               alignItems={'center'}
               justifyContent={'center'}
             >
-              {posts.map((data, index) => (
+              {posts?.map((data, index) => (
                 <Grid item key={index}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
                   <Box className=" p-2">
                     <PostCard type='Post' />
