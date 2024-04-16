@@ -146,7 +146,7 @@ const Portfolios = () => {
     if (!users || users.length < 1) {
         return null;
     }
-    console.log(users);
+    // console.log(users);
     return (
         <Box component="section" id="skills">
 
