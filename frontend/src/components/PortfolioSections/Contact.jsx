@@ -62,7 +62,7 @@ export function ContactForm() {
 export function ContactList({ contacts, socials }) {
 
   return (
-    <Paper elevation={6} sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+    <Paper elevation={6} sx={{ width: '100%', bgcolor: 'background.paper' }}>
       <nav aria-label="main mailbox folders">
         <List>
           {contacts.location && <ListItem disablePadding>
@@ -114,10 +114,10 @@ export function ContactList({ contacts, socials }) {
 const Contact = ({ contacts, socials }) => {
   return (
     <Box className="mt-20" id='contact'>
+          <SectionHeader title={'contact address'} side={true} />
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} px={{ md: '100px' }}>
         <Grid item xs={12} sm={6} md={6} mb={{ xs: '40px' }}>
 
-          <SectionHeader title={'contact address'} side={true} />
           <ContactList contacts={contacts} socials={socials} />
         </Grid>
         <Grid item xs={12} sm={6} md={6} mb={{ xs: '40px' }}>
