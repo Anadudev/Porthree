@@ -104,7 +104,7 @@ const Blogs = ({ blog, user }) => {
               justifyContent={'center'}
             >
               {blog.loading ? <Typography>Loading posts.<CircularProgress size={18} color="inherit" /> </Typography> : (blog && blog.slice(0, 6).map((data, index) => (
-                <Grid item key={index}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+                <Grid item key={index}>
                   <Box className=" p-2">
                     <PostCard type='Project' post={data} mode={"Blog Post"} />
                   </Box>
@@ -112,7 +112,7 @@ const Blogs = ({ blog, user }) => {
               )))}
 
             </Grid>
-            <Button component={Link} to={`/${user?.username}/posts`}>More...</Button>
+            <Button component={Link} to={`/${user?.username}/posts`}>Mre...</Button>
 
           </Box>
         </CustomTabPanel>
