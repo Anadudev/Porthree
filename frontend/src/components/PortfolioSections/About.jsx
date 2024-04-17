@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Grid from '@mui/material/Unstable_Grid2';
-import { Typography, Button } from '@mui/material';
+import { Typography, Button, Avatar } from '@mui/material';
 import Box from '@mui/material/Box';
 import SectionHeader from './SectionHeader';
 import List from '@mui/material/List';
@@ -8,8 +8,7 @@ import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
-import AboutCard from './AboutCard';
+import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggestOutlined'; import AboutCard from './AboutCard';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Link } from 'react-router-dom';
 
@@ -29,25 +28,29 @@ export function ToolsList({ tools }) {
   if (!tools || tools.length === 0) {
     return null;
   }
-if(tools.loading){
-  return <CircularProgress color="inherit" />
-}
+  if (tools.loading) {
+    return <CircularProgress color="inherit" />
+  }
   return (
-    <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-      {tools.slice(0, 4).map((data, index) => (
-        <div key={index}>
-          <ListItem alignItems="flex-start">
-            <ListItemAvatar>
-              <Avatar alt={data.tool || ''} src="/static/images/avatar/1.jpg" />
-            </ListItemAvatar>
-            <ListItemText
-              primary={data.tool || ''}
-            />
-          </ListItem>
-          {index == 3 || index !== tools.length - 1 && <Divider variant="inset" component="li" />}
-        </div>
-      ))}
-    </List>
+    <>
+      <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }} className='flex flex-wrap'>
+        {tools.slice(0, 4).map((data, index) => (
+          <div key={index}>
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar>
+                  <SettingsSuggestIcon color='primary' />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primary={data.tool || ''}
+              />
+            </ListItem>
+            {/* {index == 3 || index !== tools.length - 1 && <Divider variant="inset" component="li" />} */}
+          </div>
+        ))}
+      </List>
+    </>
   );
 }
 
@@ -55,7 +58,7 @@ if(tools.loading){
 
 
 const About = ({ user, tools, education, experience }) => {
-  if (user.about === '' &&  (!tools || tools.length <= 0) && (!education || education.length <= 0) && (!experience || experience.length <= 0)) { return null }
+  if (user.about === '' && (!tools || tools.length <= 0) && (!education || education.length <= 0) && (!experience || experience.length <= 0)) { return null }
   return (
     <Box sx={{ width: '100%' }} id="about">
       <SectionHeader title={'about'} />

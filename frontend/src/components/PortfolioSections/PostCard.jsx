@@ -133,13 +133,13 @@ const PostCard = ({ post, mode }) => {
                 <CardContent>
                     <Typography sx={{ fontWeight: "700" }}>{mode === "Project" ? "Tools:" : ''}</Typography>
                     <Box sx={{ flexGrow: 1 }}>
-                        {tools?.map((data, index) => (<Chip component={Paper} elevation={3} key={index} label={data.tool} className="m-0.5" variant="outlined" />))}
+                        {tools?.slice(0, 4).map((data, index) => (<Chip component={Paper} elevation={3} key={index} label={data.tool} className="m-0.5" variant="outlined" />))}
                     </Box>
                 </CardContent>
                 <CardContent>
                     <Typography sx={{ fontWeight: "700" }}>{tags && "Tags:"}</Typography>
                     <Box sx={{ flexGrow: 1 }}>
-                        {tags?.map((data, index) => (<Chip component={Paper} elevation={3} key={index} label={data.tag} className="m-0.5" variant="outlined" />))}
+                        {tags?.slice(0, 4).map((data, index) => (<Chip component={Paper} elevation={3} key={index} label={data.tag} className="m-0.5" variant="outlined" />))}
                     </Box>
                 </CardContent>
             </Collapse>
