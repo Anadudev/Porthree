@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Grid from '@mui/material/Unstable_Grid2';
-import { Typography } from '@mui/material';
+import { Typography, Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import SectionHeader from './SectionHeader';
 import List from '@mui/material/List';
@@ -11,6 +11,7 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import AboutCard from './AboutCard';
 import CircularProgress from '@mui/material/CircularProgress';
+import { Link } from 'react-router-dom';
 
 const style = {
   position: 'absolute',
@@ -74,9 +75,12 @@ const About = ({ user, tools, education, experience }) => {
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} px={{ md: '100px' }}>
         {education && education.length > 0 && <Grid item xs={12} sm={6} md={6} mb={{ xs: '40px' }}>
           <AboutCard education={education} title={"Education"} />
+          <Button component={Link} to={`/${user?.username}/educations`}>More...</Button>
+
         </Grid>}
         {experience && experience.length > 0 && <Grid item xs={12} sm={6} md={6}>
           <AboutCard experience={experience} title={"Experience"} />
+          <Button component={Link} to={`/${user?.username}/experiences`}>More...</Button>
         </Grid>}
       </Grid>
     </Box>

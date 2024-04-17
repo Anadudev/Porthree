@@ -2,10 +2,12 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import { Typography, Grid } from '@mui/material';
+import { Typography, Grid, Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import SectionHeader from './SectionHeader';
 import PostCard from './PostCard';
+import { Link } from 'react-router-dom';
+
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -39,7 +41,7 @@ function a11yProps(index) {
   };
 }
 
-const Projects = ({ projects }) => {
+const Projects = ({ projects, user }) => {
   if (!projects || projects.length <= 0) {
     return null;
   }
@@ -84,42 +86,7 @@ const Projects = ({ projects }) => {
                 </Grid>
               ))}
             </Grid>
-          </Box>
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={1}>
-          <Box sx={{ flexGrow: 1, p: 2 }}>
-            <Grid
-              container
-              spacing={2}
-              alignItems={'center'}
-              justifyContent={'center'}
-            >
-              {projects.map((data, index) => (
-                <Grid item key={index}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-                  <Box className=" p-2">
-                    <PostCard type='Project' />
-                  </Box>
-                </Grid>
-              ))}
-            </Grid>
-          </Box>
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={2}>
-          <Box sx={{ flexGrow: 1, p: 2 }}>
-            <Grid
-              container
-              spacing={2}
-              alignItems={'center'}
-              justifyContent={'center'}
-            >
-              {projects.map((data, index) => (
-                <Grid item key={index}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-                  <Box className=" p-2">
-                    <PostCard type='Project' />
-                  </Box>
-                </Grid>
-              ))}
-            </Grid>
+            <Button component={Link} to={`/${user?.username}/projects`}>More...</Button>
           </Box>
         </CustomTabPanel>
       </Box>

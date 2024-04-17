@@ -14,7 +14,7 @@ import Contact from "../components/PortfolioSections/Contact";
 import PageTitle from "./PageTitle";
 import { useLoaderData } from "react-router-dom";
 import GetUser, { getUserData, GetRelation } from "../data/GetUser";
-import { ErrorCard } from "./Error";
+import Error, { ErrorCard } from "./Error";
 import Loading from "../components/PageLoad";
 
 function Portfolio() {
@@ -30,6 +30,7 @@ function Portfolio() {
             nav={true}
         />
     }
+
     const [user, setUser] = useState([]);
     const [tools, setTools] = useState(null);
     const [educations, setEducations] = useState(null);
@@ -89,6 +90,7 @@ function Portfolio() {
         };
         fetchDataForUser();
     }, [id]);
+
     if (loading) { return <Loading /> }
 
     // console.log(skills)
@@ -101,6 +103,7 @@ function Portfolio() {
         socials,
         projects,
     ];
+
     for (const data of errHandle) {
         if (data && data.status && data.statusText) {
             return <Error err={data} />;
@@ -116,7 +119,7 @@ function Portfolio() {
     return (
         <React.Fragment>
             <DrawerAppBar pages={UserNavLinks(user)} />
-            <Box padding={{xs:"10px", sm:"50px"}} className='scroll-smooth'>
+            <Box padding={{ xs: "10px", sm: "50px" }} className='scroll-smooth'>
                 {!user ? (
                     <Typography variant="h1" component="h1">
                         Portfolio not in Porthree
@@ -136,8 +139,8 @@ function Portfolio() {
                             />
                         )}
                         {skills && <Skills skills={skills} />}
-                        {projects && <Projects projects={projects} />}
-                        {blog && <Blog blog={blog} />}
+                        {projects && <Projects projects={projects} user={user}/>}
+                        {blog && <Blog blog={blog} user={user} />}
                         <Contact contacts={contacts} socials={socials} />
                     </>
                 )}

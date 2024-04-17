@@ -2,7 +2,7 @@ import React from "react";
 import { Card, Typography, Box, Grid, Paper, Modal } from "@mui/material";
 import Limiter from "../Limiter";
 
-export default function AboutCard({ education = [], experience = [], title }) {
+export default function AboutCard({custom,  education = [], experience = [], title }) {
     const passed = education.length > 0 ? education : experience;
     const [openIndex, setOpenIndex] = React.useState(null);
 
@@ -15,7 +15,7 @@ export default function AboutCard({ education = [], experience = [], title }) {
         left: '50%',
         transform: 'translate(-50%, -50%)',
         width: '80%',
-        maxWidth: '600rem',
+        maxWidth: '48rem',
         bgcolor: 'background.paper',
         border: '2px solid #000',
         boxShadow: 24,
@@ -24,7 +24,7 @@ export default function AboutCard({ education = [], experience = [], title }) {
     };
 
     return (
-        <Card className={'p-2 xl:p-6'}>
+        <Card className={`p-2 xl:p-6 ${custom||''}`}>
             <Typography variant='h6' component={'p'} mb={'20px'} className='font-dark uppercase'>{title}</Typography>
             {passed.slice(0, 4).map((data, index) => (
                 <div key={index}>

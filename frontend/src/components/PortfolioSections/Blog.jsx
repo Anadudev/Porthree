@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import { Typography, Grid } from '@mui/material';
+import { Typography, Grid, Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import SectionHeader from './SectionHeader';
 import PostCard from './PostCard';
 import { Blogs as pj } from '../../data/Info';
 import CircularProgress from '@mui/material/CircularProgress';
+import { Link } from 'react-router-dom';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -65,7 +66,7 @@ function TabData() {
 }
 
 
-const Blogs = ({ blog }) => {
+const Blogs = ({ blog, user }) => {
   if (!blog || blog.length <= 0) {
     return null;
   }
@@ -102,14 +103,17 @@ const Blogs = ({ blog }) => {
               alignItems={'center'}
               justifyContent={'center'}
             >
-              {blog.loading ? <Typography>Loading posts.<CircularProgress size={18} color="inherit" /> </Typography>: (blog && blog.slice(0, 6).map((data, index) => (
+              {blog.loading ? <Typography>Loading posts.<CircularProgress size={18} color="inherit" /> </Typography> : (blog && blog.slice(0, 6).map((data, index) => (
                 <Grid item key={index}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
                   <Box className=" p-2">
                     <PostCard type='Project' post={data} mode={"Blog Post"} />
                   </Box>
                 </Grid>
               )))}
+
             </Grid>
+            <Button component={Link} to={`/${user?.username}/posts`}>More...</Button>
+
           </Box>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
