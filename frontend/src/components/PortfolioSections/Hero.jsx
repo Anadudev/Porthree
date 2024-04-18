@@ -34,9 +34,16 @@ const Hero = ({ props }) => {
         </Grid>
         <Grid item xs={12} sm={12} md lg={6}>
           <Box className="flex justify-center align-middle h-full">
-            <CardMedia component="img" image={props.picture || ''} sx={{
+            {/* <CardMedia component="img" image={props.picture || ''} sx={{
               borderRadius: '10px', height: `${props.picture ? "30rem" : ''}`
-            }} />
+            }} /> */}
+            <img
+              srcSet={`${props?.picture}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+              src={`${props?.picture}?w=164&h=164&fit=crop&auto=format`}
+              alt={props?.username + ' profile image'}
+              loading="lazy"
+              style={{ maxHeight: '35rem' }}
+            />
           </Box>
         </Grid>
       </Grid>

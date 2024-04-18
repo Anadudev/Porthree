@@ -38,12 +38,12 @@ export function ToolsList({ tools }) {
           <div key={index}>
             <ListItem>
               <ListItemAvatar>
-                <Avatar>
-                  <SettingsSuggestIcon color='primary' />
+                <Avatar sx={{ width: 50, height: 50 }}>
+                  <SettingsSuggestIcon fontSize='large' color='primary' />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText
-                primary={data.tool || ''}
+              <ListItemText 
+                primary={<Typography color="primary" sx={{fontWeight:500, fontSize:25}}>{data.tool || ''}</Typography>}
               />
             </ListItem>
             {/* {index == 3 || index !== tools.length - 1 && <Divider variant="inset" component="li" />} */}
