@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { GetDatas } from '../../data/GetUser';
 import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import { Typography, Grid } from '@mui/material';
+import { Typography, Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import PostCard from '../PortfolioSections/PostCard';
 import SectionTitle from './SectionTitle';
 import CircularProgress from '@mui/material/CircularProgress';
-
+import { Link } from 'react-router-dom';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -96,6 +94,7 @@ const Projects = () => {
                 </Box>
               )))}
           </Box>
+          <Button component={Link} to={`/projects`}>More...</Button>
         </CustomTabPanel>
       </Box>
     </Box>

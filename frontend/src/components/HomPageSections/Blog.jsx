@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { GetDatas } from '../../data/GetUser';
 import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import { Typography, Grid } from '@mui/material';
+import { Typography, Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import PostCard from '../PortfolioSections/PostCard';
 import SectionTitle from './SectionTitle';
 import CircularProgress from '@mui/material/CircularProgress';
-
+import { Link } from 'react-router-dom';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -85,16 +83,17 @@ const Blog = () => {
           </Tabs>
         </Box> */}
         <CustomTabPanel value={value} index={0}>
-            <Box
-              spacing={2}
-              sx={{display:'flex',flexWrap:'wrap', justifyContent:'center'}}
-            >
-              {posts.loading ? <Typography>Loading posts.<CircularProgress size={18} color="inherit" /> </Typography> : (posts && posts.slice(0, 8).map((data, index) => (
-                <Box item key={index}>
-                    <PostCard type='Post' post={data} mode={"Post"} />
-                </Box>
-              )))}
-            </Box>
+          <Box
+            spacing={2}
+            sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
+          >
+            {posts.loading ? <Typography>Loading posts.<CircularProgress size={18} color="inherit" /> </Typography> : (posts && posts.slice(0, 8).map((data, index) => (
+              <Box item key={index}>
+                <PostCard type='Post' post={data} mode={"Post"} />
+              </Box>
+            )))}
+          </Box>
+          <Button component={Link} to={`/posts`}>More...</Button>
         </CustomTabPanel>
       </Box>
     </Box>

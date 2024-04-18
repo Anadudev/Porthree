@@ -23,6 +23,8 @@ import Dashboard from './pages/Dashboard';
 import Logout from './components/Dashboard/Logout.jsx';
 import Educations from './pages/Educations.jsx';
 import Experiences from './pages/Experiences.jsx';
+import AllProjects from './pages/AllProjects.jsx';
+import AllBlogPost from './pages/AllBlogPost.jsx';
 import './index.css';
 import { GetRelation } from './data/GetUser.jsx';
 import {
@@ -44,6 +46,16 @@ const router = createBrowserRouter([
   {
     path: "/portfolios",
     element: <Portfolios />,
+    errorElement: <Error />,
+  },
+  {
+    path: "/posts",
+    element: <AllBlogPost />,
+    errorElement: <Error />,
+  },
+  {
+    path: "/projects",
+    element: <AllProjects />,
     errorElement: <Error />,
   },
   {

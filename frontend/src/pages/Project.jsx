@@ -30,6 +30,7 @@ import { styled } from "@mui/material/styles";
 import Limiter from "../components/Limiter";
 import { Link as RL } from "react-router-dom";
 import HTMLRenderer from "../components/HtmlRender";
+import { GetRelation } from "../data/GetUser";
 
 const HtmlTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -96,8 +97,9 @@ const Project = () => {
       handler();
     };
     fetchDataForUser();
-  }, [project]);
+  }, [projectList, project]);
 
+  // console.log(project);
   if (project.length < 1) {
     return <h1>Project Not Found</h1>;
   }
