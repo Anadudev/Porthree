@@ -85,58 +85,16 @@ const Blog = () => {
           </Tabs>
         </Box> */}
         <CustomTabPanel value={value} index={0}>
-          <Box sx={{ flexGrow: 1, p: 2 }}>
-            <Grid
-              container
+            <Box
               spacing={2}
-              alignItems={'center'}
-              justifyContent={'center'}
+              sx={{display:'flex',flexWrap:'wrap', justifyContent:'center'}}
             >
               {posts.loading ? <Typography>Loading posts.<CircularProgress size={18} color="inherit" /> </Typography> : (posts && posts.slice(0, 8).map((data, index) => (
-                <Grid item key={index}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-                  <Box className=" p-2">
+                <Box item key={index}>
                     <PostCard type='Post' post={data} mode={"Post"} />
-                  </Box>
-                </Grid>
+                </Box>
               )))}
-            </Grid>
-          </Box>
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={1}>
-          <Box sx={{ flexGrow: 1, p: 2 }}>
-            <Grid
-              container
-              spacing={2}
-              alignItems={'center'}
-              justifyContent={'center'}
-            >
-              {posts?.map((data, index) => (
-                <Grid item key={index}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-                  <Box className=" p-2">
-                    <PostCard type='Post' />
-                  </Box>
-                </Grid>
-              ))}
-            </Grid>
-          </Box>
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={2}>
-          <Box sx={{ flexGrow: 1, p: 2 }}>
-            <Grid
-              container
-              spacing={2}
-              alignItems={'center'}
-              justifyContent={'center'}
-            >
-              {posts?.map((data, index) => (
-                <Grid item key={index}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-                  <Box className=" p-2">
-                    <PostCard type='Post' />
-                  </Box>
-                </Grid>
-              ))}
-            </Grid>
-          </Box>
+            </Box>
         </CustomTabPanel>
       </Box>
     </Box>

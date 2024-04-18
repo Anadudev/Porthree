@@ -71,23 +71,17 @@ const Projects = ({ projects, user }) => {
           </Tabs>
         </Box> */}
         <CustomTabPanel value={value} index={0}>
-          <Box sx={{ flexGrow: 1, p: 2 }}>
-            <Grid
-              container
-              spacing={2}
-              alignItems={'center'}
-              justifyContent={'center'}
-            >
+        <Box
+            spacing={2}
+            sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
+          >
               {projects && projects.slice(0, 6).map((data, index) => (
-                <Grid item key={index}>
-                  <Box className=" p-2">
+                <Box item key={index}>
                     <PostCard type='Project' post={data} mode={"Project"} />
-                  </Box>
-                </Grid>
+                </Box>
               ))}
-            </Grid>
-            <Button component={Link} to={`/${user?.username}/projects`}>More...</Button>
           </Box>
+            <Button component={Link} to={`/${user?.username}/projects`}>More...</Button>
         </CustomTabPanel>
       </Box>
     </Box>

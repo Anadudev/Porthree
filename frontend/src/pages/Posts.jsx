@@ -47,18 +47,17 @@ const Posts = () => {
 
       <Box padding={{xs:"10px", sm:"50px"}}>
         <Breadcrumb path={useLocation()} />
-        <Masonry
-          columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
-          spacing={2}
-          className="flex justify-center"
-        >
+        <Box
+            spacing={2}
+            sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
+          >
           {posts &&
             posts.map((post, index) => (
               // <Item sx={{ [heights[index]]: true  }}>
               <PostCard key={index} post={post} mode={"Blog Post"} />
               // </Item>
             ))}
-        </Masonry>
+        </Box>
       </Box>
       <Footer />
     </React.Fragment>

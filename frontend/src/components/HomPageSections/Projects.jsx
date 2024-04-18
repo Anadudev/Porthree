@@ -84,58 +84,17 @@ const Projects = () => {
           </Tabs>
         </Box> */}
         <CustomTabPanel value={value} index={0}>
-          <Box sx={{ flexGrow: 1, p: 2 }}>
-            <Grid
-              container
-              spacing={2}
-              alignItems={'center'}
-              justifyContent={'center'}
-            >
-              {projects.loading ? <Typography>Loading Projects.<CircularProgress size={18} color="inherit" /> </Typography> : (
-                projects && projects.slice(0, 8).map((data, index) => (
-                  <Grid item key={index}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-                    <Box className=" p-2">
-                      <PostCard type='Project' post={data} mode={"Project"} />
-                    </Box>
-                  </Grid>
-                )))}
-            </Grid>
-          </Box>
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={1}>
-          <Box sx={{ flexGrow: 1, p: 2 }}>
-            <Grid
-              container
-              spacing={2}
-              alignItems={'center'}
-              justifyContent={'center'}
-            >
-              {projects?.map((data, index) => (
-                <Grid item key={index}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-                  <Box className=" p-2">
-                    <PostCard type='Project' />
-                  </Box>
-                </Grid>
-              ))}
-            </Grid>
-          </Box>
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={2}>
-          <Box sx={{ flexGrow: 1, p: 2 }}>
-            <Grid
-              container
-              spacing={2}
-              alignItems={'center'}
-              justifyContent={'center'}
-            >
-              {projects.map((data, index) => (
-                <Grid item key={index}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-                  <Box className=" p-2">
-                    <PostCard type='Project' />
-                  </Box>
-                </Grid>
-              ))}
-            </Grid>
+
+          <Box
+            spacing={2}
+            sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
+          >
+            {projects.loading ? <Typography>Loading Projects.<CircularProgress size={18} color="inherit" /> </Typography> : (
+              projects && projects.slice(0, 6).map((data, index) => (
+                <Box item key={index}>
+                  <PostCard type='Project' post={data} mode={"Project"} />
+                </Box>
+              )))}
           </Box>
         </CustomTabPanel>
       </Box>

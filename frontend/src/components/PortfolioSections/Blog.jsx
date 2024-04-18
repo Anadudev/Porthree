@@ -46,21 +46,15 @@ function a11yProps(index) {
 
 function TabData() {
   return (
-    <Box sx={{ flexGrow: 1, p: 2 }}>
-      <Grid
-        container
-        spacing={2}
-        alignItems={'center'}
-        justifyContent={'center'}
-      >
+    <Box
+            spacing={2}
+            sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
+          >
         {pj.map((data, index) => (
           <Grid item key={index}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-            <Box className=" p-2">
               <PostCard mode={'Blog Post'} />
-            </Box>
           </Grid>
         ))}
-      </Grid>
     </Box>
   )
 }
@@ -96,25 +90,19 @@ const Blogs = ({ blog, user }) => {
           </Tabs>
         </Box> */}
         <CustomTabPanel value={value} index={0}>
-          <Box sx={{ flexGrow: 1, p: 2 }}>
-            <Grid
-              container
-              spacing={2}
-              alignItems={'center'}
-              justifyContent={'center'}
-            >
+        <Box
+            spacing={2}
+            sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
+          >
               {blog.loading ? <Typography>Loading posts.<CircularProgress size={18} color="inherit" /> </Typography> : (blog && blog.slice(0, 6).map((data, index) => (
-                <Grid item key={index}>
-                  <Box className=" p-2">
+                <Box item key={index}>
                     <PostCard type='Project' post={data} mode={"Blog Post"} />
-                  </Box>
-                </Grid>
+                </Box>
               )))}
 
-            </Grid>
-            <Button component={Link} to={`/${user?.username}/posts`}>Mre...</Button>
 
           </Box>
+            <Button component={Link} to={`/${user?.username}/posts`}>More...</Button>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
           <TabData />

@@ -44,14 +44,17 @@ const Projects = () => {
       <DrawerAppBar pages={UserNavLinks(user)} />
       <Box padding={{xs:"10px", sm:"50px"}}>
         <Breadcrumb path={useLocation()} />
-        <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={2}>
+        <Box
+            spacing={2}
+            sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
+          >
           {projects &&
             projects.map((project, index) => (
               // <Item sx={{ [heights[index]]: true  }}>
               <PostCard key={index} post={project} mode={"Project"} />
               // </Item>
             ))}
-        </Masonry>
+        </Box>
       </Box>{" "}
       <Footer />
     </React.Fragment>

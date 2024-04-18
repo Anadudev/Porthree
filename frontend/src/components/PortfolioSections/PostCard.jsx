@@ -89,10 +89,10 @@ const PostCard = ({ post, mode }) => {
     }, [post]);
     // console.log(user);
     return (
-        <Card sx={{ maxWidth: 345 }} className="border">
+        <Card sx={{ maxWidth: 330,margin:1}} className="border">
             <CardHeader
                 avatar={
-                    <Avatar /* sx={{ bgcolor: red[500] }} */ alt={user.username} aria-label="recipe" src={user.picture}>
+                    <Avatar  alt={user.username} aria-label="recipe" src={user.picture}>
                     </Avatar>
                 }
                 action={
@@ -109,13 +109,13 @@ const PostCard = ({ post, mode }) => {
                 image={/* post.post_image || post.image || */ BgImage}
                 alt={"Post thumbnail"}
             />
-            <CardContent>
+            <CardContent sx={{height:200}}>
                 <p className='font-bold text-center primary'>{mode}:</p>
 
                 <Link component={RL} to={`/${user.username}/${mode === "Project" ? "projects" : "posts"}/${post.slug}`} gutterBottom underline="always" variant="h5">
                     {(<HTMLRenderer htmlContent={Limiter(post.title)} />) || ""}
                 </Link>
-                <Typography my={2} variant="body2" color="text.secondary"><b>{(<HTMLRenderer htmlContent={Limiter(post.content, 150)} />)}</b>
+                <Typography my={2} variant="body1" color="text.secondary"><b>{(<HTMLRenderer htmlContent={Limiter(post.content, 150)} />)}</b>
                 </Typography>
             </CardContent>
             <CardActions disableSpacing onClick={handleExpandClick} className='cursor-pointer'>
