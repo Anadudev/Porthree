@@ -43,7 +43,7 @@ export default function AboutCard({ custom, education = [], experience = [], tit
                             </Grid>
                         </Paper>
                     </Box>
-                    <Modal
+                    <Modal keepMounted 
                         open={openIndex === index}
                         onClose={handleClose}
                         aria-labelledby="modal-modal-title"

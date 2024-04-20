@@ -49,7 +49,7 @@ const Skills = ({ skills }) => {
                 <Typography variant='p' component='p'>{(<HTMLRenderer htmlContent={Limiter(data.detail, 200)}/>)}</Typography>
               </Box>
               {/* </Grid> */}
-              <Modal
+              <Modal keepMounted 
                 open={openIndex === index}
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"

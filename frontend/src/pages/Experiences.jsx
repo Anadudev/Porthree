@@ -25,7 +25,7 @@ const Experiences = () => {
   // console.log(user);
   return (
     <React.Fragment>
-      <ResponsiveAppBar pages={UserNavLinks(user)} />
+      <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
       <Box padding={{ xs: "10px", sm: "50px" }}>
         <Breadcrumb path={useLocation()} />
       <Box className='flex justify-center'>
