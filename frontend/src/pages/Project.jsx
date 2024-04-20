@@ -106,8 +106,8 @@ const Project = () => {
 
   return (
     <React.Fragment>
-      <ResponsiveAppBar pages={UserNavLinks(user)} />
-      <Box padding={{xs:"10px", sm:"50px"}}>
+      <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
+      <Box padding={{ xs: "10px", sm: "50px" }}>
         <Breadcrumb path={useLocation()} />
         <Box className="flex flex-wrap justify-center">
           <Card sx={{ maxWidth: 1000 }}>
@@ -122,10 +122,10 @@ const Project = () => {
                 gutterBottom
                 variant="h2"
                 component="h1"
-                sx={{ fontWeight: "900" }}
+                sx={{ fontWeight: "900", color: `${user?.secondary_color || ''}` }}
                 className="text-center"
               >
-                {(<HTMLRenderer htmlContent={project.title}/>) || ""}
+                {(<HTMLRenderer htmlContent={project.title} />) || ""}
               </Typography>
               <Box className="border-y flex-col py-2 my-4 align-middle justify-center">
                 <Box className="flex py-2 my-4 justify-between">
@@ -148,7 +148,7 @@ const Project = () => {
                       <Link
                         component={RL}
                         to={`/${user.username}`}
-                        sx={{ fontWeight: 700 }}
+                        sx={{ fontWeight: 700, color: `${user?.secondary_color || ''}` }}
                         className="capitalize"
                       >
                         {user.username || ""}
@@ -219,7 +219,7 @@ const Project = () => {
                 color="text.secondary"
                 className="py-10 font-semibold text-lg"
               >
-                {(<HTMLRenderer htmlContent={project.content}/>) || ""}
+                {(<HTMLRenderer htmlContent={project.content} />) || ""}
               </Typography>
             </CardContent>
             <Box px={"10px"}>

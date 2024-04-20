@@ -61,7 +61,7 @@ const Post = () => {
 
     return (
         <React.Fragment>
-            <ResponsiveAppBar pages={UserNavLinks(user)} />
+            <ResponsiveAppBar pages={UserNavLinks(user)} custom={user}/>
             <Box padding={{xs:"10px", sm:"50px"}}>
                 <Breadcrumb path={useLocation()} />
                 <Box className="flex justify-center">
@@ -73,7 +73,7 @@ const Post = () => {
                             alt="green iguana"
                         />
                         <CardContent>
-                            <Typography gutterBottom variant="h2" component="h1" sx={{ fontWeight: '900' }} className="text-center">
+                            <Typography gutterBottom variant="h2" component="h1" sx={{ fontWeight: '900' ,color:`${user?.secondary_color|| ''}`}} className="text-center">
                                 {(<HTMLRenderer htmlContent={post.title} />) || ''}
                             </Typography>
                             <Box className="border-y flex py-2 my-4">
@@ -84,7 +84,7 @@ const Post = () => {
                                 />
                                 <Box>
                                     <Typography sx={{ fontWeight: 700 }}>{user.first_name} {user.last_name || ''}</Typography>
-                                    <Link component={RL} to={`/${user.username}`} sx={{ fontWeight: 700 }} className="capitalize">{user.username || ''}</Link>
+                                    <Link component={RL} to={`/${user.username}`} sx={{ fontWeight: 700 ,color:`${user?.primary_color|| ''}`}} className="capitalize">{user.username || ''}</Link>
                                     <Typography sx={{ fontWeight: 700 }}>{user.career || ''}</Typography>
                                 </Box>
                             </Box>

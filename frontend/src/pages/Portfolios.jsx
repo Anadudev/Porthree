@@ -172,7 +172,7 @@ const Portfolios = () => {
                                             <Avatar component={Paper} elevation={6} alt={user.username} src={user.picture} sx={{ width: 70, height: 70 }} />
                                         </StyledBadge>
                                     </Box>
-                                    <Paper elevation={5} sx={{ pt: '40px', px: '10px', pb: '10px', borderRadius: '10px' }}>
+                                    <Paper elevation={5} sx={{ pt: '40px', px: '10px', pb: '10px', borderRadius: '10px', border: `1px solid ${user?.primary_color}` }}>
                                         <Box sx={{ display: "flex", justifyContent: 'space-between' }}>
                                             <Box>
                                                 <Typography component='p' className='capitalize text-center pr-2' >projects <br /> <b>{user.projects ? `${user.projects}+` : 0}</b></Typography>
@@ -192,7 +192,7 @@ const Portfolios = () => {
                                         <Box className="mt-3 flex justify-center">
                                             <Chip
                                                 label="Portfolio"
-                                                color="success"
+                                                sx={{ color: `${user?.secondary_color || ''}` }}
                                                 component={Link}
                                                 to={`/${user.username}`}
                                                 variant="outlined"
