@@ -30,32 +30,24 @@ import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 
-const actions = [
-  { icon: <PostsIcon />, name: 'posts', component: <PostsComponent /> },
-  { icon: <WorkIcon />, name: 'experience', component: < ExperienceComponent /> },
-  { icon: <EducationIcon />, name: 'education', component: < EducationsComponent /> },
-  { icon: <ProjectsIcon />, name: 'projects', component: <ProjectsComponent /> },
-  { icon: <ToolsIcon />, name: 'tools', component: < ToolsComponent /> },
-  { icon: <UserIcon />, name: 'profile', component: <UserComponent /> },
-];
 
 /**
  * Object containing the structure of the dashboard with keys as section names and values as React components.
  */
 const boardStructure = {
-  posts: {component: <PostsComponent />, icon: <PostsIcon />},
-  projects: {component: <ProjectsComponent />,icon: <ProjectsIcon /> },
-  experience: {component: <ExperienceComponent />, icon: <WorkIcon />},
-  education: {component: <EducationsComponent />, icon: <EducationIcon />},
-  tools: {component: <ToolsComponent />, icon: <ToolsIcon />},
-  profile: {component: <UserComponent />, icon: <UserIcon />},
+  posts: { component: <PostsComponent />, icon: <PostsIcon /> },
+  projects: { component: <ProjectsComponent />, icon: <ProjectsIcon /> },
+  experience: { component: <ExperienceComponent />, icon: <WorkIcon /> },
+  education: { component: <EducationsComponent />, icon: <EducationIcon /> },
+  tools: { component: <ToolsComponent />, icon: <ToolsIcon /> },
+  profile: { component: <UserComponent />, icon: <UserIcon /> },
 };
 
-export function SpeedDialTooltipOpen({propActiveLink}) {
+export function SpeedDialTooltipOpen({ propActiveLink }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  function activateLink(active){
+  function activateLink(active) {
     propActiveLink(active);
     handleClose();
   }
@@ -96,9 +88,13 @@ export function SpeedDialTooltipOpen({propActiveLink}) {
 const Dashboard = () => {
   const userData = useLoaderData();
   // console.log("userData",userData);
-  const user = (userData.results)[0]
-
+  const intialUser = (userData.results)[0];
+  const [user, setUser] = useState(intialUser);
+  const data = JSON.parse(localStorage.getItem('user'))
   const navigation = useLocation();
+  useEffect(() => {
+    setUser(data);
+  }, [data])
 
   PageTitle("Dashboard");
   const [activeLink, setActiveLink] = useState('profile');
@@ -112,7 +108,7 @@ const Dashboard = () => {
   // console.log(user);
   return (
     <React.Fragment>
-      <ResponsiveAppBar pages={UserNavLinks(user)}  custom={user}/>
+      <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
       <Box padding={{ xs: "10px", sm: "50px" }}>
         <Breadcrumb path={navigation} />
         <Container>

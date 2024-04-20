@@ -72,7 +72,9 @@ const UserComponent = () => {
           'Content-Type': 'multipart/form-data', // Set the content type to multipart/form-data
         },
       });
+      // console.log(response.data);
       setUser(response.data); // Update state with updated user data
+      localStorage.setItem('user', JSON.stringify(response.data));
       setIsEdit(false); // Exit edit mode
     } catch (error) {
       setError(error);
