@@ -77,7 +77,7 @@ class UserPostsListView(generics.ListAPIView):
 
     def get_queryset(self):
         user_id = self.kwargs["user_id"]
-        return Post.objects.filter(user_id=user_id)
+        return Post.objects.filter(user_id=user_id).order_by("-created_at")
 
 
 class ProjectViewSet(viewsets.ModelViewSet):
@@ -97,7 +97,7 @@ class UserProjectsListView(generics.ListAPIView):
 
     def get_queryset(self):
         user_id = self.kwargs["user_id"]
-        return Project.objects.filter(user_id=user_id)
+        return Project.objects.filter(user_id=user_id).order_by('-created_at')
 
 
 class TagViewSet(viewsets.ModelViewSet):

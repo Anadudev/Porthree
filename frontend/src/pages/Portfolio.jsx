@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import DrawerAppBar from "../components/Nav";
+import ResponsiveAppBar from "../components/Nav";
 import { UserNavLinks } from "../data/NavLinks";
 import Footer from "../components/Footer";
 import Breadcrumb from "../components/Breadcrumb";
@@ -109,16 +109,10 @@ function Portfolio() {
             return <Error err={data} />;
         }
     }
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const contacts = {
-        phone: user?.phone,
-        email: user?.email,
-        location: user?.location,
-    };
 
     return (
         <React.Fragment>
-            <DrawerAppBar pages={UserNavLinks(user)} />
+            <ResponsiveAppBar pages={UserNavLinks(user)} custom={user}/>
             <Box padding={{ xs: "10px", sm: "50px" }} className='scroll-smooth'>
                 {!user ? (
                     <Typography variant="h1" component="h1">
@@ -141,7 +135,7 @@ function Portfolio() {
                         {skills && <Skills skills={skills} />}
                         {projects && <Projects projects={projects} user={user}/>}
                         {blog && <Blog blog={blog} user={user} />}
-                        <Contact contacts={contacts} socials={socials} />
+                        <Contact contacts={user} socials={socials} />
                     </>
                 )}
             </Box>

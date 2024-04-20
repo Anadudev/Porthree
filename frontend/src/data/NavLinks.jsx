@@ -32,37 +32,39 @@ export const NavLinks = [
     },
 ];
 
+
+
 export const UserNavLinks = (data) => (
     [
         {
             id: 1,
-            title: data.username || "#",
-            url: `/${data.username}` || "#",
+            title: data?.username || "#",
+            url: `/${data?.username}` || "#",
         },
         {
             id: 2,
             title: "About",
-            url: `/${data.username}#about` || "#",
+            url: `/${data?.username}#about` || "#",
         },
         {
             id: 3,
             title: "Skills",
-            url: `/${data.username}#skills` || "#",
+            url: `/${data?.username}#skills` || "#",
         },
         {
             id: 4,
             title: "Projects",
-            url: `/${data.username}#projects` || "#",
+            url: `/${data?.username}#projects` || "#",
         },
         {
             id: 6,
             title: "Posts",
-            url: `/${data.username}#posts` || "#",
+            url: `/${data?.username}#posts` || "#",
         },
         {
             id: 6,
             title: "Contact",
-            url: `/${data.username}#contact` || "#",
+            url: `/${data?.username}#contact` || "#",
         },
         {
             id: 7,

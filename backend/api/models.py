@@ -8,7 +8,6 @@ from django.db import models
 from django.utils.text import slugify
 
 
-
 class Tool(models.Model):
     """Represents a tool used in a project."""
 
@@ -80,6 +79,7 @@ class UserDetails(AbstractUser):
             _str_: users full name
         """
         return f"{self.first_name} {self.middle_name} {self.last_name}"
+
 
 class Tag(models.Model):
     """Represents a tag that can be associated with posts or projects."""

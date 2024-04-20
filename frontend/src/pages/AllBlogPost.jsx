@@ -8,7 +8,7 @@ import SectionTitle from '../components/HomPageSections/SectionTitle';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Link } from 'react-router-dom';
 import PageTitle from './PageTitle';
-import DrawerAppBar from '../components/Nav'
+import ResponsiveAppBar from '../components/Nav'
 import Breadcrumb from '../components/Breadcrumb';
 import { NavLinks } from '../data/NavLinks';
 import { useLocation } from 'react-router-dom';
@@ -56,7 +56,7 @@ const AllBlogPost = () => {
     // console.log(projects);
     return (
         <React.Fragment>
-            <DrawerAppBar pages={NavLinks} />
+            <ResponsiveAppBar pages={NavLinks} />
             <Box padding={{ xs: "10px", sm: "50px" }}>
                 <Breadcrumb path={useLocation()} />
                 <Box sx={{ width: '100%' }}>

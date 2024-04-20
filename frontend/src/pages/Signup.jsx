@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import axios from 'axios';
 import { Container, Grid, TextField, Button, Box } from '@mui/material';
-import DrawerAppBar from '../components/Nav';
+import ResponsiveAppBar from '../components/Nav';
 import Footer from '../components/Footer';
 import { useNavigate } from 'react-router-dom';
 import api from '../../apiConfig';
@@ -61,7 +61,7 @@ const Signup = () => {
 
   return (
     <div>
-      <DrawerAppBar pages={NavLinks} />
+      <ResponsiveAppBar pages={NavLinks} />
       <div className='p-[50px]'>
         <Breadcrumb path={useLocation()} />
         <Container>

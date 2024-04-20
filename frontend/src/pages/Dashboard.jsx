@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, useNavigate } from "react-router-dom";
-import DrawerAppBar from "../components/Nav";
+import ResponsiveAppBar from "../components/Nav";
 import Footer from '../components/Footer';
 import { UserNavLinks } from '../data/NavLinks';
 import Breadcrumb from '../components/Breadcrumb';
@@ -96,7 +96,7 @@ export function SpeedDialTooltipOpen({propActiveLink}) {
 const Dashboard = () => {
   const userData = useLoaderData();
   // console.log("userData",userData);
-  const user = userData.results
+  const user = (userData.results)[0]
 
   const navigation = useLocation();
 
@@ -112,7 +112,7 @@ const Dashboard = () => {
   // console.log(user);
   return (
     <React.Fragment>
-      <DrawerAppBar pages={UserNavLinks(user[0])} />
+      <ResponsiveAppBar pages={UserNavLinks(user)}  custom={user}/>
       <Box padding={{ xs: "10px", sm: "50px" }}>
         <Breadcrumb path={navigation} />
         <Container>

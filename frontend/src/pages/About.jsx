@@ -1,5 +1,5 @@
 import React from 'react'
-import DrawerAppBar from '../components/Nav';
+import ResponsiveAppBar from '../components/Nav';
 import Footer from '../components/Footer';
 import { NavLinks } from '../data/NavLinks';
 import Breadcrumb from '../components/Breadcrumb';
@@ -9,7 +9,7 @@ const About = () => {
     PageTitle("About");
     return (
         <React.Fragment>
-            <DrawerAppBar pages={NavLinks} />
+            <ResponsiveAppBar pages={NavLinks} />
             <Breadcrumb path={useLocation()} />
             <div>About</div>
             <Footer />

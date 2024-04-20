@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import { Skills as sk } from '../data/Info';
 import PageTitle from './PageTitle';
-import DrawerAppBar from '../components/Nav';
+import ResponsiveAppBar from '../components/Nav';
 import Breadcrumb from '../components/Breadcrumb';
 import { NavLinks } from '../data/NavLinks';
 import { useLocation } from 'react-router-dom';
@@ -150,7 +150,7 @@ const Portfolios = () => {
     return (
         <Box component="section" id="skills">
 
-            <DrawerAppBar pages={NavLinks} />
+            <ResponsiveAppBar pages={NavLinks} />
             <Box padding={{ xs: "10px", sm: "50px" }}>
                 <Breadcrumb path={useLocation()} />
                 <Box sx={{ flexGrow: 1, p: 2 }}>

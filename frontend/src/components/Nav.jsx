@@ -17,7 +17,7 @@ import { userTools } from '../data/NavLinks';
 
 const settings = userTools();
 
-function ResponsiveAppBar({ pages }) {
+function ResponsiveAppBar({ pages, custom }) {
   if (!pages) { return null }
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -30,7 +30,7 @@ function ResponsiveAppBar({ pages }) {
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip title="Open settings">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar alt="U" src={settings[0].user.picture||''} />
+          <Avatar alt="U" src={settings[0].user.picture || ''} />
         </IconButton>
       </Tooltip>
       <Menu
@@ -80,9 +80,10 @@ function ResponsiveAppBar({ pages }) {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  // console.log(user);
 
   return (
-    <AppBar position="static">
+    <AppBar sx={{ bgcolor: custom?.primary_color ||'' }} position="sticky">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/* app logo */}

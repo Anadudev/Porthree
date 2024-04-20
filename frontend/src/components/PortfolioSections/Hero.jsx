@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Box, Grid, Typography,
-  CardMedia, Button, ButtonGroup
+  Button, ButtonGroup
 } from '@mui/material';
 
 
@@ -26,7 +26,7 @@ const Hero = ({ props }) => {
             <Box className="self-center h-fit">
               <Box className='mb-10' textAlign={{ xs: 'center', sm: 'left' }}>
                 <Typography variant="h4" component="h2" sx={{ fontWeight: '900' }} >{props.first_name || 'props'} {props.last_name || ''}</Typography>
-                <Typography variant="h2" component="h1" sx={{ fontWeight: '900', marginBottom: "30px" }}>{props.career || ''}</Typography>
+                <Typography variant="h2" component="h1" sx={{ fontWeight: '900', marginBottom: "30px", color: props?.primary_color || '' }}>{props.career || ''}</Typography>
                 <Typography variant="p" mb={'20px'} component="p" className='text-2xl italic'>{props.bio || ''}</Typography>
               </Box>
             </Box>
@@ -49,8 +49,8 @@ const Hero = ({ props }) => {
       </Grid>
       <Box>
         <ButtonGroup variant="text" aria-label="Basic button group " color="primary">
-          <Button Link href='#about' color="primary">Download Resume</Button>
-          <Button Link href='#skills' color="primary">Skills</Button>
+          <Button Link href='#about' sx={{ color: `${props?.secondary_color || 'primary'}` }}>Download Resume</Button>
+          <Button Link href='#skills' sx={{ color: `${props?.secondary_color || 'primary'}` }}>Skills</Button>
         </ButtonGroup>
       </Box>
     </Box>

@@ -1,8 +1,9 @@
 import React from "react";
 import { Card, Typography, Box, Grid, Paper, Modal } from "@mui/material";
 import Limiter from "../Limiter";
+import moment from 'moment';
 
-export default function AboutCard({custom,  education = [], experience = [], title }) {
+export default function AboutCard({ custom, education = [], experience = [], title, customize }) {
     const passed = education.length > 0 ? education : experience;
     const [openIndex, setOpenIndex] = React.useState(null);
 
@@ -24,7 +25,7 @@ export default function AboutCard({custom,  education = [], experience = [], tit
     };
 
     return (
-        <Card className={`p-2 xl:p-6 ${custom||''}`}>
+        <Card className={`p-2 xl:p-6 ${custom || ''}`}>
             <Typography variant='h6' component={'p'} mb={'20px'} className='font-dark uppercase'>{title}</Typography>
             {passed.slice(0, 4).map((data, index) => (
                 <div key={index}>
@@ -32,11 +33,11 @@ export default function AboutCard({custom,  education = [], experience = [], tit
                         <Paper elevation={6} className='p-2'>
                             <Grid container rowSpacing={1} columnSpacing={1}>
                                 <Grid item xs={4}>
-                                    <Typography variant='p' component='p' className='text-sm'>{data.start_date} - {data.end_date || "in progress"}</Typography>
-                                    <Typography variant='p' component='p' className='font-bold capitalize'>{data.institute || data.company || ""}</Typography>
+                                    <Typography variant='p' component='p' className='text-sm'>{moment(data.start_date).format('MMM D, YYYY')} - {data.end_date ? moment(data.end_date).format('MMM D, YYYY') : "Present"}</Typography>
+                                    <Typography variant='p' component='p' className='font-bold capitalize' sx={{color:`${customize?.secondary_color|| ''}`}}>{data.institute || data.company || ""}</Typography>
                                 </Grid>
                                 <Grid item xs={8}>
-                                    <Typography variant='p' component='p' className='font-bold capitalize'>{data.degree || data.position || ""}</Typography>
+                                    <Typography variant='p' component='p' className='font-bold capitalize' sx={{color:`${customize?.secondary_color|| ''}`}}>{data.degree || data.position || ""}</Typography>
                                     <Typography variant='p' component='p' >{Limiter(data.detail, 100)}</Typography>
                                 </Grid>
                             </Grid>
@@ -49,13 +50,13 @@ export default function AboutCard({custom,  education = [], experience = [], tit
                         aria-describedby="modal-modal-description"
                     >
                         <Box sx={style}>
-                            <Typography id="modal-modal-title" className="capitalize" variant="h6" component="h2">
+                            <Typography id="modal-modal-title" className="capitalize" variant="h6" component="h2" sx={{color:`${customize?.secondary_color|| ''}`}}>
                                 {data.institute && `institute: ${data.institute}` || data.company && `company: ${data.company}`}
                             </Typography>
                             <Typography id="modal-modal-title" className="capitalize text-right" variant="p" component="h2">
-                                started: <b>{data.start_date}</b> <br />ended: <b>{data.end_date || 'in progress'}</b>
+                                started: <b>{moment(data.start_date).format('MMM D, YYYY')}</b> <br />ended: <b>{data.end_date ? moment(data.end_date).format('MMM D, YYYY') : "Present"}</b>
                             </Typography>
-                            <Typography id="modal-modal-title" className="capitalize text-right mb-7" variant="p" component="h2">
+                            <Typography id="modal-modal-title" className="capitalize text-right mb-7" variant="p" component="h2" >
                                 {
                                     (data.institute && <span>degree: <b>{data.degree}</b></span>) ||
                                     (data.company && <span>position: <b>{data.position}</b></span>)

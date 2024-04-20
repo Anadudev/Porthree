@@ -54,7 +54,7 @@ const Projects = ({ projects, user }) => {
 
   return (
     <Box id='projects'>
-      <SectionHeader title={'awesome works'} />
+      <SectionHeader title={'awesome works'} custom={user}/>
       <Box sx={{ width: '100%' }}>
         {/* <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs
@@ -81,7 +81,7 @@ const Projects = ({ projects, user }) => {
                 </Box>
               ))}
           </Box>
-            <Button component={Link} to={`/${user?.username}/projects`}>More...</Button>
+            <Button component={Link} to={`/${user?.username}/projects`} sx={{color:`${user?.secondary_color|| ''}`}}>More...</Button>
         </CustomTabPanel>
       </Box>
     </Box>

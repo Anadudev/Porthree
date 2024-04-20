@@ -3,7 +3,7 @@ import { useLoaderData, useLocation } from "react-router-dom";
 import { GetRelation } from '../data/GetUser';
 import AboutCard from '../components/PortfolioSections/AboutCard';
 import { Box } from "@mui/material";
-import DrawerAppBar from "../components/Nav";
+import ResponsiveAppBar from "../components/Nav";
 import Footer from '../components/Footer';
 import { UserNavLinks } from "../data/NavLinks";
 import PageTitle from './PageTitle';
@@ -24,7 +24,7 @@ const Educations = () => {
   return (
     <React.Fragment>
 
-      <DrawerAppBar pages={UserNavLinks(user)} />
+      <ResponsiveAppBar pages={UserNavLinks(user)} />
       <Box padding={{ xs: "10px", sm: "50px" }}>
         <Breadcrumb path={useLocation()} />
       <Box className='flex justify-center'>

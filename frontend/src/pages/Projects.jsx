@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import DrawerAppBar from "../components/Nav";
+import ResponsiveAppBar from "../components/Nav";
 import { UserNavLinks } from "../data/NavLinks";
 import Footer from "../components/Footer";
 import Breadcrumb from "../components/Breadcrumb";
@@ -41,7 +41,7 @@ const Projects = () => {
   }
   return (
     <React.Fragment>
-      <DrawerAppBar pages={UserNavLinks(user)} />
+      <ResponsiveAppBar pages={UserNavLinks(user)} />
       <Box padding={{xs:"10px", sm:"50px"}}>
         <Breadcrumb path={useLocation()} />
         <Box

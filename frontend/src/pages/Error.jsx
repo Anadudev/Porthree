@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Footer from '../components/Footer';
 import PageTitle from './PageTitle';
-import DrawerAppBar from "../components/Nav";
+import ResponsiveAppBar from "../components/Nav";
 import { NavLinks } from '../data/NavLinks';
 import { Typography, Alert } from '@mui/material';
 import { useRouteError } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { useRouteError } from 'react-router-dom';
 export const ErrorCard = ({ error, code, content, nav }) => {
     return (
         <React.Fragment>
-            {nav && <DrawerAppBar pages={NavLinks} />}
+            {nav && <ResponsiveAppBar pages={NavLinks} />}
             <div className="w-full h-[70vh] flex justify-center align-middle">
                 <div className='capitalize h-fit self-center'>
                 <Alert severity="error">
@@ -29,7 +29,7 @@ const Error = () => {
     // console.log("tada",error);
     return (
         <React.Fragment>
-            <DrawerAppBar pages={NavLinks} />
+            <ResponsiveAppBar pages={NavLinks} />
             {error && <ErrorCard content={error.error && error.error.message||error.error} code={error.statusText} error={error.status} />}
             <Footer />
         </React.Fragment>

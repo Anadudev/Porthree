@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import DrawerAppBar from '../components/Nav';
+import ResponsiveAppBar from '../components/Nav';
 import { NavLinks } from '../data/NavLinks';
 import Footer from '../components/Footer';
 import Breadcrumb from '../components/Breadcrumb';
@@ -73,7 +73,7 @@ const Login = () => {
 
   return (
     <div onClick={() => (setErrorMessage(''))} >
-      <DrawerAppBar pages={NavLinks} />
+      <ResponsiveAppBar pages={NavLinks} />
       <div className='p-[50px]'>
         <Breadcrumb path={useLocation()} />
         <Container>

@@ -73,7 +73,7 @@ const Blogs = ({ blog, user }) => {
   // console.log(blog)
   return (
     <Box id='blog'>
-      <SectionHeader title={'Helpful writings'} />
+      <SectionHeader title={'Helpful writings'} custom={user}/>
       <Box sx={{ width: '100%' }}>
         {/* <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs
@@ -102,7 +102,7 @@ const Blogs = ({ blog, user }) => {
 
 
           </Box>
-            <Button component={Link} to={`/${user?.username}/posts`}>More...</Button>
+            <Button component={Link} to={`/${user?.username}/posts`} sx={{color:`${user?.secondary_color|| ''}`}}>More...</Button>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
           <TabData />
