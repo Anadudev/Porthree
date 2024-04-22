@@ -8,19 +8,6 @@ from django.db import models
 from django.utils.text import slugify
 
 
-class Tool(models.Model):
-    """Represents a tool used in a project."""
-
-    id = models.AutoField(primary_key=True)
-    icon = models.ImageField(upload_to="tool_icons/", blank=True)
-    tool = models.CharField(unique=True, max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return str(self.tool)
-
-
 class Skill(models.Model):
     """Represents a skill of a user."""
 
@@ -52,9 +39,6 @@ class UserDetails(AbstractUser):
     primary_color = models.CharField(max_length=50, blank=True, null=True)
     secondary_color = models.CharField(max_length=50, blank=True, null=True)
     picture = models.ImageField(upload_to="profile_pics/", blank=True, null=True)
-    tools = models.ManyToManyField(
-        Tool, related_name="user_tools", blank=True
-    )  # Many-to-Many with tools
     skills = models.ManyToManyField(
         Skill, related_name="user_skills", blank=True
     )  # Many-to-Many with Skills
@@ -91,6 +75,24 @@ class Tag(models.Model):
 
     def __str__(self):
         return str(self.tag)
+
+
+class Tool(models.Model):
+    """Represents a tool used in a project."""
+
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
+    icon = models.ImageField(upload_to="tool_icons/", blank=True)
+    tool = models.CharField(unique=True, max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.tool)
+
+    class Meta:
+        # Ensure that a user cannot have duplicate tools
+        unique_together = ["user", "tool"]
 
 
 class Post(models.Model):

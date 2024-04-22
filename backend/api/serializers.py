@@ -46,7 +46,6 @@ class UserDetailsSerializer(serializers.HyperlinkedModelSerializer):
             "secondary_color",
             "picture",
             "groups",
-            "tools",
             "skills",
         ]
 
