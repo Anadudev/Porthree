@@ -60,18 +60,17 @@ const Posts = () => {
     <React.Fragment>
       <ResponsiveAppBar pages={UserNavLinks(user)} />
 
-      <Box padding={{xs:"10px", sm:"50px"}}>
+      {posts && <Box padding={{ xs: "10px", sm: "50px" }}>
         <Breadcrumb path={location} />
         <Box
-            spacing={2}
-            sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
-          >
-          {posts &&
-            posts.map((post, index) => (
-              // <Item sx={{ [heights[index]]: true  }}>
-              <PostCard key={index} post={post} mode={"Blog Post"} />
-              // </Item>
-            ))}
+          spacing={2}
+          sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
+        >
+          {posts.map((post, index) => (
+            // <Item sx={{ [heights[index]]: true  }}>
+            <PostCard key={index} post={post} mode={"Blog Post"} />
+            // </Item>
+          ))}
         </Box>
         <Box mt={5} sx={{ display: 'flex', justifyContent: 'center' }}>
           <Pagination
@@ -82,7 +81,7 @@ const Posts = () => {
             onChange={handleChange}
           />
         </Box>
-      </Box>
+      </Box>}
       <Footer />
     </React.Fragment>
   );

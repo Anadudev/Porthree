@@ -57,13 +57,13 @@ const Projects = () => {
   return (
     <React.Fragment>
       <ResponsiveAppBar pages={UserNavLinks(user)} />
-      <Box padding={{ xs: "10px", sm: "50px" }}>
+      {projects && <Box padding={{ xs: "10px", sm: "50px" }}>
         <Breadcrumb path={location} />
         <Box
           spacing={2}
           sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
         >
-          {projects && projects.map((project, index) => (
+          {projects.map((project, index) => (
             // <Item sx={{ [heights[index]]: true  }}>
             <PostCard key={index} post={project} mode={"Project"} />
             // </Item>
@@ -78,7 +78,7 @@ const Projects = () => {
             onChange={handleChange}
           />
         </Box>
-      </Box>{" "}
+      </Box>}
       <Footer />
     </React.Fragment>
   );

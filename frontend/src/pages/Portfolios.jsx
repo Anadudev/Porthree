@@ -165,14 +165,14 @@ const Portfolios = () => {
             <ResponsiveAppBar pages={NavLinks} />
             <Box padding={{ xs: "10px", sm: "50px" }}>
                 <Breadcrumb path={location} />
-                <Box sx={{ flexGrow: 1, p: 2 }}>
+                {users && <Box sx={{ flexGrow: 1, p: 2 }}>
                     <Grid
                         container
                         spacing={2}
                         alignItems={'center'}
                         justifyContent={'center'}
                     >
-                        {users?.map((user, index) => (
+                        {users.map((user, index) => (
                             <Grid key={index} {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
                                 <Box>
                                     <Box sx={{ display: 'flex', justifyContent: 'center', mb: '-20px' }}>
@@ -225,7 +225,7 @@ const Portfolios = () => {
                             onChange={handleChange}
                         />
                     </Box>
-                </Box>
+                </Box>}
             </Box>
         </Box>
     );

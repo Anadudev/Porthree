@@ -33,9 +33,6 @@ const Experiences = () => {
         if (initialCount === 0) {
           setInitialCount(Math.ceil(result.count / result.results.length));
         }
-        if (initialCount === 0) {
-          setInitialCount(Math.ceil(result.count / result.results.length));
-        }
 
         setCount(initialCount || Math.ceil(result.count / result.results.length));
       }
@@ -57,23 +54,23 @@ const Experiences = () => {
       <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
       <Box padding={{ xs: "10px", sm: "50px" }}>
         <Breadcrumb path={location} />
-      <Box className='flex justify-center'>
-      <Card className={`p-2 xl:p-6 w-[60rem]`}>
+        <Box className='flex justify-center'>
+          {experiences && <Card className={`p-2 xl:p-6 w-[60rem]`}>
             <Typography variant='h6' component={'p'} mb={'20px'} className='font-dark uppercase'>Educations</Typography>
-            {experiences?.length > 0 && experiences.slice(0, 4).map((data, index) => (
+            {experiences.slice(0, 4).map((data, index) => (
               <AboutCard key={index} data={data} customize={user} />
             ))}
             <Box mt={5} sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Pagination
-                            count={count}
-                            variant="outlined"
-                            color="primary"
-                            page={page}
-                            onChange={handleChange}
-                        />
-                    </Box>
-          </Card>
-      </Box>
+              <Pagination
+                count={count}
+                variant="outlined"
+                color="primary"
+                page={page}
+                onChange={handleChange}
+              />
+            </Box>
+          </Card>}
+        </Box>
       </Box>
       <Footer />
 

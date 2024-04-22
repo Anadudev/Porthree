@@ -75,12 +75,12 @@ const AllBlogPost = () => {
             <ResponsiveAppBar pages={NavLinks} />
             <Box padding={{ xs: "10px", sm: "50px" }}>
                 <Breadcrumb path={location} />
-                <Box sx={{ width: '100%' }}>
+                {posts && <Box sx={{ width: '100%' }}>
                     <Box
                         spacing={2}
                         sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
                     >
-                        {posts && posts.map((data, index) => (
+                        {posts.map((data, index) => (
                             <Box item key={index}>
                                 <PostCard type='Project' post={data} mode={"Blog Post"} />
                             </Box>
@@ -95,7 +95,7 @@ const AllBlogPost = () => {
                             onChange={handleChange}
                         />
                     </Box>
-                </Box>
+                </Box>}
             </Box>
         </React.Fragment >
     )

@@ -57,7 +57,7 @@ const AllProjects = () => {
                     setInitialCount(Math.ceil(result.count / result.results.length));
                 }
 
-                    setCount(initialCount || Math.ceil(result.count / result.results.length));
+                setCount(initialCount || Math.ceil(result.count / result.results.length));
             }
             // console.log(result);
             setLoading(false);
@@ -77,7 +77,8 @@ const AllProjects = () => {
             <ResponsiveAppBar pages={NavLinks} />
             <Box padding={{ xs: "10px", sm: "50px" }}>
                 <Breadcrumb path={location} />
-                <Box sx={{ width: '100%' }}>
+
+                {projects && <Box sx={{ width: '100%' }}>
                     <Box
                         spacing={2}
                         sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
@@ -97,7 +98,7 @@ const AllProjects = () => {
                             onChange={handleChange}
                         />
                     </Box>
-                </Box>
+                </Box>}
             </Box>
         </React.Fragment >
     )
