@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Typography, Button, TextField, List, ListItem, ListItemText, Dialog, DialogTitle, DialogContent, DialogActions, FormControlLabel, Switch } from '@mui/material';
+import {
+  Grid, Typography, Button,
+  TextField, List, ListItem,
+  ListItemText, Dialog, DialogTitle,
+  DialogContent, DialogActions, FormControlLabel,
+  Switch
+} from '@mui/material';
 import axios from 'axios';
 
 const ProjectsComponent = () => {
