@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Typography, Button, TextField, List, ListItem, ListItemText } from '@mui/material';
+import {
+  Grid, Typography, Button,
+  TextField, List, ListItem, ListItemText
+} from '@mui/material';
 import axios from 'axios';
 import { GetRelation } from '../../data/GetUser';
 
@@ -24,7 +27,7 @@ const ToolsComponent = () => {
         for (const tool of userId.tools) {
           const data = await GetRelation(tool);
           relationList.push(data)
-      }
+        }
 
         // const response = await axios.get(`http://localhost:8000/api/users/${userId.id}/tools/`);
         setTools(relationList);
@@ -44,7 +47,7 @@ const ToolsComponent = () => {
     try {
 
       // Prepare the data for the POST request, specifying user
-      const toolData = { tool: newTool};
+      const toolData = { tool: newTool };
 
 
       // Send the POST request with the Authorization header
