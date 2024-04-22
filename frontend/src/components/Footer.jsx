@@ -1,8 +1,5 @@
 import * as React from 'react';
-import BottomNavigation from '@mui/material/BottomNavigation';
-import Typography from '@mui/material/Typography';
-import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import Paper from '@mui/material/Paper';
+import { Paper, BottomNavigation, Typography, BottomNavigationAction } from '@mui/material';
 
 
 export default function Footer() {
