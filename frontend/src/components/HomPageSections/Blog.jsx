@@ -47,11 +47,11 @@ const Blog = () => {
   const [posts, setPosts] = useState(null);
 
   useEffect(() => {
-    const data = async () => {
+    const fetchData = async () => {
       const result = await GetRelation(`http://127.0.0.1:8000/api/posts/?publish=true`);
       setPosts(result.results)
     }
-    data();
+    fetchData();
   }, [])
   const [value, setValue] = useState(0);
 

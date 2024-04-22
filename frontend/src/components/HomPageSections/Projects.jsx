@@ -47,11 +47,11 @@ const Projects = () => {
   const [projects, setProjects] = useState(null);
 
   useEffect(() => {
-    const data = async () => {
+    const fetchData = async () => {
       const result = await GetRelation(`http://127.0.0.1:8000/api/projects/?publish=true`);
       setProjects(result.results)
     }
-    data();
+    fetchData();
   }, [])
   const [value, setValue] = useState(0);
 

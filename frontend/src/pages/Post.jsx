@@ -44,7 +44,7 @@ const Post = () => {
     const [tags, setTags] = useState([]);
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
-        const fetchDataForUser = async () => {
+        const fetchData = async () => {
             async function handler() {
                 let relate = await GetRelation(post.user);
                 setUser(await GetItem('users', Number(post.user.split('/')[5])));
@@ -56,7 +56,7 @@ const Post = () => {
             }
             handler();
         };
-        fetchDataForUser();
+        fetchData();
     }, [post]);
 
     return (

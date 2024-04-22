@@ -49,7 +49,7 @@ const AllProjects = () => {
     const location = useLocation();
 
     useEffect(() => {
-        async function handler() {
+        async function fetchData() {
             setResult((await GetRelation(`http://127.0.0.1:8000/api/projects/?page=${page}&publish=true`)));
             if (result && result.results) {
                 setProjects(result.results);
@@ -62,7 +62,7 @@ const AllProjects = () => {
             // console.log(result);
             setLoading(false);
         }
-        handler();
+        fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [page, result.count, count, result.next])
     const handleChange = (event, value) => {

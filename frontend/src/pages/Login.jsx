@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import ResponsiveAppBar from '../components/Nav';
 import { NavLinks } from '../data/NavLinks';
 import Footer from '../components/Footer';
@@ -17,19 +17,6 @@ import GetUser from '../data/GetUser';
 const Login = () => {
   const navigate = useNavigate();
   PageTitle("Login");
-  /*
-  const storedUserJson = localStorage.getItem("user")
-  if (storedUserJson && localStorage.getItem("access_token")) {
-    console.log(storedUserJson);
-    const storedUser = JSON.parse(storedUserJson)
-    if (typeof storedUser.username != 'undefined') {
-      useEffect(() => {
-        navigate(`/dashboard/${storedUser.username}`);
-      }, [storedUser, navigate])
-    }
-  } */
-
-
   const [errorMessage, setErrorMessage] = useState('');
 
   const formik = useFormik({

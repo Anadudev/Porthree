@@ -92,6 +92,7 @@ const Dashboard = () => {
   const [user, setUser] = useState(intialUser);
   const data = JSON.parse(localStorage.getItem('user'))
   const navigation = useLocation();
+
   useEffect(() => {
     setUser(data);
   }, [data])

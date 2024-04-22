@@ -57,7 +57,7 @@ const PostCard = ({ post, mode }) => {
         /**
          * Fetches user data for the post and updates the component state.
          */
-        const fetchDataForUser = async () => {
+        const fetchData = async () => {
             let relate = null;
             relate = await GetRelation(post.user);
             // console.log(relate.id);
@@ -85,14 +85,14 @@ const PostCard = ({ post, mode }) => {
             }
             setTags(collection);
         }
-        fetchDataForUser()
+        fetchData()
     }, [post]);
     // console.log(post);
     return (
-        <Card sx={{ maxWidth: 330,margin:1, border:`1px solid ${user?.secondary_color}`}} className="border">
+        <Card sx={{ maxWidth: 330, margin: 1, border: `1px solid ${user?.secondary_color}` }} className="border">
             <CardHeader
                 avatar={
-                    <Avatar  alt={user.username} aria-label="recipe" src={user.picture}>
+                    <Avatar alt={user.username} aria-label="recipe" src={user.picture}>
                     </Avatar>
                 }
                 action={
@@ -100,7 +100,7 @@ const PostCard = ({ post, mode }) => {
                         <MoreVertIcon />
                     </IconButton>
                 }
-                title={<Typography component={RL} to={`/${user.username}`} className='capitalize' sx={{ color: user?.primary_color ||''}}> {user.username || ""}</Typography>}
+                title={<Typography component={RL} to={`/${user.username}`} className='capitalize' sx={{ color: user?.primary_color || '' }}> {user.username || ""}</Typography>}
                 subheader={<TimeAgo date={post.created_at} /> || ""}
             />
             <CardMedia
@@ -109,13 +109,13 @@ const PostCard = ({ post, mode }) => {
                 image={/* post.post_image || post.image || */ BgImage}
                 alt={"Post thumbnail"}
             />
-            <CardContent  sx={{height:200}}>
+            <CardContent sx={{ height: 200 }}>
                 <p className='font-bold text-center primary'>{mode}:</p>
 
-                <Link component={RL} to={`/${user.username}/${mode === "Project" ? "projects" : "posts"}/${post.slug}`} gutterBottom underline="always" variant="h5" sx={{ color: user?.secondary_color ||'',}}>
+                <Link component={RL} to={`/${user.username}/${mode === "Project" ? "projects" : "posts"}/${post.slug}`} gutterBottom underline="always" variant="h5" sx={{ color: user?.secondary_color || '', }}>
                     {(<HTMLRenderer htmlContent={Limiter(post.title)} />) || ""}
                 </Link>
-                <Typography my={2} variant="body1" color="text.secondary"  component={RL} to={`/${user.username}/${mode === "Project" ? "projects" : "posts"}/${post.slug}`}><b>{(<HTMLRenderer htmlContent={Limiter(post.content, 150)} />)}</b>
+                <Typography my={2} variant="body1" color="text.secondary" component={RL} to={`/${user.username}/${mode === "Project" ? "projects" : "posts"}/${post.slug}`}><b>{(<HTMLRenderer htmlContent={Limiter(post.content, 150)} />)}</b>
                 </Typography>
             </CardContent>
             <CardActions disableSpacing onClick={handleExpandClick} className='cursor-pointer'>
