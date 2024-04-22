@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Typography, TextField, Button, List, ListItem, ListItemText, Dialog, DialogTitle, DialogContent, DialogActions, Checkbox, FormControlLabel } from '@mui/material';
+import {
+  Grid, Typography, TextField,
+  Button, List, ListItem,
+  ListItemText, Dialog, DialogTitle,
+  DialogContent, DialogActions, Checkbox,
+  FormControlLabel
+} from '@mui/material';
 import axios from 'axios';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
