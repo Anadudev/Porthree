@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { GetRelation } from '../../data/GetUser';
 import PropTypes from 'prop-types';
-import { Typography, Button } from '@mui/material';
-import Box from '@mui/material/Box';
+import { Typography, Button, Box, CircularProgress } from '@mui/material';
 import PostCard from '../PortfolioSections/PostCard';
 import SectionTitle from './SectionTitle';
-import CircularProgress from '@mui/material/CircularProgress';
 import { Link } from 'react-router-dom';
 
 function CustomTabPanel(props) {
