@@ -67,7 +67,7 @@ class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     queryset = Post.objects.all().order_by("-created_at")
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ["slug", "id"]
+    filterset_fields = ["slug", "id", "publish"]
 
 
 class UserPostsListView(generics.ListAPIView):
@@ -87,7 +87,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
     serializer_class = ProjectSerializer
     queryset = Project.objects.all().order_by("-created_at")
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ["slug", "id"]
+    filterset_fields = ["slug", "id", "publish"]
 
 
 class UserProjectsListView(generics.ListAPIView):

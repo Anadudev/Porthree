@@ -8,14 +8,14 @@ import Breadcrumb from '../components/Breadcrumb';
 import { NavLinks } from '../data/NavLinks';
 import { useLocation } from 'react-router-dom';
 import BgImage from "/src/assets/image.jpg";
-import { Typography, Paper, Avatar, Chip, Button } from '@mui/material';
+import { Typography, Paper, Avatar, Chip, Pagination } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Badge from '@mui/material/Badge';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { GetDatas, getUserData, GetRelation } from '../data/GetUser';
+import { GetDatas, GetRelation } from '../data/GetUser';
 import { Link } from 'react-router-dom';
 import Limiter from '../components/Limiter';
 import Loading from "../components/PageLoad";
@@ -115,33 +115,45 @@ const Portfolios = () => {
     PageTitle("Portfolios");
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(1);
+    const [result, setResult] = useState([]);
+    const [count, setCount] = useState(0);
+    const [initialCount, setInitialCount] = useState(0);
+
+    const location = useLocation();
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await GetDatas('users');
+            setResult(await GetRelation(`http://localhost:8000/api/users/?page=${page}`));
 
             if (!result.loading) {
+                if (result && result.results) {
+                    if (initialCount === 0) {
+                        setInitialCount(Math.ceil(result.count / result.results.length));
+                    }
+
+                    setCount(initialCount || Math.ceil(result.count / result.results.length));
+                }
                 const userList = result.results;
 
                 for (const user of userList) {
-                    user.projects = await GetRelation(user.url + 'projects/');
-                    // console.log(await GetRelation(user.url+'projects/'));
+                    user.projects = (await GetRelation(user.url + 'projects/?publish=true')).count;
 
-                    user.posts = await GetRelation(user.url + 'posts/');
+                    user.posts = (await GetRelation(user.url + 'posts/?publish=true')).count;
 
                     user.dataSkills = await gatterRelations(user.skills);
-                    // console.log(user);
+                    // console.log(user.projects);
                     relationList = [];
                 }
-
                 setLoading(false);
                 setUsers(userList);
             }
         };
-
         fetchData();
-    }, []);
-
+    }, [page, result.count, count, result.next]);
+    const handleChange = (event, value) => {
+        setPage(value);
+    };
     if (loading) { return <Loading /> }
     if (!users || users.length < 1) {
         return null;
@@ -152,7 +164,7 @@ const Portfolios = () => {
 
             <ResponsiveAppBar pages={NavLinks} />
             <Box padding={{ xs: "10px", sm: "50px" }}>
-                <Breadcrumb path={useLocation()} />
+                <Breadcrumb path={location} />
                 <Box sx={{ flexGrow: 1, p: 2 }}>
                     <Grid
                         container
@@ -204,6 +216,15 @@ const Portfolios = () => {
                             </Grid>
                         ))}
                     </Grid>
+                    <Box mt={5} sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <Pagination
+                            count={count}
+                            variant="outlined"
+                            color="primary"
+                            page={page}
+                            onChange={handleChange}
+                        />
+                    </Box>
                 </Box>
             </Box>
         </Box>

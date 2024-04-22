@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { GetDatas } from '../../data/GetUser';
+import { GetRelation } from '../../data/GetUser';
 import PropTypes from 'prop-types';
 import { Typography, Button } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -48,7 +48,7 @@ const Blog = () => {
 
   useEffect(() => {
     const data = async () => {
-      const result = await GetDatas('posts');
+      const result = await GetRelation(`http://127.0.0.1:8000/api/posts/?publish=true`);
       setPosts(result.results)
     }
     data();

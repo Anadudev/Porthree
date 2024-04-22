@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { GetDatas } from '../../data/GetUser';
+import { GetRelation } from '../../data/GetUser';
 import PropTypes from 'prop-types';
 import { Typography, Button } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -48,7 +48,7 @@ const Projects = () => {
 
   useEffect(() => {
     const data = async () => {
-      const result = await GetDatas('projects');
+      const result = await GetRelation(`http://127.0.0.1:8000/api/projects/?publish=true`);
       setProjects(result.results)
     }
     data();
@@ -67,20 +67,6 @@ const Projects = () => {
     <Box id='projects'>
       <SectionTitle title={'projects'} caption={'some projects by users on our platform'} />
       <Box sx={{ width: '100%' }}>
-        {/* <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            aria-label="basic tabs example"
-            scrollButtons
-            allowScrollButtonsMobile
-            centered
-          >
-            <Tab label="Item One" {...a11yProps(0)} />
-            <Tab label="Item Two" {...a11yProps(1)} />
-            <Tab label="Item Three" {...a11yProps(2)} />
-          </Tabs>
-        </Box> */}
         <CustomTabPanel value={value} index={0}>
 
           <Box

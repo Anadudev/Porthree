@@ -99,7 +99,7 @@ class Post(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
-    slug = models.SlugField(unique=True, blank=True)
+    slug = models.SlugField(max_length=255, unique=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     post_image = models.ImageField(upload_to="post_images/", blank=True, null=True)

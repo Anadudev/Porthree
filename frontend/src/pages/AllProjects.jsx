@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { GetRelation, GetDatas } from '../data/GetUser';
+import { GetRelation } from '../data/GetUser';
 import PropTypes from 'prop-types';
-import { Typography, Button } from '@mui/material';
+import { Typography, Pagination } from '@mui/material';
 import Box from '@mui/material/Box';
-import PostCard from '../components/PortfolioSections/PostCard';
-import SectionTitle from '../components/HomPageSections/SectionTitle';
-import CircularProgress from '@mui/material/CircularProgress';
-import { Link } from 'react-router-dom';
 import PageTitle from './PageTitle';
 import ResponsiveAppBar from '../components/Nav'
 import Breadcrumb from '../components/Breadcrumb';
 import { NavLinks } from '../data/NavLinks';
 import { useLocation } from 'react-router-dom';
 import Loading from '../components/PageLoad';
+import PostCard from '../components/PortfolioSections/PostCard';
+
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
 
@@ -43,23 +41,42 @@ const AllProjects = () => {
     PageTitle('All Projects')
     const [projects, setProjects] = useState('');
     const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(1);
+    const [result, setResult] = useState([]);
+    const [count, setCount] = useState(0);
+    const [initialCount, setInitialCount] = useState(0);
+
+    const location = useLocation();
 
     useEffect(() => {
         async function handler() {
-            setProjects((await GetRelation("http://127.0.0.1:8000/api/projects/")).results);
+            setResult((await GetRelation(`http://127.0.0.1:8000/api/projects/?page=${page}&publish=true`)));
+            if (result && result.results) {
+                setProjects(result.results);
+                if (initialCount === 0) {
+                    setInitialCount(Math.ceil(result.count / result.results.length));
+                }
+
+                    setCount(initialCount || Math.ceil(result.count / result.results.length));
+            }
+            // console.log(result);
             setLoading(false);
         }
         handler();
-    }, [])
-    if (loading){
-        return <Loading/>
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [page, result.count, count, result.next])
+    const handleChange = (event, value) => {
+        setPage(value);
+    };
+    if (loading) {
+        return <Loading />
     }
-    // console.log(projects);
+    // console.log(count);
     return (
         <React.Fragment>
             <ResponsiveAppBar pages={NavLinks} />
             <Box padding={{ xs: "10px", sm: "50px" }}>
-                <Breadcrumb path={useLocation()} />
+                <Breadcrumb path={location} />
                 <Box sx={{ width: '100%' }}>
                     <Box
                         spacing={2}
@@ -70,6 +87,15 @@ const AllProjects = () => {
                                 <PostCard type='Project' post={data} mode={"Project"} />
                             </Box>
                         ))}
+                    </Box>
+                    <Box mt={5} sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <Pagination
+                            count={count}
+                            variant="outlined"
+                            color="primary"
+                            page={page}
+                            onChange={handleChange}
+                        />
                     </Box>
                 </Box>
             </Box>

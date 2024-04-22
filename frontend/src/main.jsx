@@ -20,13 +20,14 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import PasswordReset from './pages/PasswordReset';
 import Dashboard from './pages/Dashboard';
-import Logout from './components/Dashboard/Logout.jsx';
-import Educations from './pages/Educations.jsx';
-import Experiences from './pages/Experiences.jsx';
-import AllProjects from './pages/AllProjects.jsx';
-import AllBlogPost from './pages/AllBlogPost.jsx';
+import Logout from './components/Dashboard/Logout';
+import Educations from './pages/Educations';
+import Experiences from './pages/Experiences';
+import AllProjects from './pages/AllProjects';
+import AllBlogPost from './pages/AllBlogPost';
 import './index.css';
-import { GetRelation } from './data/GetUser.jsx';
+import HandlePagination from './components/Pagination'
+import { GetRelation } from './data/GetUser';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -56,6 +57,11 @@ const router = createBrowserRouter([
   {
     path: "/projects",
     element: <AllProjects />,
+    errorElement: <Error />,
+  },
+  {
+    path: "/play",
+    element: <HandlePagination />,
     errorElement: <Error />,
   },
   {

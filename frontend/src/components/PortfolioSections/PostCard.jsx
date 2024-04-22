@@ -87,7 +87,7 @@ const PostCard = ({ post, mode }) => {
         }
         fetchDataForUser()
     }, [post]);
-    // console.log(user);
+    // console.log(post);
     return (
         <Card sx={{ maxWidth: 330,margin:1, border:`1px solid ${user?.secondary_color}`}} className="border">
             <CardHeader
