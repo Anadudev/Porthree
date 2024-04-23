@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import {
   AppBar,
   Box,
@@ -21,8 +21,8 @@ const settings = userTools();
 
 function ResponsiveAppBar({ pages, custom }) {
   if (!pages) { return null }
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
 
   const OutUser = () => (<ButtonGroup variant="text" aria-label="Basic button group " color="inherit">
     <Button component={Link} to='/login' color="inherit">Login</Button>

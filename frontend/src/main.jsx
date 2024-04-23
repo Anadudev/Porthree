@@ -26,7 +26,6 @@ import Experiences from './pages/Experiences';
 import AllProjects from './pages/AllProjects';
 import AllBlogPost from './pages/AllBlogPost';
 import './index.css';
-import HandlePagination from './components/Pagination'
 import { GetRelation } from './data/GetUser';
 import {
   createBrowserRouter,
@@ -58,11 +57,6 @@ const router = createBrowserRouter([
   {
     path: "/projects",
     element: <AllProjects />,
-    errorElement: <Error />,
-  },
-  {
-    path: "/play",
-    element: <HandlePagination />,
     errorElement: <Error />,
   },
   {
