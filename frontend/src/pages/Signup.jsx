@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import axios from 'axios';
-import { Container, Grid, TextField, Button, Box } from '@mui/material';
+import { Container, Grid, TextField, Button, Alert } from '@mui/material';
 import ResponsiveAppBar from '../components/Nav';
 import Footer from '../components/Footer';
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +10,6 @@ import { useLocation } from 'react-router-dom';
 import Breadcrumb from '../components/Breadcrumb';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import Alert from '@mui/material/Alert';
 import PageTitle from './PageTitle';
 
 const Signup = () => {

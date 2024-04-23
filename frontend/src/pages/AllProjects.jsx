@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { GetRelation } from '../data/GetUser';
 import PropTypes from 'prop-types';
-import { Typography, Pagination } from '@mui/material';
-import Box from '@mui/material/Box';
+import { Typography, Pagination, Box } from '@mui/material';
 import PageTitle from './PageTitle';
 import ResponsiveAppBar from '../components/Nav'
 import Breadcrumb from '../components/Breadcrumb';

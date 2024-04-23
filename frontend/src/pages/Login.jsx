@@ -5,12 +5,11 @@ import Footer from '../components/Footer';
 import Breadcrumb from '../components/Breadcrumb';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { Container, TextField, Button, Box, Typography } from '@mui/material'; // Import Typography
+import { Container, TextField, Button, Box, Typography, Alert } from '@mui/material'; // Import Typography
 import { useNavigate, Link } from 'react-router-dom'; // Import Link
 import api from '../../apiConfig';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import Alert from '@mui/material/Alert';
 import PageTitle from './PageTitle';
 import GetUser from '../data/GetUser';
 

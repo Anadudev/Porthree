@@ -4,13 +4,12 @@ import {
   Button, Link,
   List, Box, Paper,
   TextField, FormControl,
-  Grid
+  Grid, ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Divider,
 } from '@mui/material';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Divider from '@mui/material/Divider';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -53,7 +52,7 @@ export function ContactForm(custom) {
             rows={6}
           />
         </FormControl>
-        <Button varian="outlined" sx={{color:`${custom?.secondary_color|| ''}`}}>Send</Button>
+        <Button varian="outlined" sx={{ color: `${custom?.secondary_color || ''}` }}>Send</Button>
       </div>
     </Box>
   );
@@ -115,7 +114,7 @@ export function ContactList({ contacts, socials }) {
 const Contact = ({ contacts, socials }) => {
   return (
     <Box className="mt-20" id='contact'>
-      <SectionHeader title={'contact address'} side={true} custom={contacts}/>
+      <SectionHeader title={'contact address'} side={true} custom={contacts} />
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} px={{ md: '100px' }}>
         <Grid item xs={12} sm={6} md={6} mb={{ xs: '40px' }}>
 
@@ -123,7 +122,7 @@ const Contact = ({ contacts, socials }) => {
         </Grid>
         <Grid item xs={12} sm={6} md={6} mb={{ xs: '40px' }}>
 
-          <ContactForm custom={contacts}/>
+          <ContactForm custom={contacts} />
         </Grid>
       </Grid>
     </Box>

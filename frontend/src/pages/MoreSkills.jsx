@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { useLoaderData } from "react-router-dom";
 import GetUser, { GetRelation } from '../data/GetUser';
-import AboutCard from '../components/PortfolioSections/AboutCard';
-import { Box, Typography, Button, Pagination, Modal, Grid } from "@mui/material";
+import {
+  Box, Typography, Pagination,
+  Grid, Dialog, DialogContent,
+  DialogContentText, DialogTitle
+} from "@mui/material";
 import ResponsiveAppBar from "../components/Nav";
 import Footer from '../components/Footer';
 import { UserNavLinks } from "../data/NavLinks";
@@ -13,13 +16,6 @@ import Loading from '../components/PageLoad';
 import HTMLRenderer from '../components/HtmlRender';
 import Limiter from '../components/Limiter';
 
-/* ============= */
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-/* ============= */
 
 const Skills = () => {
   const userId = useLoaderData();

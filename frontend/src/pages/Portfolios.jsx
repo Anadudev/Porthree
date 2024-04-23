@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import { Skills as sk } from '../data/Info';
 import PageTitle from './PageTitle';
@@ -7,15 +6,15 @@ import ResponsiveAppBar from '../components/Nav';
 import Breadcrumb from '../components/Breadcrumb';
 import { NavLinks } from '../data/NavLinks';
 import { useLocation } from 'react-router-dom';
-import BgImage from "/src/assets/image.jpg";
-import { Typography, Paper, Avatar, Chip, Pagination } from '@mui/material';
+import {
+    Typography, Paper, Avatar,
+    Chip, Pagination, Badge,
+    IconButton, Menu, MenuItem,
+    Box
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
-import Badge from '@mui/material/Badge';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { GetDatas, GetRelation } from '../data/GetUser';
+import { GetRelation } from '../data/GetUser';
 import { Link } from 'react-router-dom';
 import Limiter from '../components/Limiter';
 import Loading from "../components/PageLoad";

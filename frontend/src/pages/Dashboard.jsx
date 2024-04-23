@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import ResponsiveAppBar from "../components/Nav";
 import Footer from '../components/Footer';
 import { UserNavLinks } from '../data/NavLinks';
 import Breadcrumb from '../components/Breadcrumb';
 import { useLocation } from 'react-router-dom';
-import { Typography, Button, Container, Grid, Paper, List, ListItem, ListItemText, ListItemIcon } from '@mui/material';
-import LogoutIcon from '@mui/icons-material/Logout';
+import {
+  Container, Grid, Box,
+  Backdrop, SpeedDial, SpeedDialIcon,
+  SpeedDialAction
+} from '@mui/material';
 import UserIcon from '@mui/icons-material/Person';
 import ToolsIcon from '@mui/icons-material/Build';
 import ProjectsIcon from '@mui/icons-material/Work';
 import EducationIcon from '@mui/icons-material/School';
 import WorkIcon from '@mui/icons-material/Work';
 import PostsIcon from '@mui/icons-material/PostAdd';
-import Logout from '../components/Dashboard/Logout';
 import UserComponent from '../components/Dashboard/User';
 import ToolsComponent from '../components/Dashboard/Tools';
 import ProjectsComponent from '../components/Dashboard/Projects';
@@ -21,14 +23,7 @@ import EducationsComponent from '../components/Dashboard/Education';
 import PostsComponent from '../components/Dashboard/Posts';
 import ExperienceComponent from '../components/Dashboard/Experience';
 import PageTitle from './PageTitle';
-import { GetItem } from '../data/GetUser';
 import { useLoaderData } from "react-router-dom";
-
-import Box from '@mui/material/Box';
-import Backdrop from '@mui/material/Backdrop';
-import SpeedDial from '@mui/material/SpeedDial';
-import SpeedDialIcon from '@mui/material/SpeedDialIcon';
-import SpeedDialAction from '@mui/material/SpeedDialAction';
 
 
 /**

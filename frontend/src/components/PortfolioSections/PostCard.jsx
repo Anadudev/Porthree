@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { styled } from '@mui/material/styles';
-import { Card, Chip, Box, Paper, Link } from '@mui/material';
-import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
-import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+import {
+    Card, Chip, Box, Paper, Link,
+    CardHeader, CardMedia, CardContent,
+    CardActions, Collapse, Avatar,
+    IconButton, Typography,styled
+} from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import BgImage from "/src/assets/image.jpg";

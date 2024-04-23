@@ -1,9 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import { Typography, Grid, Button } from '@mui/material';
-import Box from '@mui/material/Box';
+import { Typography, Box, Button } from '@mui/material';
 import SectionHeader from './SectionHeader';
 import PostCard from './PostCard';
 import { Link } from 'react-router-dom';
