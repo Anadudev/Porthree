@@ -54,7 +54,7 @@ export default function AboutCard({ key, data, customize }) {
                 aria-describedby="scroll-dialog-description"
             >
                 <DialogTitle id="scroll-dialog-title" sx={{ color: `${customize?.secondary_color || ''}` }}>
-                    {data.institute && `institute: ${data.institute}` || data.company && `Company: ${data.company}`}
+                    {data.institute ? `${data.institute}` : `${data.company}`}
                 </DialogTitle>
                 <DialogContent dividers={scroll === 'paper'}>
                     <DialogContentText

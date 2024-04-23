@@ -56,7 +56,7 @@ const Experiences = () => {
         <Breadcrumb path={location} />
         <Box className='flex justify-center'>
           {experiences && <Card className={`p-2 xl:p-6 w-[60rem]`}>
-            <Typography variant='h6' component={'p'} mb={'20px'} className='font-dark uppercase'>Educations</Typography>
+            <Typography variant='h6' component={'p'} mb={'20px'} className='font-dark uppercase'>Experiences</Typography>
             {experiences.slice(0, 4).map((data, index) => (
               <AboutCard key={index} data={data} customize={user} />
             ))}
