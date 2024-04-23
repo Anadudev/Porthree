@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef, Fragment } from 'react'
 import { useLoaderData } from "react-router-dom";
 import GetUser, { GetRelation } from '../data/GetUser';
 import {
   Box, Typography, Pagination,
-  Grid, Dialog, DialogContent,
+  Dialog, DialogContent,
   DialogContentText, DialogTitle
 } from "@mui/material";
+import Grid from '@mui/material/Unstable_Grid2';
 import ResponsiveAppBar from "../components/Nav";
 import Footer from '../components/Footer';
 import { UserNavLinks } from "../data/NavLinks";
@@ -30,8 +31,8 @@ const Skills = () => {
   const [result, setResult] = useState([]);
   const [count, setCount] = useState(0);
   const [initialCount, setInitialCount] = useState(0);
-  const [open, setOpen] = React.useState(null);
-  const [scroll, setScroll] = React.useState('paper');
+  const [open, setOpen] = useState(null);
+  const [scroll, setScroll] = useState('paper');
 
   const handleClickOpen = (scrollType, id) => () => {
     setOpen(id);
@@ -42,8 +43,8 @@ const Skills = () => {
     setOpen(null);
   };
 
-  const descriptionElementRef = React.useRef(null);
-  React.useEffect(() => {
+  const descriptionElementRef = useRef(null);
+  useEffect(() => {
     if (open) {
       const { current: descriptionElement } = descriptionElementRef;
       if (descriptionElement !== null) {
@@ -78,7 +79,7 @@ const Skills = () => {
   }
   // console.log(user);
   return (
-    <React.Fragment>
+    <Fragment>
 
       <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
       <Box padding={{ xs: "10px", sm: "50px" }}>
@@ -137,8 +138,7 @@ const Skills = () => {
         </Box>
       </Box>
       <Footer />
-
-    </React.Fragment>
+    </Fragment>
 
   )
 }

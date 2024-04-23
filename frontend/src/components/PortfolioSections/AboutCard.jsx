@@ -1,32 +1,38 @@
-import React from "react";
-import { Card, Typography, Box, Grid, Paper, Modal } from "@mui/material";
+import React, { useState, useEffect, useRef } from "react";
+import {
+    Box, Typography, Grid, Paper,
+    Dialog, DialogContent,
+    DialogContentText, DialogTitle
+} from "@mui/material";
 import Limiter from "../Limiter";
 import moment from 'moment';
 
 export default function AboutCard({ key, data, customize }) {
-    // const passed = education.length > 0 ? education : experience;
-    const [openIndex, setOpenIndex] = React.useState(null);
+    const [open, setOpen] = useState(null);
+    const [scroll, setScroll] = useState('paper');
 
-    const handleOpen = (data) => setOpenIndex(data);
-    const handleClose = () => setOpenIndex(null);
-
-    const style = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: '80%',
-        maxWidth: '48rem',
-        bgcolor: 'background.paper',
-        border: '2px solid #000',
-        boxShadow: 24,
-        borderRadius: '10px',
-        p: 2,
+    const handleClickOpen = (scrollType, id) => () => {
+        setOpen(id);
+        setScroll(scrollType);
     };
+
+    const handleClose = () => {
+        setOpen(null);
+    };
+
+    const descriptionElementRef = useRef(null);
+    useEffect(() => {
+        if (open) {
+            const { current: descriptionElement } = descriptionElementRef;
+            if (descriptionElement !== null) {
+                descriptionElement.focus();
+            }
+        }
+    }, [open]);
 
     return (
         <div key={key}>
-            <Box className="my-2 xl:my-6 cursor-pointer" onClick={() => handleOpen(key)} >
+            <Box className="my-2 xl:my-6 cursor-pointer" onClick={handleClickOpen('paper', key)}>
                 <Paper elevation={6} className='p-2'>
                     <Grid container rowSpacing={1} columnSpacing={1}>
                         <Grid item xs={4}>
@@ -40,30 +46,41 @@ export default function AboutCard({ key, data, customize }) {
                     </Grid>
                 </Paper>
             </Box>
-            <Modal keepMounted
-                open={openIndex === key}
+            <Dialog
+                open={open === key}
                 onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
+                scroll={scroll}
+                aria-labelledby="scroll-dialog-title"
+                aria-describedby="scroll-dialog-description"
             >
-                <Box sx={style}>
-                    <Typography id="modal-modal-title" className="capitalize" variant="h6" component="h2" sx={{ color: `${customize?.secondary_color || ''}` }}>
-                        {data.institute && `institute: ${data.institute}` || data.company && `company: ${data.company}`}
-                    </Typography>
-                    <Typography id="modal-modal-title" className="capitalize text-right" variant="p" component="h2">
-                        started: <b>{moment(data.start_date).format('MMM D, YYYY')}</b> <br />ended: <b>{data.end_date ? moment(data.end_date).format('MMM D, YYYY') : "Present"}</b>
-                    </Typography>
-                    <Typography id="modal-modal-title" className="capitalize text-right mb-7" variant="p" component="h2" >
-                        {
-                            (data.institute && <span>degree: <b>{data.degree}</b></span>) ||
-                            (data.company && <span>position: <b>{data.position}</b></span>)
-                        }
-                    </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        {data.detail || ''}
-                    </Typography>
-                </Box>
-            </Modal>
+                <DialogTitle id="scroll-dialog-title" sx={{ color: `${customize?.secondary_color || ''}` }}>
+                    {data.institute && `institute: ${data.institute}` || data.company && `Company: ${data.company}`}
+                </DialogTitle>
+                <DialogContent dividers={scroll === 'paper'}>
+                    <DialogContentText
+                        id="scroll-dialog-description"
+                        ref={descriptionElementRef}
+                        tabIndex={-1}
+                    >
+                        <Typography id="modal-modal-title" className="capitalize" variant="p" component="h2">
+                            started: <b>{moment(data.start_date).format('MMM D, YYYY')}</b> <br />ended: <b>{data.end_date ? moment(data.end_date).format('MMM D, YYYY') : "Present"}</b>
+                        </Typography>
+                        <Typography id="modal-modal-title" className="capitalize mb-7" variant="p" component="h2" >
+                            {
+                                (data.institute && <span>degree: <b>{data.degree}</b></span>) ||
+                                (data.company && <span>position: <b>{data.position}</b></span>)
+                            }
+                        </Typography>
+                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                            {data.detail || ''}
+                        </Typography>
+                    </DialogContentText>
+                </DialogContent>
+                {/* <DialogActions>
+                        <Button onClick={handleClose}>Cancel</Button>
+                        <Button onClick={handleClose}>Subscribe</Button>
+                      </DialogActions> */}
+            </Dialog>
         </div>
     )
 }

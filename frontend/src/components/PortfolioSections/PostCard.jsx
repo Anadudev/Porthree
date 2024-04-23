@@ -96,7 +96,7 @@ const PostCard = ({ post, mode }) => {
                         <MoreVertIcon />
                     </IconButton>
                 }
-                title={<Typography component={RL} to={`/${user.username}`} className='capitalize' sx={{ color: user?.primary_color || '' }}> {user.username || ""}</Typography>}
+                title={<Typography variant="h6" component={RL} to={`/${user.username}`} className='capitalize' sx={{ color: user?.primary_color || '' }}> {user.username || ""}</Typography>}
                 subheader={<TimeAgo date={post.created_at} /> || ""}
             />
             <CardMedia
