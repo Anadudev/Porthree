@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import { Typography, Grid, Button } from '@mui/material';
-import Box from '@mui/material/Box';
+import {
+  Typography, Grid, Button,
+  Box, CircularProgress,
+} from '@mui/material';
 import SectionHeader from './SectionHeader';
 import PostCard from './PostCard';
 import { Blogs as pj } from '../../data/Info';
-import CircularProgress from '@mui/material/CircularProgress';
 import { Link } from 'react-router-dom';
 
 function CustomTabPanel(props) {
@@ -47,14 +46,14 @@ function a11yProps(index) {
 function TabData() {
   return (
     <Box
-            spacing={2}
-            sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
-          >
-        {pj.map((data, index) => (
-          <Grid item key={index}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <PostCard mode={'Blog Post'} />
-          </Grid>
-        ))}
+      spacing={2}
+      sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
+    >
+      {pj.map((data, index) => (
+        <Grid item key={index}  {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+          <PostCard mode={'Blog Post'} />
+        </Grid>
+      ))}
     </Box>
   )
 }
@@ -73,36 +72,22 @@ const Blogs = ({ blog, user }) => {
   // console.log(blog)
   return (
     <Box id='blog'>
-      <SectionHeader title={'Helpful writings'} custom={user}/>
+      <SectionHeader title={'Helpful writings'} custom={user} />
       <Box sx={{ width: '100%' }}>
-        {/* <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            aria-label="basic tabs example"
-            scrollButtons
-            allowScrollButtonsMobile
-            centered
-          >
-            <Tab label="Item One" {...a11yProps(0)} />
-            <Tab label="Item Two" {...a11yProps(1)} />
-            <Tab label="Item Three" {...a11yProps(2)} />
-          </Tabs>
-        </Box> */}
         <CustomTabPanel value={value} index={0}>
-        <Box
+          <Box
             spacing={2}
             sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
           >
-              {blog.loading ? <Typography>Loading posts.<CircularProgress size={18} color="inherit" /> </Typography> : (blog && blog.slice(0, 6).map((data, index) => (
-                <Box item key={index}>
-                    <PostCard type='Project' post={data} mode={"Blog Post"} />
-                </Box>
-              )))}
+            {blog.loading ? <Typography>Loading posts.<CircularProgress size={18} color="inherit" /> </Typography> : (blog && blog.slice(0, 6).map((data, index) => (
+              <Box item key={index}>
+                <PostCard type='Project' post={data} mode={"Blog Post"} />
+              </Box>
+            )))}
 
 
           </Box>
-            <Button component={Link} to={`/${user?.username}/posts`} sx={{color:`${user?.secondary_color|| ''}`}}>More...</Button>
+          <Button component={Link} to={`/${user?.username}/posts`} sx={{ color: `${user?.secondary_color || ''}` }}>More...</Button>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
           <TabData />

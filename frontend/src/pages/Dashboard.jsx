@@ -116,23 +116,6 @@ const Dashboard = () => {
 
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              {/* <nav>
-                <List component="nav" sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
-                  {Object.keys(boardStructure).map((link, index) => (
-                    <ListItem key={index} button onClick={() => handleLinkClick(link)} selected={activeLink === link} sx={{ minWidth: '120px' }}>
-                      <ListItemIcon>
-                        {link === 'profile' && <UserIcon />}
-                        {link === 'tools' && <ToolsIcon />}
-                        {link === 'projects' && <ProjectsIcon />}
-                        {link === 'education' && <EducationIcon />}
-                        {link === 'experience' && <WorkIcon />}
-                        {link === 'posts' && <PostsIcon />}
-                      </ListItemIcon>
-                      <ListItemText primary={link} />
-                    </ListItem>
-                  ))}
-                </List>
-              </nav> */}
             </Grid>
             <SpeedDialTooltipOpen propActiveLink={setActiveLink} />
             <Grid item xs={12}>

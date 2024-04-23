@@ -43,7 +43,7 @@ function Portfolio() {
 
 
     useEffect(() => {
-        const fetchDataForUser = async () => {
+        const fetchUserData = async () => {
             // console.log(id)
             const fetchedUser = await GetUser(id);
             if (!fetchedUser.loading) {
@@ -57,12 +57,9 @@ function Portfolio() {
             if (fetchedUser) {
 
                 /* fetch all users tools  */
-                for (const tool of fetchedUser.tools) {
-                    const data = await GetRelation(tool);
-                    relationList.push(data)
-                }
+                dataResult = await GetRelation(`http://localhost:8000/api/tools/?user=${4}`);
 
-                setTools(relationList);
+                setTools(dataResult.results);
                 /* fetch all users educations  */
                 dataResult = await GetRelation(fetchedUser.url + "educations/");
                 setEducations(dataResult.results);
@@ -88,7 +85,7 @@ function Portfolio() {
                 setBlog(dataResult.results);
             }
         };
-        fetchDataForUser();
+        fetchUserData();
     }, [id]);
 
     if (loading) { return <Loading /> }
