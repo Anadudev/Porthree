@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useLoaderData } from "react-router-dom";
 import GetUser, { GetRelation } from '../data/GetUser';
 import AboutCard from '../components/PortfolioSections/AboutCard';
-import { Box, Typography, Card, Pagination, Modal, Grid } from "@mui/material";
+import { Box, Typography, Button, Pagination, Modal, Grid } from "@mui/material";
 import ResponsiveAppBar from "../components/Nav";
 import Footer from '../components/Footer';
 import { UserNavLinks } from "../data/NavLinks";
@@ -13,39 +13,53 @@ import Loading from '../components/PageLoad';
 import HTMLRenderer from '../components/HtmlRender';
 import Limiter from '../components/Limiter';
 
+/* ============= */
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+/* ============= */
+
 const Skills = () => {
   const userId = useLoaderData();
+
   PageTitle(userId?.username + ' Skills');
+  const location = useLocation();
+
   const [user, setUser] = useState("");
   const [skills, setSkills] = useState("");
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [result, setResult] = useState([]);
   const [count, setCount] = useState(0);
-  const [openIndex, setOpenIndex] = useState(null);
   const [initialCount, setInitialCount] = useState(0);
+  const [open, setOpen] = React.useState(null);
+  const [scroll, setScroll] = React.useState('paper');
 
-  const handleOpen = (index) => setOpenIndex(index);
-  const handleClose = () => setOpenIndex(null);
-
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '80%',
-    maxWidth: '600rem',
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    borderRadius: '10px',
-    p: 2,
+  const handleClickOpen = (scrollType, id) => () => {
+    setOpen(id);
+    setScroll(scrollType);
   };
-  const location = useLocation();
+
+  const handleClose = () => {
+    setOpen(null);
+  };
+
+  const descriptionElementRef = React.useRef(null);
+  React.useEffect(() => {
+    if (open) {
+      const { current: descriptionElement } = descriptionElementRef;
+      if (descriptionElement !== null) {
+        descriptionElement.focus();
+      }
+    }
+  }, [open]);
+
   useEffect(() => {
     async function fetchData() {
       setUser((await GetUser(userId)));
-      setResult(await GetRelation(`http://127.0.0.1:8000/api/skills/?page=${page}&user=${user.id}`));
+      setResult(await GetRelation(`http://127.0.0.1:8000/api/skills/?page=${page}&user=${userId.id}`));
       if (result && result.results) {
         setSkills(result.results);
         if (initialCount === 0) {
@@ -84,25 +98,32 @@ const Skills = () => {
               >
                 {skills.map((data, index) => (
                   <Grid key={index} {...{ xs: 12, sm: 8, md: 4, lg: 3, m: 0.5 }} className="border-4 rounded-lg">
-                    <Box className=" p-2 cursor-pointer" onClick={() => handleOpen(index)}>
+                    <Box className=" p-2 cursor-pointer" onClick={handleClickOpen('paper', index)}>
                       <Typography component='h3' className='uppercase' sx={{ fontWeight: '900', mb: 2 }}>{data.skill}</Typography>
                       <Typography variant='body1' component='p' sx={{ textWrap: 'wrap' }}>{(<HTMLRenderer htmlContent={Limiter(data.detail, 200)} />)}</Typography>
                     </Box>
-                    <Modal keepMounted
-                      open={openIndex === index}
+                    <Dialog
+                      open={open === index}
                       onClose={handleClose}
-                      aria-labelledby="modal-modal-title"
-                      aria-describedby="modal-modal-description"
+                      scroll={scroll}
+                      aria-labelledby="scroll-dialog-title"
+                      aria-describedby="scroll-dialog-description"
                     >
-                      <Box sx={style}>
-                        <Typography id="modal-modal-title" className="capitalize" variant="h6" component="h2">
-                          {data.skill || ''}
-                        </Typography>
-                        <Typography component="body1" id="modal-modal-description" sx={{ mt: 2 }}>
-                          {data.detail || ''}
-                        </Typography>
-                      </Box>
-                    </Modal>
+                      <DialogTitle id="scroll-dialog-title">{data.skill || ''}</DialogTitle>
+                      <DialogContent dividers={scroll === 'paper'}>
+                        <DialogContentText
+                          id="scroll-dialog-description"
+                          ref={descriptionElementRef}
+                          tabIndex={-1}
+                        >
+                          {(<HTMLRenderer htmlContent={data.detail} />)}
+                        </DialogContentText>
+                      </DialogContent>
+                      {/* <DialogActions>
+                        <Button onClick={handleClose}>Cancel</Button>
+                        <Button onClick={handleClose}>Subscribe</Button>
+                      </DialogActions> */}
+                    </Dialog>
                   </Grid>
                 ))}
               </Grid>
