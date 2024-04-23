@@ -19,29 +19,24 @@ export function ToolsList({ tools }) {
     return <CircularProgress color="inherit" />
   }
   return (
-    <>
-      <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }} className='flex flex-wrap'>
-        {tools.slice(0, 4).map((data, index) => (
-          <div key={index}>
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar sx={{ width: 50, height: 50 }}>
-                  <SettingsSuggestIcon fontSize='large' color='primary' />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText
-                primary={<Typography color="primary" sx={{ fontWeight: 500, fontSize: 25 }}>{data.tool || ''}</Typography>}
-              />
-            </ListItem>
-            {/* {index == 3 || index !== tools.length - 1 && <Divider variant="inset" component="li" />} */}
-          </div>
-        ))}
-      </List>
-    </>
+    <List sx={{ width: '100%', bgcolor: 'background.paper' }} className='flex flex-wrap'>
+      {tools.slice(0, 4).map((data, index) => (
+        <div key={index}>
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar sx={{ width: 50, height: 50 }}>
+                <SettingsSuggestIcon fontSize='large' color='primary' />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText
+              primary={<Typography color="primary" sx={{ fontWeight: 500, fontSize: 25 }}>{data.tool || ''}</Typography>}
+            />
+          </ListItem>
+        </div>
+      ))}
+    </List>
   );
 }
-
-
 
 
 const About = ({ user, tools, education, experience }) => {

@@ -32,6 +32,7 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import MoreSkills from './pages/MoreSkills';
 
 const router = createBrowserRouter([
   {
@@ -83,7 +84,21 @@ const router = createBrowserRouter([
     loader: async ({ params }) => {
       try {
         const user = await fetch(`http://127.0.0.1:8000/api/user/${params.username}`)
-        return user.status != 200? null : user
+        return user.status != 200 ? null : user
+      } catch (error) {
+        return null
+      }
+
+    },
+  },
+  {
+    path: "/:username/skills",
+    element: <MoreSkills />,
+    errorElement: <Error />,
+    loader: async ({ params }) => {
+      try {
+        const user = await fetch(`http://127.0.0.1:8000/api/user/${params.username}`)
+        return user.status != 200 ? null : user
       } catch (error) {
         return null
       }

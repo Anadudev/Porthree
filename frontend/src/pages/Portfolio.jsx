@@ -43,7 +43,7 @@ function Portfolio() {
 
 
     useEffect(() => {
-        const fetchUserData = async () => {
+        const fetchDataForUser = async () => {
             // console.log(id)
             const fetchedUser = await GetUser(id);
             if (!fetchedUser.loading) {
@@ -57,9 +57,13 @@ function Portfolio() {
             if (fetchedUser) {
 
                 /* fetch all users tools  */
-                dataResult = await GetRelation(`http://localhost:8000/api/tools/?user=${4}`);
+                // dataResult = await GetRelation(`http://localhost:8000/api/tools/?user=${fetchedUser.id}`);
+                for (const tool of fetchedUser.tools) {
+                    const data = await GetRelation(tool);
+                    relationList.push(data)
+                }
 
-                setTools(dataResult.results);
+                setTools(relationList);
                 /* fetch all users educations  */
                 dataResult = await GetRelation(fetchedUser.url + "educations/");
                 setEducations(dataResult.results);
@@ -68,13 +72,9 @@ function Portfolio() {
                 setExperiences(dataResult.results);
 
                 /* fetch all users skills  */
-                relationList = [];
-                for (const skill of fetchedUser.skills) {
-                    const data = await GetRelation(skill);
-                    relationList.push(data)
-                }
+                dataResult = await GetRelation(`http://localhost:8000/api/skills/?user=${fetchedUser.id}`);
+                setSkills(dataResult.results);
 
-                setSkills(relationList);
                 /* fetch all users socials  */
                 setSocials(await getUserData(fetchedUser.id, "socials"));
                 /* fetch all users projects  */
@@ -85,7 +85,7 @@ function Portfolio() {
                 setBlog(dataResult.results);
             }
         };
-        fetchUserData();
+        fetchDataForUser();
     }, [id]);
 
     if (loading) { return <Loading /> }
@@ -109,7 +109,7 @@ function Portfolio() {
 
     return (
         <React.Fragment>
-            <ResponsiveAppBar pages={UserNavLinks(user)} custom={user}/>
+            <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
             <Box padding={{ xs: "10px", sm: "50px" }} className='scroll-smooth'>
                 {!user ? (
                     <Typography variant="h1" component="h1">
@@ -129,8 +129,8 @@ function Portfolio() {
                                 education={educations}
                             />
                         )}
-                        {skills && <Skills skills={skills} />}
-                        {projects && <Projects projects={projects} user={user}/>}
+                        {skills && <Skills skills={skills} custom={user}/>}
+                        {projects && <Projects projects={projects} user={user} />}
                         {blog && <Blog blog={blog} user={user} />}
                         <Contact contacts={user} socials={socials} />
                     </>

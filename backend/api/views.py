@@ -117,7 +117,7 @@ class ToolViewSet(viewsets.ModelViewSet):
     queryset = Tool.objects.all().order_by("-created_at")
     serializer_class = ToolSerializer
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ["tool", "id", "user"]
+    filterset_fields = ["tool", "id"]
 
 
 class SocialViewSet(viewsets.ModelViewSet):
@@ -137,7 +137,7 @@ class SkillViewSet(viewsets.ModelViewSet):
     queryset = Skill.objects.all().order_by("-created_at")
     serializer_class = SkillSerializer
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ["skill", "id"]
+    filterset_fields = ["skill", "id", "user"]
 
 
 class EducationViewSet(viewsets.ModelViewSet):

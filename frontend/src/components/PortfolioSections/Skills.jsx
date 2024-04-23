@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import SectionHeader from './SectionHeader'
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
@@ -6,12 +6,12 @@ import { Typography, Modal } from '@mui/material';
 import Limiter from '../Limiter';
 import HTMLRenderer from '../HtmlRender';
 
-const Skills = ({ skills }) => {
+const Skills = ({ skills, custom }) => {
   if (!skills || skills.length < 1) {
     return null;
   }
 
-  const [openIndex, setOpenIndex] = React.useState(null);
+  const [openIndex, setOpenIndex] = useState(null);
 
   const handleOpen = (index) => setOpenIndex(index);
   const handleClose = () => setOpenIndex(null);
@@ -28,8 +28,7 @@ const Skills = ({ skills }) => {
     boxShadow: 24,
     borderRadius: '10px',
     p: 2,
-};
-
+  };
 
   return (
     <Box component="section" id="skills">
@@ -42,14 +41,12 @@ const Skills = ({ skills }) => {
           justifyContent={'center'}
         >
           {skills.map((data, index) => (
-            <Grid key={index} {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              {/* <div> */}
+            <Grid key={index} {...{ xs: 12, sm: 8, md: 4, lg: 3, m:0.5}}  className="border-4 rounded-lg">
               <Box className=" p-2 cursor-pointer" onClick={() => handleOpen(index)}>
-                <Typography component='p' className='uppercase' sx={{ fontWeight: '900' }}>{data.skill}</Typography>
-                <Typography variant='p' component='p'>{(<HTMLRenderer htmlContent={Limiter(data.detail, 200)}/>)}</Typography>
+                <Typography component='h3' className='uppercase' sx={{ fontWeight: '900', mb:2 }}>{data.skill}</Typography>
+                <Typography variant='body1' component='p' sx={{textWrap:'wrap'}}>{(<HTMLRenderer htmlContent={Limiter(data.detail, 200)} />)}</Typography>
               </Box>
-              {/* </Grid> */}
-              <Modal keepMounted 
+              <Modal keepMounted
                 open={openIndex === index}
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
@@ -58,18 +55,16 @@ const Skills = ({ skills }) => {
                 <Box sx={style}>
                   <Typography id="modal-modal-title" className="capitalize" variant="h6" component="h2">
                     {data.skill || ''}
-                    </Typography>
-                  <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                    <b>
-
-                    {data.detail || ''}
-                    </b>
+                  </Typography>
+                  <Typography component="body1" id="modal-modal-description" sx={{ mt: 2 }}>
+                      {data.detail || ''}
                   </Typography>
                 </Box>
               </Modal>
             </Grid>
           ))}
         </Grid>
+          <Typography sx={{m:2}}>More</Typography>
       </Box>
     </Box>
   );

@@ -8,17 +8,17 @@ from django.db import models
 from django.utils.text import slugify
 
 
-class Skill(models.Model):
-    """Represents a skill of a user."""
+class Tool(models.Model):
+    """Represents a tool used in a project."""
 
     id = models.AutoField(primary_key=True)
+    icon = models.ImageField(upload_to="tool_icons/", blank=True)
+    tool = models.CharField(unique=True, max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    skill = models.CharField(unique=True, max_length=255)
-    detail = models.TextField()
 
     def __str__(self):
-        return str(self.skill)
+        return str(self.tool)
 
 
 class UserDetails(AbstractUser):
@@ -39,8 +39,8 @@ class UserDetails(AbstractUser):
     primary_color = models.CharField(max_length=50, blank=True, null=True)
     secondary_color = models.CharField(max_length=50, blank=True, null=True)
     picture = models.ImageField(upload_to="profile_pics/", blank=True, null=True)
-    skills = models.ManyToManyField(
-        Skill, related_name="user_skills", blank=True
+    tools = models.ManyToManyField(
+        Tool, related_name="user_tools", blank=True
     )  # Many-to-Many with Skills
 
     class Meta:
@@ -65,6 +65,23 @@ class UserDetails(AbstractUser):
         return f"{self.first_name} {self.middle_name} {self.last_name}"
 
 
+class Skill(models.Model):
+    """Represents skills of a user."""
+
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    skill = models.CharField(unique=True, max_length=255)
+    detail = models.TextField()
+
+    def __str__(self):
+        return str(self.skill)
+
+    class Meta:
+        # Ensure that a user cannot have duplicate tools
+        unique_together = ["user", "skill"]
+
 class Tag(models.Model):
     """Represents a tag that can be associated with posts or projects."""
 
@@ -76,23 +93,6 @@ class Tag(models.Model):
     def __str__(self):
         return str(self.tag)
 
-
-class Tool(models.Model):
-    """Represents a tool used in a project."""
-
-    id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
-    icon = models.ImageField(upload_to="tool_icons/", blank=True)
-    tool = models.CharField(unique=True, max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return str(self.tool)
-
-    class Meta:
-        # Ensure that a user cannot have duplicate tools
-        unique_together = ["user", "tool"]
 
 
 class Post(models.Model):
