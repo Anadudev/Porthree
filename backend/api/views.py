@@ -97,7 +97,7 @@ class UserProjectsListView(generics.ListAPIView):
 
     def get_queryset(self):
         user_id = self.kwargs["user_id"]
-        return Project.objects.filter(user_id=user_id).order_by('-created_at')
+        return Project.objects.filter(user_id=user_id).order_by("-created_at")
 
 
 class TagViewSet(viewsets.ModelViewSet):
@@ -117,7 +117,7 @@ class ToolViewSet(viewsets.ModelViewSet):
     queryset = Tool.objects.all().order_by("-created_at")
     serializer_class = ToolSerializer
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ["tool", "id"]
+    filterset_fields = ["tool", "id", "user"]
 
 
 class SocialViewSet(viewsets.ModelViewSet):
