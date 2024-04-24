@@ -7,6 +7,7 @@ const ProjectsComponent = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [newProject, setNewProject] = useState({
+    image: null,
     title: '',
     content: '',
     demo: '',
@@ -43,15 +44,16 @@ const ProjectsComponent = () => {
       const response = await axios.post(`http://localhost:8000/api/projects/`, projectData, {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
       });
 
       setProjects([...projects, response.data]);
-      setNewProject({ title: '', content: '', demo: '', video: '', publish: false }); // Reset publish status
+      setNewProject({ image: null, title: '', content: '', demo: '', video: '', publish: false }); // Reset publish status
       setOpenDialog(false);
     } catch (error) {
-      // console.log(error);
+      console.log(newProject);
+      console.log(error);
       setError(error);
     } finally {
       setIsLoading(false);
@@ -65,11 +67,13 @@ const ProjectsComponent = () => {
       await axios.delete(`http://localhost:8000/api/projects/${projectId}/`, {
         headers: {
           Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
         },
       });
 
       setProjects(projects.filter(project => project.id !== projectId));
     } catch (error) {
+      console.log(error);
       setError(error);
     } finally {
       setIsLoading(false);
@@ -86,12 +90,14 @@ const ProjectsComponent = () => {
     setIsLoading(true);
     setError(null);
     try {
+      if (!(newProject.image instanceof File)) {
+        delete newProject.image;
+      };
       const projectData = { ...newProject, user: userId.url };
-
       const response = await axios.put(`http://localhost:8000/api/projects/${editingProject.id}/`, projectData, {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
       });
 
@@ -140,6 +146,30 @@ const ProjectsComponent = () => {
                 <DialogContent>
                   <form onSubmit={handleSubmit}>
                     <Grid container spacing={2}>
+                      <Grid item xs={12}>
+                        <div style={{display:'flex', alignItems:'center'}}>
+                        {newProject.image && (
+                        <img src={typeof newProject.image === 'string' ?
+                         newProject.image : URL.createObjectURL(newProject.image)}
+                         alt="Preview" 
+                         style={{ marginRight: '10px', height: '100px', width: '200px', borderRadius: '15px 20px 18px 5px', }} />
+                         )}
+                        <TextField
+                          name="image"
+                          type='file'
+                          onChange={(e) => setNewProject({ ...newProject, image: e.target.files[0] })}
+                          inputProps={{ accept: 'image/*' }}
+                          // Customize the label
+                          InputLabelProps={{
+                            shrink: true, // This is necessary to ensure the label is always in the shrunk state
+                          }}
+                          // Use the label as a placeholder
+                          label={editingProject ? 'Change project Image' : 'Choose Project Image'}
+                          style={{marginTop: '10px'}}
+                          fullWidth
+                        />
+                        </div>
+                      </Grid>
                       <Grid item xs={12}>
                         <TextField
                           label="Title"
