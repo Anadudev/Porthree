@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Grid, Typography, Button, TextField, List, ListItem, ListItemText, Dialog, DialogTitle, DialogContent, DialogActions, FormControlLabel, Switch } from '@mui/material';
 import axios from 'axios';
+import ImageUploadandPreview from './ImageUploadandPreview';
 
 const ProjectsComponent = () => {
   const [projects, setProjects] = useState([]);
@@ -146,30 +147,11 @@ const ProjectsComponent = () => {
                 <DialogContent>
                   <form onSubmit={handleSubmit}>
                     <Grid container spacing={2}>
-                      <Grid item xs={12}>
-                        <div style={{display:'flex', alignItems:'center'}}>
-                        {newProject.image && (
-                        <img src={typeof newProject.image === 'string' ?
-                         newProject.image : URL.createObjectURL(newProject.image)}
-                         alt="Preview" 
-                         style={{ marginRight: '10px', height: '100px', width: '200px', borderRadius: '15px 20px 18px 5px', }} />
-                         )}
-                        <TextField
-                          name="image"
-                          type='file'
-                          onChange={(e) => setNewProject({ ...newProject, image: e.target.files[0] })}
-                          inputProps={{ accept: 'image/*' }}
-                          // Customize the label
-                          InputLabelProps={{
-                            shrink: true, // This is necessary to ensure the label is always in the shrunk state
-                          }}
-                          // Use the label as a placeholder
-                          label={editingProject ? 'Change project Image' : 'Choose Project Image'}
-                          style={{marginTop: '10px'}}
-                          fullWidth
-                        />
-                        </div>
-                      </Grid>
+                          <ImageUploadandPreview 
+                            newProject={newProject}
+                            setNewProject={setNewProject}
+                            editingProject={editingProject}
+                            nature="project" />
                       <Grid item xs={12}>
                         <TextField
                           label="Title"
