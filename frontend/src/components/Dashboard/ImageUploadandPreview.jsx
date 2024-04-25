@@ -3,7 +3,8 @@ import { Grid, TextField } from '@mui/material';
 
 function ImageUploadandPreview({ newProject, setNewProject, editingProject, nature }) {
 
- let imagePrev = null;
+  const firsTU = (nature) => nature[0].toUpperCase() + nature.slice(1); // make first letter of nature upppercase
+  let imagePrev = null;
 
  const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -38,7 +39,7 @@ function ImageUploadandPreview({ newProject, setNewProject, editingProject, natu
           InputLabelProps={{
             shrink: true, // Ensure the label is always in the shrunk state
           }}
-          label={editingProject ? 'Change project Image' : 'Choose Project Image'}
+          label={editingProject ? `Change ${firsTU(nature)} Image` : `Choose ${firsTU(nature)} Image`}
           style={{ marginTop: '10px' }}
           fullWidth
         />
