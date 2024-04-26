@@ -2,14 +2,16 @@ import React, { useState, useEffect } from 'react'
 import { useLoaderData } from "react-router-dom";
 import GetUser, { GetRelation } from '../data/GetUser';
 import AboutCard from '../components/PortfolioSections/AboutCard';
-import { Box, Typography, Card, Pagination } from "@mui/material";
-import ResponsiveAppBar from "../components/Nav";
+import { Box, Typography, Card, Pagination, CssBaseline } from "@mui/material";
+import ResponsiveAppBar, { appTheme } from "../components/Nav";
 import Footer from '../components/Footer';
 import { UserNavLinks } from "../data/NavLinks";
 import PageTitle from './PageTitle';
 import Breadcrumb from '../components/Breadcrumb';
 import { useLocation } from 'react-router-dom';
 import Loading from '../components/PageLoad';
+import { ThemeProvider } from '@mui/material/styles';
+
 
 const Educations = () => {
   const userId = useLoaderData();
@@ -52,29 +54,32 @@ const Educations = () => {
     <React.Fragment>
 
       <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
-      <Box padding={{ xs: "10px", sm: "50px" }}>
-        <Breadcrumb path={location} />
-        <Box className='flex justify-center'>
-          {educations && <Card className={`p-2 xl:p-6 w-[60rem]`}>
-            <Typography variant='h6' component={'p'} mb={'20px'} className='font-dark uppercase'>Educations</Typography>
-            {educations.slice(0, 4).map((data, index) => (
-              <AboutCard key={index} data={data} customize={user} />
-            ))}
-            <Box mt={5} sx={{ display: 'flex', justifyContent: 'center' }}>
-              <Pagination
-                count={count}
-                variant="outlined"
-                color="primary"
-                page={page}
-                onChange={handleChange}
-              />
-            </Box>
-          </Card>}
+      <ThemeProvider theme={appTheme}>
+        <CssBaseline />
+        <Box padding={{ xs: "10px", sm: "50px" }}>
+          <Breadcrumb path={location} />
+          <Box className='flex justify-center'>
+            {educations && <Card className={`p-2 xl:p-6 w-[60rem]`}>
+              <Typography variant='h6' component={'p'} mb={'20px'} className='font-dark uppercase'>Educations</Typography>
+              {educations.slice(0, 4).map((data, index) => (
+                <AboutCard key={index} data={data} customize={user} />
+              ))}
+              <Box mt={5} sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Pagination
+                  count={count}
+                  variant="outlined"
+                  color="primary"
+                  page={page}
+                  onChange={handleChange}
+                />
+              </Box>
+            </Card>}
+          </Box>
         </Box>
-      </Box>
+      </ThemeProvider>
       <Footer />
 
-    </React.Fragment>
+    </React.Fragment >
 
   )
 }

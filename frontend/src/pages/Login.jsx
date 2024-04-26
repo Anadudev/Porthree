@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
-import ResponsiveAppBar from '../components/Nav';
+import ResponsiveAppBar, { appTheme } from '../components/Nav';
 import { NavLinks } from '../data/NavLinks';
 import Footer from '../components/Footer';
 import Breadcrumb from '../components/Breadcrumb';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { Container, TextField, Button, Box, Typography, Alert } from '@mui/material'; // Import Typography
+import {
+  Container, TextField, Button,
+  Box, Typography, Alert, CssBaseline,
+  ThemeProvider
+} from '@mui/material';
 import { useNavigate, Link } from 'react-router-dom'; // Import Link
 import api from '../../apiConfig';
 import { useFormik } from 'formik';
@@ -61,55 +65,58 @@ const Login = () => {
     <div onClick={() => (setErrorMessage(''))} >
       <ResponsiveAppBar pages={NavLinks} />
       <div className='p-[50px]'>
-        <Breadcrumb path={useLocation()} />
-        <Container>
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="center"
-            height="60vh"
-            textAlign="center"
-          >
-            <h2>Login</h2>
-            {errorMessage}
-            <form onSubmit={formik.handleSubmit}>
-              <TextField
-                {...formik.getFieldProps('username')}
-                name="username"
-                label="Username"
-                variant="outlined"
-                fullWidth
-                margin="normal"
-                error={formik.touched.username && formik.errors.username}
-                helperText={formik.touched.username && formik.errors.username}
-              />
-              <TextField
-                {...formik.getFieldProps('password')}
-                name="password"
-                label="Password"
-                type="password"
-                variant="outlined"
-                fullWidth
-                margin="normal"
-                error={formik.touched.password && formik.errors.password}
-                helperText={formik.touched.password && formik.errors.password}
-              />
-              {/* {errorMessage && <p>{errorMessage}</p>} */}
-              <Button variant="contained" color="primary" type="submit">
-                Login
-              </Button>
-              {/* Add the "password reset" link */}
-              <Typography component="div" variant="body2" style={{ marginTop: '10px' }}>
-                Forgot your password? <Link to="/password_reset" style={{ color: 'blue' }}>Reset</Link>
-              </Typography>
-              {/* Add the "Sign Up" link */}
-              <Typography component="div" variant="body2" style={{ marginTop: '10px' }}>
-                Don&apos;t  have an account? <Link to="/signup" style={{ color: 'blue' }}>Sign Up</Link>
-              </Typography>
-            </form>
-          </Box>
-        </Container>
+        <ThemeProvider theme={appTheme}>
+          <CssBaseline/>
+          <Breadcrumb path={useLocation()} />
+          <Container>
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              justifyContent="center"
+              height="60vh"
+              textAlign="center"
+            >
+              <h2>Login</h2>
+              {errorMessage}
+              <form onSubmit={formik.handleSubmit}>
+                <TextField
+                  {...formik.getFieldProps('username')}
+                  name="username"
+                  label="Username"
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  error={formik.touched.username && formik.errors.username}
+                  helperText={formik.touched.username && formik.errors.username}
+                />
+                <TextField
+                  {...formik.getFieldProps('password')}
+                  name="password"
+                  label="Password"
+                  type="password"
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  error={formik.touched.password && formik.errors.password}
+                  helperText={formik.touched.password && formik.errors.password}
+                />
+                {/* {errorMessage && <p>{errorMessage}</p>} */}
+                <Button variant="contained" color="primary" type="submit">
+                  Login
+                </Button>
+                {/* Add the "password reset" link */}
+                <Typography component="div" variant="body2" style={{ marginTop: '10px' }}>
+                  Forgot your password? <Link to="/password_reset" style={{ color: 'blue' }}>Reset</Link>
+                </Typography>
+                {/* Add the "Sign Up" link */}
+                <Typography component="div" variant="body2" style={{ marginTop: '10px' }}>
+                  Don&apos;t  have an account? <Link to="/signup" style={{ color: 'blue' }}>Sign Up</Link>
+                </Typography>
+              </form>
+            </Box>
+          </Container>
+        </ThemeProvider>
         <Footer />
       </div>
     </div>

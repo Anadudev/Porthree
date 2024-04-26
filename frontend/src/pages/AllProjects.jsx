@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { GetRelation } from '../data/GetUser';
 import PropTypes from 'prop-types';
-import { Typography, Pagination, Box } from '@mui/material';
+import { Typography, Pagination, Box, CssBaseline } from '@mui/material';
 import PageTitle from './PageTitle';
-import ResponsiveAppBar from '../components/Nav'
+import ResponsiveAppBar, { appTheme } from '../components/Nav'
 import Breadcrumb from '../components/Breadcrumb';
 import { NavLinks } from '../data/NavLinks';
 import { useLocation } from 'react-router-dom';
 import Loading from '../components/PageLoad';
 import PostCard from '../components/PortfolioSections/PostCard';
+import { ThemeProvider } from '@mui/material/styles';
+import Footer from '../components/Footer';
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -74,31 +76,34 @@ const AllProjects = () => {
     return (
         <React.Fragment>
             <ResponsiveAppBar pages={NavLinks} />
-            <Box padding={{ xs: "10px", sm: "50px" }}>
-                <Breadcrumb path={location} />
+            <ThemeProvider theme={appTheme}>
+                <CssBaseline />
+                <Box padding={{ xs: "10px", sm: "50px" }}>
+                    <Breadcrumb path={location} />
 
-                {projects && <Box sx={{ width: '100%' }}>
-                    <Box
-                        spacing={2}
-                        sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
-                    >
-                        {projects && projects.slice(0, 6).map((data, index) => (
-                            <Box item key={index}>
-                                <PostCard type='Project' post={data} mode={"Project"} />
-                            </Box>
-                        ))}
-                    </Box>
-                    <Box mt={5} sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Pagination
-                            count={count}
-                            variant="outlined"
-                            color="primary"
-                            page={page}
-                            onChange={handleChange}
-                        />
-                    </Box>
-                </Box>}
-            </Box>
+                    {projects && <Box sx={{ width: '100%' }}>
+                        <Box
+                            spacing={2}
+                            sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
+                        >
+                            {projects && projects.slice(0, 6).map((data, index) => (
+                                <Box item key={index}>
+                                    <PostCard type='Project' post={data} mode={"Project"} />
+                                </Box>
+                            ))}
+                        </Box>
+                        <Box mt={5} sx={{ display: 'flex', justifyContent: 'center' }}>
+                            <Pagination
+                                count={count}
+                                variant="outlined"
+                                color="primary"
+                                page={page}
+                                onChange={handleChange}
+                            />
+                        </Box>
+                    </Box>}
+                </Box>
+            </ThemeProvider>
         </React.Fragment >
     )
 }

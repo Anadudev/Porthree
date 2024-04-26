@@ -61,7 +61,7 @@ export function ContactForm(custom) {
 export function ContactList({ contacts, socials }) {
 
   return (
-    <Paper elevation={6} sx={{ width: '100%', height: '87%', bgcolor: 'background.paper' }}>
+    <Paper elevation={6} sx={{ width: '100%', height: '19rem', bgcolor: 'background.paper' }}>
       <nav aria-label="main mailbox folders">
         <List>
           {contacts.location && <ListItem disablePadding>
