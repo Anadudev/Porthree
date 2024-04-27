@@ -11,6 +11,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import HTMLRenderer from '../HtmlRender';
 import Limiter from '../Limiter';
+import ImageUploadandPreview from './ImageUploadandPreview';
 
 const PostsComponent = () => {
   const [posts, setPosts] = useState([]);
@@ -19,6 +20,7 @@ const PostsComponent = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [newPost, setNewPost] = useState({
+    post_image: null,
     title: '',
     content: '',
     publish: false,
@@ -56,16 +58,16 @@ const PostsComponent = () => {
       const response = await axios.post(`http://localhost:8000/api/posts/`, postData, {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
       });
 
       setPosts([...posts, response.data]);
-      setNewPost({ title: '', content: '', publish: false, tags: [] });
+      setNewPost({ post_image: null, title: '', content: '', publish: false, tags: [] });
       setOpenDialog(false);
       fetchPosts();
     } catch (error) {
-      // console.log(error);
+      console.log(error);
 
       setError(error);
     } finally {
@@ -102,21 +104,24 @@ const PostsComponent = () => {
     setIsLoading(true);
     setError(null);
     try {
+      if (!(newPost.post_image instanceof File)) {
+        delete newPost.post_image;
+      };
       const postData = { ...newPost, user: userId.url };
       const response = await axios.put(`http://localhost:8000/api/posts/${editingPost.id}/`, postData, {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
       });
 
       setPosts(posts.map(post => post.id === editingPost.id ? response.data : post));
       setEditingPost(null);
-      setNewPost({ title: '', content: '', publish: false, tags: [] });
+      setNewPost({ post_image: null, title: '', content: '', publish: false, tags: [] });
       setOpenDialog(false);
       fetchPosts();
     } catch (error) {
-      // console.log(error);
+      console.log(error);
       setError(error);
     } finally {
       setIsLoading(false);
@@ -185,6 +190,11 @@ const PostsComponent = () => {
             <DialogTitle>{editingPost ? 'Edit Post' : 'Add Post'}</DialogTitle>
             <DialogContent>
               <form onSubmit={handleSubmit}>
+              <ImageUploadandPreview 
+                  newProject={newPost}
+                  setNewProject={setNewPost}
+                  editingProject={editingPost}
+                  nature="post" />
                 <TextField
                   label="Title"
                   name="title"
