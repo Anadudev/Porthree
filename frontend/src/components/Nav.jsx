@@ -8,6 +8,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from "react-router-dom";
 import { userTools } from '../data/NavLinks';
 
+const settings = userTools();
+
 function ResponsiveAppBar({ pages, custom }) {
   if (!pages) { return null }
   const [anchorElNav, setAnchorElNav] = useState(null);
