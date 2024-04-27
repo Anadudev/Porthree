@@ -2,6 +2,14 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import { Switch, Box } from '@mui/material';
+import { Brightness7, Brightness4 } from '@mui/icons-material';
+import {IconButton} from '@mui/material';
+import { useState, useEffect } from'react';
+
+
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -183,8 +191,57 @@ const router = createBrowserRouter([
   },
 ]);
 
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
+
+const lightTheme = createTheme({
+  palette: {
+    mode: 'light',
+  },
+});
+
+const App = () => {
+  const [theme, setTheme] = useState(localStorage.getItem('theme') === 'dark'? darkTheme : lightTheme);
+
+  useEffect(() => {
+    localStorage.setItem('theme', theme.palette.mode);
+  }, [theme]);
+
+  const handleDarkModeToggle = () => {
+    setTheme(theme.palette.mode === 'dark'? lightTheme : darkTheme);
+  };
+
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Box
+      sx={{
+        display: 'flex',
+        width: '100%',
+        height: '20px',
+        alignItems: 'center',
+        justifyContent: 'center',
+        bgcolor: 'background.default',
+        color: 'text.primary',
+        borderRadius: 1,
+        p: 3,
+      }}
+    >
+      {theme.palette.mode} mode
+      <IconButton sx={{ ml: 1 }} onClick={handleDarkModeToggle} color="inherit">
+        {theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
+      </IconButton>
+    </Box>
+      <RouterProvider router={router} />
+    </ThemeProvider>
+  );
+};
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <App />
   </React.StrictMode>,
-)
+);
