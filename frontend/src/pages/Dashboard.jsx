@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet } from "react-router-dom";
-import ResponsiveAppBar, { appTheme } from "../components/Nav";
+import ResponsiveAppBar from "../components/Nav";
 import Footer from '../components/Footer';
 import { UserNavLinks } from '../data/NavLinks';
 import Breadcrumb from '../components/Breadcrumb';
@@ -8,7 +8,7 @@ import { useLocation } from 'react-router-dom';
 import {
   Container, Grid, Box,
   Backdrop, SpeedDial, SpeedDialIcon,
-  SpeedDialAction, CssBaseline
+  SpeedDialAction
 } from '@mui/material';
 import UserIcon from '@mui/icons-material/Person';
 import ToolsIcon from '@mui/icons-material/Build';
@@ -24,7 +24,6 @@ import PostsComponent from '../components/Dashboard/Posts';
 import ExperienceComponent from '../components/Dashboard/Experience';
 import PageTitle from './PageTitle';
 import { useLoaderData } from "react-router-dom";
-import { ThemeProvider } from '@mui/material/styles';
 
 
 /**
@@ -106,26 +105,23 @@ const Dashboard = () => {
   return (
     <React.Fragment>
       <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
-      <ThemeProvider theme={appTheme}>
-        <CssBaseline/>
-        <Box padding={{ xs: "10px", sm: "50px" }}>
-          <Breadcrumb path={navigation} />
-          <Container>
+      <Box padding={{ xs: "10px", sm: "50px" }}>
+        <Breadcrumb path={navigation} />
+        <Container>
 
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-              </Grid>
-              <SpeedDialTooltipOpen propActiveLink={setActiveLink} />
-              <Grid item xs={12}>
-                {boardStructure[activeLink].component}
-              </Grid>
-              <Grid item xs={12}>
-                <Outlet />
-              </Grid>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
             </Grid>
-          </Container>
-        </Box>
-      </ThemeProvider>
+            <SpeedDialTooltipOpen propActiveLink={setActiveLink} />
+            <Grid item xs={12}>
+              {boardStructure[activeLink].component}
+            </Grid>
+            <Grid item xs={12}>
+              <Outlet />
+            </Grid>
+          </Grid>
+        </Container>
+      </Box>
       <Footer />
     </React.Fragment >
   );

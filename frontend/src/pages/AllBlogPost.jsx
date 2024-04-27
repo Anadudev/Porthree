@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { GetRelation } from '../data/GetUser';
 import PropTypes from 'prop-types';
-import { Typography, Pagination, Box, CssBaseline } from '@mui/material';
+import { Typography, Pagination, Box } from '@mui/material';
 import PostCard from '../components/PortfolioSections/PostCard';
 import PageTitle from './PageTitle';
-import ResponsiveAppBar, { appTheme } from '../components/Nav'
+import ResponsiveAppBar from '../components/Nav'
 import Breadcrumb from '../components/Breadcrumb';
 import { NavLinks } from '../data/NavLinks';
 import { useLocation } from 'react-router-dom';
 import Loading from '../components/PageLoad';
-import { ThemeProvider } from '@mui/material/styles';
 import Footer from '../components/Footer';
 
 function CustomTabPanel(props) {
@@ -74,8 +73,6 @@ const AllBlogPost = () => {
     return (
         <React.Fragment>
             <ResponsiveAppBar pages={NavLinks} />
-            <ThemeProvider theme={appTheme}>
-                <CssBaseline />
                 <Box padding={{ xs: "10px", sm: "50px" }}>
                     <Breadcrumb path={location} />
                     {posts && <Box sx={{ width: '100%' }}>
@@ -100,7 +97,6 @@ const AllBlogPost = () => {
                         </Box>
                     </Box>}
                 </Box>
-            </ThemeProvider>
             <Footer/>
         </React.Fragment >
     )

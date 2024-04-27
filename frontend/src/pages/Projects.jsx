@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
-import ResponsiveAppBar, {appTheme} from "../components/Nav";
+import ResponsiveAppBar from "../components/Nav";
 import { UserNavLinks } from "../data/NavLinks";
 import Footer from "../components/Footer";
 import Breadcrumb from "../components/Breadcrumb";
 import { useLocation } from "react-router-dom";
 import PageTitle from "./PageTitle";
 import { useLoaderData } from "react-router-dom";
-import { Box, Pagination, CssBaseline } from "@mui/material";
+import { Box, Pagination } from "@mui/material";
 import PostCard from "../components/PortfolioSections/PostCard";
 import { GetRelation } from "../data/GetUser";
 import Error from "./Error";
 import Loading from "../components/PageLoad";
-import { ThemeProvider } from '@mui/material/styles';
 
 const Projects = () => {
   PageTitle("Projects");
@@ -58,8 +57,6 @@ const Projects = () => {
   return (
     <React.Fragment>
       <ResponsiveAppBar pages={UserNavLinks(user)} />
-      <ThemeProvider theme={appTheme}>
-        <CssBaseline/>
       {projects && <Box padding={{ xs: "10px", sm: "50px" }}>
         <Breadcrumb path={location} />
         <Box
@@ -82,7 +79,6 @@ const Projects = () => {
           />
         </Box>
       </Box>}
-      </ThemeProvider>
       <Footer />
     </React.Fragment>
   );

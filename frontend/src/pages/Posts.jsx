@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
-import ResponsiveAppBar, { appTheme } from "../components/Nav";
+import ResponsiveAppBar from "../components/Nav";
 import { UserNavLinks } from "../data/NavLinks";
 import Footer from "../components/Footer";
 import Breadcrumb from "../components/Breadcrumb";
 import { useLocation } from "react-router-dom";
 import PageTitle from "./PageTitle";
 import { useLoaderData } from "react-router-dom";
-import { Box, Pagination, CssBaseline } from "@mui/material";
+import { Box, Pagination } from "@mui/material";
 import PostCard from "../components/PortfolioSections/PostCard";
 import { GetRelation } from "../data/GetUser";
 import { ErrorCard } from "./Error";
 import Loading from "../components/PageLoad";
-import { ThemeProvider } from '@mui/material/styles';
 
 const Posts = () => {
   PageTitle("Posts");
@@ -60,31 +59,28 @@ const Posts = () => {
   return (
     <React.Fragment>
       <ResponsiveAppBar pages={UserNavLinks(user)} />
-      <ThemeProvider theme={appTheme}>
-        <CssBaseline />
-        {posts && <Box padding={{ xs: "10px", sm: "50px" }}>
-          <Breadcrumb path={location} />
-          <Box
-            spacing={2}
-            sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
-          >
-            {posts.map((post, index) => (
-              // <Item sx={{ [heights[index]]: true  }}>
-              <PostCard key={index} post={post} mode={"Blog Post"} />
-              // </Item>
-            ))}
-          </Box>
-          <Box mt={5} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Pagination
-              count={count}
-              variant="outlined"
-              color="primary"
-              page={page}
-              onChange={handleChange}
-            />
-          </Box>
-        </Box>}
-      </ThemeProvider>
+      {posts && <Box padding={{ xs: "10px", sm: "50px" }}>
+        <Breadcrumb path={location} />
+        <Box
+          spacing={2}
+          sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
+        >
+          {posts.map((post, index) => (
+            // <Item sx={{ [heights[index]]: true  }}>
+            <PostCard key={index} post={post} mode={"Blog Post"} />
+            // </Item>
+          ))}
+        </Box>
+        <Box mt={5} sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Pagination
+            count={count}
+            variant="outlined"
+            color="primary"
+            page={page}
+            onChange={handleChange}
+          />
+        </Box>
+      </Box>}
       <Footer />
     </React.Fragment>
   );

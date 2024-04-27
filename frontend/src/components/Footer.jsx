@@ -1,17 +1,13 @@
-import * as React from 'react';
+import React from 'react';
 import {
   Paper, BottomNavigation, Typography,
-  BottomNavigationAction, CssBaseline
+  BottomNavigationAction
 } from '@mui/material';
-import { ThemeProvider } from '@mui/material/styles';
-import { appTheme } from './Nav';
 
 export default function Footer() {
   const year = new Date().getFullYear();
   return (
-    <ThemeProvider theme={appTheme}>
-      <CssBaseline />
-      <Paper elevation={0} sx={{ height: '120px' }}></Paper>
+    <Paper elevation={0} sx={{ height: '120px' }}>
       <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, padding: '10px' }} elevation={3}>
         <BottomNavigation>
           <Typography
@@ -26,6 +22,6 @@ export default function Footer() {
           <BottomNavigationAction />
         </BottomNavigation>
       </Paper>
-    </ThemeProvider>
+    </Paper>
   );
 }

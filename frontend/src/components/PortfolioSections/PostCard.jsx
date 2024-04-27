@@ -3,7 +3,7 @@ import {
     Card, Chip, Box, Paper, Link,
     CardHeader, CardMedia, CardContent,
     CardActions, Collapse, Avatar,
-    IconButton, Typography,styled
+    IconButton, Typography, styled
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -85,7 +85,7 @@ const PostCard = ({ post, mode }) => {
     }, [post]);
     // console.log(post);
     return (
-        <Card sx={{ maxWidth: 330, margin: 1, border: `1px solid ${user?.secondary_color}` }} className="border">
+        <Card sx={{ width: "21rem", margin: 1, border: `1px solid ${user?.secondary_color}` }} className="border">
             <CardHeader
                 avatar={
                     <Avatar alt={user.username} aria-label="recipe" src={user.picture}>
@@ -101,8 +101,8 @@ const PostCard = ({ post, mode }) => {
             />
             <CardMedia
                 component="img"
-                height="194"
-                image={/* post.post_image || post.image || */ BgImage}
+                sx={{height:"10rem"}}
+                image={post.post_image || post.image || BgImage}
                 alt={"Post thumbnail"}
             />
             <CardContent sx={{ height: 200 }}>

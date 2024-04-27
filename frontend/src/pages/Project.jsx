@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ResponsiveAppBar, {appTheme} from "../components/Nav";
+import ResponsiveAppBar from "../components/Nav";
 import Footer from "../components/Footer";
 import { UserNavLinks } from "../data/NavLinks";
 import Breadcrumb from "../components/Breadcrumb";
@@ -7,7 +7,7 @@ import { useLocation, useLoaderData } from "react-router-dom";
 import PageTitle from "./PageTitle";
 import {
   Card, AvatarGroup, CardContent, CardMedia, Typography,
-  Link, Avatar, CardActions, Box, Chip, IconButton, CssBaseline
+  Link, Avatar, CardActions, Box, Chip, IconButton
 } from "@mui/material";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import { styled } from "@mui/material/styles";
@@ -20,7 +20,6 @@ import Limiter from "../components/Limiter";
 import { Link as RL } from "react-router-dom";
 import HTMLRenderer from "../components/HtmlRender";
 import { GetRelation, GetItem } from "../data/GetUser";
-import { ThemeProvider } from '@mui/material/styles';
 
 
 const HtmlTooltip = styled(({ className, ...props }) => (
@@ -98,17 +97,15 @@ const Project = () => {
   return (
     <React.Fragment>
       <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
-      <ThemeProvider theme={appTheme}>
-        <CssBaseline/>
       <Box padding={{ xs: "10px", sm: "50px" }}>
         <Breadcrumb path={useLocation()} />
         <Box className="flex flex-wrap justify-center">
-          <Card sx={{ maxWidth: 1000 }}>
+          <Card sx={{ width: "60rem" }}>
             <CardMedia
               component="img"
-              height="140"
+              sx={{ height: "25rem" }}
               image={project.image || BgImage}
-              alt="green iguana"
+              alt={project.title}
             />
             <CardContent>
               <Typography
@@ -242,7 +239,6 @@ const Project = () => {
           </Card>
         </Box>
       </Box>
-      </ThemeProvider>
       <Footer />
     </React.Fragment>
   );

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Grid from '@mui/material/Unstable_Grid2';
 import PageTitle from './PageTitle';
-import ResponsiveAppBar, { appTheme } from '../components/Nav';
+import ResponsiveAppBar from '../components/Nav';
 import Breadcrumb from '../components/Breadcrumb';
 import { NavLinks } from '../data/NavLinks';
 import { useLocation } from 'react-router-dom';
@@ -9,7 +9,7 @@ import {
     Typography, Paper, Avatar,
     Chip, Pagination, Badge,
     IconButton, Menu, MenuItem,
-    Box, CssBaseline
+    Box
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -17,7 +17,6 @@ import { GetRelation } from '../data/GetUser';
 import { Link } from 'react-router-dom';
 import Limiter from '../components/Limiter';
 import Loading from "../components/PageLoad";
-import { ThemeProvider } from '@mui/material/styles';
 import Footer from '../components/Footer';
 const ITEM_HEIGHT = 48;
 let relationList = [];
@@ -164,71 +163,68 @@ const Portfolios = () => {
 
             <ResponsiveAppBar pages={NavLinks} />
             <Box padding={{ xs: "10px", sm: "50px" }}>
-                <ThemeProvider theme={appTheme}>
-                    <CssBaseline />
-                    <Breadcrumb path={location} />
-                    {users && <Box sx={{ flexGrow: 1, p: 2 }}>
-                        <Grid
-                            container
-                            spacing={2}
-                            alignItems={'center'}
-                            justifyContent={'center'}
-                        >
-                            {users.map((user, index) => (
-                                <Grid key={index} {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-                                    <Box>
-                                        <Box sx={{ display: 'flex', justifyContent: 'center', mb: '-20px' }}>
-                                            <StyledBadge
-                                                overlap="circular"
-                                                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                                                variant="dot"
-                                            >
-                                                <Avatar component={Paper} elevation={6} alt={user.username} src={user.picture} sx={{ width: 70, height: 70 }} />
-                                            </StyledBadge>
-                                        </Box>
-                                        <Paper elevation={5} sx={{ pt: '40px', px: '10px', pb: '10px', borderRadius: '10px', border: `1px solid ${user?.primary_color}`, height: '16rem' }}>
-                                            <Box sx={{ display: "flex", justifyContent: 'space-between', mb: 2 }}>
-                                                <Box>
-                                                    <Typography component='p' className='capitalize text-center pr-2' >projects <br /> <b>{user.projects ? `${user.projects}+` : 0}</b></Typography>
-                                                </Box>
-                                                <Box><Typography component='p' className='capitalize text-center border-x px-1' sx={{ fontWeight: '900' }}>{user.first_name && user.last_name ? `${user.first_name} ${user.last_name}` : user.username}</Typography>
-                                                    <Typography component='p' className='capitalize text-center' >{user.career}</Typography></Box>
-                                                <Box><Typography component='p' className='capitalize text-center pl-2' >posts <br /> <b>{user.posts ? `${user.posts}+` : 0}</b></Typography>
-                                                </Box>
-                                            </Box>
-                                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                                                <Typography variant='p' component='p' sx={{ fontWeight: '700' }}>Bio:</Typography>
-                                                <Box sx={{ display: "flex", alignItems: "center" }}>
-                                                    {user.dataSkills && <SkillMenu skills={user.dataSkills} />}
-                                                </Box>
-                                            </Box>
-                                            <Typography variant='p' component='p'>{Limiter(user.bio, 100)}</Typography>
-                                            <Box className="mt-3 flex justify-center">
-                                                <Chip
-                                                    label="Portfolio"
-                                                    sx={{ color: `${user?.secondary_color || ''}` }}
-                                                    component={Link}
-                                                    to={`/${user.username}`}
-                                                    variant="outlined"
-                                                    clickable
-                                                />
-                                            </Box>
-                                        </Paper>
+                <Breadcrumb path={location} />
+                {users && <Box sx={{ flexGrow: 1, p: 2 }}>
+                    <Grid
+                        container
+                        spacing={2}
+                        alignItems={'center'}
+                        justifyContent={'center'}
+                    >
+                        {users.map((user, index) => (
+                            <Grid key={index} {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+                                <Box>
+                                    <Box sx={{ display: 'flex', justifyContent: 'center', mb: '-20px' }}>
+                                        <StyledBadge
+                                            overlap="circular"
+                                            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                                            variant="dot"
+                                        >
+                                            <Avatar component={Paper} elevation={6} alt={user.username} src={user.picture} sx={{ width: 70, height: 70 }} />
+                                        </StyledBadge>
                                     </Box>
-                                </Grid>
-                            ))}
-                        </Grid>
-                        <Box mt={5} sx={{ display: 'flex', justifyContent: 'center' }}>
-                            <Pagination
-                                count={count}
-                                variant="outlined"
-                                color="primary"
-                                page={page}
-                                onChange={handleChange}
-                            />
-                        </Box>
-                    </Box>}
-                </ThemeProvider>
+                                    <Paper elevation={5} sx={{ pt: '40px', px: '10px', pb: '10px', borderRadius: '10px', border: `1px solid ${user?.primary_color}`, height: '16rem' }}>
+                                        <Box sx={{ display: "flex", justifyContent: 'space-between', mb: 2 }}>
+                                            <Box>
+                                                <Typography component='p' className='capitalize text-center pr-2' >projects <br /> <b>{user.projects ? `${user.projects}+` : 0}</b></Typography>
+                                            </Box>
+                                            <Box><Typography component='p' className='capitalize text-center border-x px-1' sx={{ fontWeight: '900' }}>{user.first_name && user.last_name ? `${user.first_name} ${user.last_name}` : user.username}</Typography>
+                                                <Typography component='p' className='capitalize text-center' >{user.career}</Typography></Box>
+                                            <Box><Typography component='p' className='capitalize text-center pl-2' >posts <br /> <b>{user.posts ? `${user.posts}+` : 0}</b></Typography>
+                                            </Box>
+                                        </Box>
+                                        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                            <Typography variant='p' component='p' sx={{ fontWeight: '700' }}>Bio:</Typography>
+                                            <Box sx={{ display: "flex", alignItems: "center" }}>
+                                                {user.dataSkills && <SkillMenu skills={user.dataSkills} />}
+                                            </Box>
+                                        </Box>
+                                        <Typography variant='p' component='p'>{Limiter(user.bio, 100)}</Typography>
+                                        <Box className="mt-3 flex justify-center">
+                                            <Chip
+                                                label="Portfolio"
+                                                sx={{ color: `${user?.secondary_color || ''}` }}
+                                                component={Link}
+                                                to={`/${user.username}`}
+                                                variant="outlined"
+                                                clickable
+                                            />
+                                        </Box>
+                                    </Paper>
+                                </Box>
+                            </Grid>
+                        ))}
+                    </Grid>
+                    <Box mt={5} sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <Pagination
+                            count={count}
+                            variant="outlined"
+                            color="primary"
+                            page={page}
+                            onChange={handleChange}
+                        />
+                    </Box>
+                </Box>}
             </Box>
             <Footer />
         </Box>

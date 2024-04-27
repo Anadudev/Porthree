@@ -42,7 +42,7 @@ const Hero = ({ props }) => {
               src={`${props?.picture}?w=164&h=164&fit=crop&auto=format`}
               alt={props?.username + ' profile image'}
               loading="lazy"
-              style={{ maxHeight: '35rem' }}
+              style={{ height: '30rem' }}
             />
           </Box>
         </Grid>

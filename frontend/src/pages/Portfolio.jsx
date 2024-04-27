@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import ResponsiveAppBar, { appTheme } from "../components/Nav";
+import ResponsiveAppBar from "../components/Nav";
 import { UserNavLinks } from "../data/NavLinks";
 import Footer from "../components/Footer";
 import Breadcrumb from "../components/Breadcrumb";
 import { useLocation } from "react-router-dom";
-import { Box, Typography, CssBaseline } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Hero from "../components/PortfolioSections/Hero";
 import About from "../components/PortfolioSections/About";
 import Skills from "../components/PortfolioSections/Skills";
@@ -16,7 +16,6 @@ import { useLoaderData } from "react-router-dom";
 import GetUser, { getUserData, GetRelation } from "../data/GetUser";
 import Error, { ErrorCard } from "./Error";
 import Loading from "../components/PageLoad";
-import { ThemeProvider } from '@mui/material/styles';
 
 
 function Portfolio() {
@@ -112,35 +111,32 @@ function Portfolio() {
     return (
         <React.Fragment>
             <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
-            <ThemeProvider theme={appTheme}>
-            <CssBaseline />
-                <Box padding={{ xs: "10px", sm: "50px" }} className='scroll-smooth'>
-                    {!user ? (
-                        <Typography variant="h1" component="h1">
-                            Portfolio not in Porthree
-                        </Typography>
-                    ) : (
-                        <>
-                            <Breadcrumb path={currLoc} />
-                            <Hero props={user} />
-                            {!user && !tools && !experiences && !educations ? (
-                                ""
-                            ) : (
-                                <About
-                                    user={user}
-                                    tools={tools}
-                                    experience={experiences}
-                                    education={educations}
-                                />
-                            )}
-                            {skills && <Skills skills={skills} custom={user} />}
-                            {projects && <Projects projects={projects} user={user} />}
-                            {blog && <Blog blog={blog} user={user} />}
-                            <Contact contacts={user} socials={socials} />
-                        </>
-                    )}
-                </Box>
-            </ThemeProvider>
+            <Box padding={{ xs: "10px", sm: "50px" }} className='scroll-smooth'>
+                {!user ? (
+                    <Typography variant="h1" component="h1">
+                        Portfolio not in Porthree
+                    </Typography>
+                ) : (
+                    <>
+                        <Breadcrumb path={currLoc} />
+                        <Hero props={user} />
+                        {!user && !tools && !experiences && !educations ? (
+                            ""
+                        ) : (
+                            <About
+                                user={user}
+                                tools={tools}
+                                experience={experiences}
+                                education={educations}
+                            />
+                        )}
+                        {skills && <Skills skills={skills} custom={user} />}
+                        {projects && <Projects projects={projects} user={user} />}
+                        {blog && <Blog blog={blog} user={user} />}
+                        <Contact contacts={user} socials={socials} />
+                    </>
+                )}
+            </Box>
             <Footer />
         </React.Fragment>
     );

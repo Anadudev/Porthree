@@ -3,20 +3,10 @@ import {
   AppBar, Box, Toolbar, IconButton,
   Typography, Menu, Container, Avatar,
   Button, Tooltip, MenuItem, ButtonGroup,
-  CssBaseline
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Link } from "react-router-dom";
 import { userTools } from '../data/NavLinks';
-
-const settings = userTools();
-
-export const appTheme = createTheme({
-  palette: {
-    mode: localStorage.getItem('theme') === "dark" ? "dark" : "light"
-  },
-});
 
 function ResponsiveAppBar({ pages, custom }) {
   if (!pages) { return null }
@@ -88,8 +78,6 @@ function ResponsiveAppBar({ pages, custom }) {
   // console.log(user);
 
   return (
-    <ThemeProvider theme={appTheme}>
-      <CssBaseline />
       <AppBar sx={{ bgcolor: custom?.primary_color || '' }} position="sticky">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
@@ -196,7 +184,6 @@ function ResponsiveAppBar({ pages, custom }) {
           </Toolbar>
         </Container>
       </AppBar>
-    </ThemeProvider>
   );
 }
 export default ResponsiveAppBar;

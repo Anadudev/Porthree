@@ -28,7 +28,6 @@ import { GetRelation } from './data/GetUser.jsx';
 import {
   createBrowserRouter,
 } from "react-router-dom";
-import DrawerAppBar from './components/Nav';
 import Footer from './components/Footer.jsx';
 
 

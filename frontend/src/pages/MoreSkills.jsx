@@ -5,10 +5,9 @@ import {
   Box, Typography, Pagination,
   Dialog, DialogContent,
   DialogContentText, DialogTitle,
-  CssBaseline
 } from "@mui/material";
 import Grid from '@mui/material/Unstable_Grid2';
-import ResponsiveAppBar, {appTheme} from "../components/Nav";
+import ResponsiveAppBar from "../components/Nav";
 import Footer from '../components/Footer';
 import { UserNavLinks } from "../data/NavLinks";
 import PageTitle from './PageTitle';
@@ -17,7 +16,6 @@ import { useLocation } from 'react-router-dom';
 import Loading from '../components/PageLoad';
 import HTMLRenderer from '../components/HtmlRender';
 import Limiter from '../components/Limiter';
-import { ThemeProvider } from '@mui/material/styles';
 
 
 const Skills = () => {
@@ -84,8 +82,6 @@ const Skills = () => {
     <Fragment>
 
       <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
-      <ThemeProvider theme={appTheme}>
-        <CssBaseline/>
       <Box padding={{ xs: "10px", sm: "50px" }}>
         <Breadcrumb path={location} />
         <Box className='flex justify-center'>
@@ -141,7 +137,6 @@ const Skills = () => {
           </Box>}
         </Box>
       </Box>
-      </ThemeProvider>
       <Footer />
     </Fragment>
 
