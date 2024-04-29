@@ -125,7 +125,7 @@ const Portfolios = () => {
         const fetchData = async () => {
             setResult(await GetRelation(`http://localhost:8000/api/users/?page=${page}`));
 
-            if (!result.loading) {
+            if (!result.loading && result.results) {
                 if (result && result.results) {
                     if (initialCount === 0) {
                         setInitialCount(Math.ceil(result.count / result.results.length));

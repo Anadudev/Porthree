@@ -39,7 +39,7 @@ const Post = () => {
     useEffect(() => {
         const fetchData = async () => {
             async function handler() {
-                let relate = await GetRelation(post.user);
+                // let relate = await GetRelation(post.user);
                 setUser(await GetItem('users', Number(post.user.split('/')[5])));
                 const tagCollection = []
                 for (const tag in post.tags) {
@@ -111,4 +111,4 @@ const Post = () => {
     )
 }
 
-export default Post
+export default Post;
