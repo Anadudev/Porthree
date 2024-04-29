@@ -4,16 +4,12 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Switch, Box } from '@mui/material';
+import { Box } from '@mui/material';
 import { Brightness7, Brightness4 } from '@mui/icons-material';
-import {IconButton} from '@mui/material';
-import { useState, useEffect } from'react';
-
-
-
+import { IconButton } from '@mui/material';
+import { useState, useEffect } from 'react';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-// import App from './App';
 import Home from './pages/Home';
 import About from './pages/About';
 import UserAbout from './pages/UserAbout';
@@ -40,6 +36,16 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import MoreSkills from './pages/MoreSkills';
+import Drawer from '@mui/material/Drawer';
+import Button from '@mui/material/Button';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import MailIcon from '@mui/icons-material/Mail';
 
 const router = createBrowserRouter([
   {
@@ -230,38 +236,116 @@ const lightTheme = createTheme({
   },
 });
 
-const App = () => {
-  const [theme, setTheme] = useState(localStorage.getItem('theme') === 'dark'? darkTheme : lightTheme);
+/* ------------------- */
+
+
+export function AnchorTemporaryDrawer() {
+  const [state, setState] = React.useState({
+    top: false,
+    left: false,
+    bottom: false,
+    right: false,
+  });
+
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+
+    setState({ ...state, [anchor]: open });
+  };
+
+  const list = (anchor) => (
+    <Box
+      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
+      role="presentation"
+      onClick={toggleDrawer(anchor, false)}
+      onKeyDown={toggleDrawer(anchor, false)}
+    >
+      <List>
+        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+          <ListItem key={text} disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+      <List>
+        {['All mail', 'Trash', 'Spam'].map((text, index) => (
+          <ListItem key={text} disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
+
+  return (
+    <div>
+      {['left', 'right', 'top', 'bottom'].map((anchor) => (
+        <React.Fragment key={anchor}>
+          <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button>
+          <Drawer
+            anchor={anchor}
+            open={state[anchor]}
+            onClose={toggleDrawer(anchor, false)}
+          >
+            {list(anchor)}
+          </Drawer>
+        </React.Fragment>
+      ))}
+    </div>
+  );
+}
+
+/* ------------------- */
+
+
+const ThemeToggle = () => {
+  const [theme, setTheme] = useState(localStorage.getItem('theme') === 'dark' ? darkTheme : lightTheme);
 
   useEffect(() => {
     localStorage.setItem('theme', theme.palette.mode);
   }, [theme]);
 
   const handleDarkModeToggle = () => {
-    setTheme(theme.palette.mode === 'dark'? lightTheme : darkTheme);
+    setTheme(theme.palette.mode === 'dark' ? lightTheme : darkTheme);
   };
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Box
-      sx={{
-        display: 'flex',
-        width: '100%',
-        height: '20px',
-        alignItems: 'center',
-        justifyContent: 'center',
-        bgcolor: 'background.default',
-        color: 'text.primary',
-        borderRadius: 1,
-        p: 3,
-      }}
-    >
-      {theme.palette.mode} mode
-      <IconButton sx={{ ml: 1 }} onClick={handleDarkModeToggle} color="inherit">
-        {theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
-      </IconButton>
-    </Box>
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          bgcolor: 'transparent',
+          color: 'text.primary',
+          // borderRadius: "100%",
+          // border: "1px solid",
+          position: 'fixed',
+          paddingRight: 1,
+          py: 1,
+          zIndex: 9999,
+          right: 1,
+          top: "4rem",
+        }}
+      >
+        <IconButton sx={{ ml: 1 }} onClick={handleDarkModeToggle} color="inherit">
+          {theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
+        </IconButton>
+      </Box>
       <RouterProvider router={router} />
     </ThemeProvider>
   );
@@ -269,6 +353,6 @@ const App = () => {
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App />
+    <ThemeToggle />
   </React.StrictMode>,
 );
