@@ -93,11 +93,12 @@ export const UserNavLinks = (data) => (
     ]);
 
 
-const id = JSON.parse(localStorage.getItem("user"))?.id;
-const authUser = await GetItem('users', id);
+// const authUser = await GetItem('users', id);
 
-export const userTools = () => (
-    [
+export const userTools = () => {
+const authUser = JSON.parse(localStorage.getItem("user"));
+    console.log(authUser);
+    return [
         {
             title: "",
             url: '',
@@ -118,4 +119,4 @@ export const userTools = () => (
         {
             item: <Logout />,
         },
-    ]);
+    ]};

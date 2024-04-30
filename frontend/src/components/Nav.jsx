@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   AppBar, Box, Toolbar, IconButton,
   Typography, Menu, Container, Avatar,
@@ -27,7 +27,7 @@ export function TemporaryDrawer({ navItems, color }) {
   };
 
   const DrawerList = (
-    <Box sx={{ width: 250, bgcolor: color}} role="presentation" onClick={toggleDrawer(false)}>
+    <Box sx={{ width: 250, bgcolor: color }} role="presentation" onClick={toggleDrawer(false)}>
       <List>
         {navItems.map((item, index) => (
           <ListItem key={index} disablePadding>
@@ -82,7 +82,6 @@ export function TemporaryDrawer({ navItems, color }) {
 }
 
 
-const settings = userTools();
 
 /**
  * Renders a responsive app bar with navigation links and user options.
@@ -96,20 +95,21 @@ function ResponsiveAppBar({ pages, custom }) {
   if (!pages) { return null }
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const toggleTheme = () => {
-    localStorage.getItem('theme') === "light" ? localStorage.setItem('theme', 'dark') : localStorage.setItem('theme', 'light')
-  }
+  const [settings, setSettings] = useState('')
+  useEffect(() => {
+    setSettings(userTools())
+  }, [])
+
 
   const OutUser = () => (<ButtonGroup variant="text" aria-label="Basic button group " color="inherit">
     <Button component={Link} to='/login' color="inherit">Login</Button>
     <Button component={Link} to='/signup' color="inherit">SignUp</Button>
-    <Button onClick={() => toggleTheme()} color="inherit">Theme</Button>
   </ButtonGroup>)
   const InUser = () => (
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip title="Open settings">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar alt="U" src={settings[0].user.picture || ''} />
+          <Avatar alt="U" src={settings[0]?.user?.picture || ''} />
         </IconButton>
       </Tooltip>
       <Menu
@@ -128,7 +128,7 @@ function ResponsiveAppBar({ pages, custom }) {
         open={Boolean(anchorElUser)}
         onClose={handleCloseUserMenu}
       >
-        {settings?.map((setting, index) => (
+        {settings && settings?.map((setting, index) => (
           <MenuItem key={index} onClick={handleCloseUserMenu}>
             {setting.item || <Button
               component={Link}
