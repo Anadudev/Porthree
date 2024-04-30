@@ -128,10 +128,10 @@ const PostCard = ({ post, mode }) => {
             let collection = []
             const tools = post.tools;
 
+            // console.log(user)
             for (const tool of tools) {
-                // console.log(tools[i])
-                relate = await GetRelation(tool);
-                const data = await GetItem("tools", relate.id);
+                const data = await GetRelation(tool);
+                // const data = await GetItem("tools", relate.id);
                 collection.push(data)
             }
             setTools(collection);
@@ -139,15 +139,15 @@ const PostCard = ({ post, mode }) => {
             // collect post tags
             collection = []
             const tags = post.tags || blog.tags;
-            for (const i in tags) {
+            for (const tag in tags) {
                 // console.log(tags[i]);
-                relate = await GetRelation(tags[i]);
-                const data = await GetItem("tags", relate.id);
+                const data = await GetRelation(tag);
+                //  = await GetItem("tags", relate.id);
                 collection.push(data)
             }
             setTags(collection);
         }
-        fetchData()
+        fetchData();
     }, [post]);
     // console.log(post);
     return (mode === "Project" ? <ProjectCard project={post} user={user} /> : <BlogCard post={post} user={user} />);

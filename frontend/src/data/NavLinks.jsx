@@ -97,7 +97,7 @@ export const UserNavLinks = (data) => (
 
 export const userTools = () => {
 const authUser = JSON.parse(localStorage.getItem("user"));
-    console.log(authUser);
+    // console.log(authUser);
     return [
         {
             title: "",

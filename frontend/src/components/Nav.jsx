@@ -95,10 +95,11 @@ function ResponsiveAppBar({ pages, custom }) {
   if (!pages) { return null }
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const [settings, setSettings] = useState('')
+/*   const [settings, setSettings] = useState('')
   useEffect(() => {
     setSettings(userTools())
-  }, [])
+  }, []) */
+  const settings = userTools();
 
 
   const OutUser = () => (<ButtonGroup variant="text" aria-label="Basic button group " color="inherit">
