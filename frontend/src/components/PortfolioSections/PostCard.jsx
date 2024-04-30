@@ -14,6 +14,74 @@ import { GetItem, GetRelation } from '../../data/GetUser';
 import { Link as RL } from 'react-router-dom';
 import HTMLRenderer from '../HtmlRender';
 
+import { Button, CardActionArea } from '@mui/material';
+
+export function ProjectCard({ project, user }) {
+    return (
+        <Card sx={{ width: 345, margin: 1, border: `1px solid ${user?.secondary_color}` }} >
+            <CardActionArea component={RL} to={`/${user.username}/projects/${project.slug}`} >
+                <CardMedia
+                    component="img"
+                    sx={{ height: "12rem" }}
+                    image={project?.image}
+                    alt="Project Thumbnail"
+                />
+                <CardContent  sx={{ height: 150 }}>
+                    <Typography gutterBottom variant="h5" component="div" color={user.secondary_color}>
+                        {(<HTMLRenderer htmlContent={Limiter(project?.title)}/>) || ""}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                        {(<HTMLRenderer htmlContent={Limiter(project.content, 190)} />) || ""}
+                    </Typography>
+                </CardContent>
+            </CardActionArea>
+            <CardActions>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Avatar alt="Remy Sharp" src={user.picture || ''} sx={{ mr: 1 }} />
+                    <Typography color={user.primary_color} variant='h6' component={RL} to={`/${user.username}`} className='capitalize'>
+                        {/* {`${user.first_name} ${user.last_name}` || ""} */}
+                        {user.username}
+                    </Typography>
+                </Box>
+                <Typography><TimeAgo date={project.created_at} /></Typography>
+            </CardActions>
+        </Card>
+    );
+}
+
+function BlogCard({ post, user }) {
+    return (
+        <Card sx={{ width: 345, margin: 1, border: `1px solid ${user?.secondary_color}` }} className="border">
+            <CardHeader
+                avatar={
+                    <Avatar alt={user.username} aria-label="recipe" src={user.picture}>
+                    </Avatar>
+                }
+                action={
+                    <IconButton aria-label="settings">
+                        <MoreVertIcon />
+                    </IconButton>
+                }
+                title={<Typography variant="h6" component={RL} to={`/${user.username}`} className='capitalize' sx={{ color: user?.primary_color || '' }}> {user.username || ""}</Typography>}
+                subheader={<TimeAgo date={post.created_at} /> || ""}
+            />
+            <CardMedia
+                component="img"
+                sx={{ height: "12rem" }}
+                image={post.post_image || BgImage}
+                alt={"Post thumbnail"}
+            />
+            <CardContent sx={{ height: 150 }}>
+                <Typography gutterBottom variant="h5" component={RL} to={`/${user.username}/posts/${post.slug}`} sx={{ color: user?.secondary_color || '', }}>
+                    {(<HTMLRenderer htmlContent={Limiter(post.title)} />) || ""}
+                </Typography>
+                <Typography my={2} variant="body2" color="text.secondary" component={RL} to={`/${user.username}/posts/${post.slug}`}>{(<HTMLRenderer htmlContent={Limiter(post.content, 150)} />)}</Typography>
+            </CardContent>
+        </Card>
+    )
+}
+
+
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -55,16 +123,14 @@ const PostCard = ({ post, mode }) => {
          */
         const fetchData = async () => {
             let relate = null;
-            relate = await GetRelation(post.user);
-            // console.log(relate.id);
-            setUser(await GetItem("users", relate.id));
+            setUser(await GetRelation(post.user));
             // collect post tools
             let collection = []
             const tools = post.tools;
 
-            for (const i in tools) {
+            for (const tool of tools) {
                 // console.log(tools[i])
-                relate = await GetRelation(tools[i]);
+                relate = await GetRelation(tool);
                 const data = await GetItem("tools", relate.id);
                 collection.push(data)
             }
@@ -84,63 +150,7 @@ const PostCard = ({ post, mode }) => {
         fetchData()
     }, [post]);
     // console.log(post);
-    return (
-        <Card sx={{ width: "21rem", margin: 1, border: `1px solid ${user?.secondary_color}` }} className="border">
-            <CardHeader
-                avatar={
-                    <Avatar alt={user.username} aria-label="recipe" src={user.picture}>
-                    </Avatar>
-                }
-                action={
-                    <IconButton aria-label="settings">
-                        <MoreVertIcon />
-                    </IconButton>
-                }
-                title={<Typography variant="h6" component={RL} to={`/${user.username}`} className='capitalize' sx={{ color: user?.primary_color || '' }}> {user.username || ""}</Typography>}
-                subheader={<TimeAgo date={post.created_at} /> || ""}
-            />
-            <CardMedia
-                component="img"
-                sx={{height:"10rem"}}
-                image={post.post_image || post.image || BgImage}
-                alt={"Post thumbnail"}
-            />
-            <CardContent sx={{ height: 200 }}>
-                <p className='font-bold text-center primary'>{mode}:</p>
-
-                <Link component={RL} to={`/${user.username}/${mode === "Project" ? "projects" : "posts"}/${post.slug}`} gutterBottom underline="always" variant="h5" sx={{ color: user?.secondary_color || '', }}>
-                    {(<HTMLRenderer htmlContent={Limiter(post.title)} />) || ""}
-                </Link>
-                <Typography my={2} variant="body1" color="text.secondary" component={RL} to={`/${user.username}/${mode === "Project" ? "projects" : "posts"}/${post.slug}`}><b>{(<HTMLRenderer htmlContent={Limiter(post.content, 150)} />)}</b>
-                </Typography>
-            </CardContent>
-            <CardActions disableSpacing onClick={handleExpandClick} className='cursor-pointer'>
-                {mode === "Project" && <Typography><span className='font-bold'>{post.contributors?.length} </span>Contributors</Typography>}
-                <ExpandMore
-                    expand={expanded}
-
-                    aria-expanded={expanded}
-                    aria-label="show more"
-                >
-                    <ExpandMoreIcon />
-                </ExpandMore>
-            </CardActions>
-            <Collapse in={expanded} timeout="auto">
-                <CardContent>
-                    <Typography sx={{ fontWeight: "700" }}>{mode === "Project" ? "Tools:" : ''}</Typography>
-                    <Box sx={{ flexGrow: 1 }}>
-                        {tools?.slice(0, 4).map((data, index) => (<Chip component={Paper} elevation={3} key={index} label={data.tool} className="m-0.5" variant="outlined" />))}
-                    </Box>
-                </CardContent>
-                <CardContent>
-                    <Typography sx={{ fontWeight: "700" }}>{tags && "Tags:"}</Typography>
-                    <Box sx={{ flexGrow: 1 }}>
-                        {tags?.slice(0, 4).map((data, index) => (<Chip component={Paper} elevation={3} key={index} label={data.tag} className="m-0.5" variant="outlined" />))}
-                    </Box>
-                </CardContent>
-            </Collapse>
-        </Card>
-    );
+    return (mode === "Project" ? <ProjectCard project={post} user={user} /> : <BlogCard post={post} user={user} />);
 }
 
 export default PostCard;
