@@ -51,40 +51,41 @@ const UserComponent = () => {
     // console.log(updatedUser);
   };
 
-async function fetchPaginatedData(amount = 10) {
+  async function fetchPaginatedData(amount = 10) {
     const results = [];
     let currentPage = 1;
     let totalFetched = 0;
 
     try {
-        while (totalFetched < amount) {
-            const response = await fetch(`http://localhost:8000/api/users/4/posts/?page=${currentPage}`);
-            const data = await response.json();
-            const newData = data.results;
+      while (totalFetched < amount) {
+        const response = await fetch(`http://localhost:8000/api/users/4/posts/?page=${currentPage}`);
+        const data = await response.json();
+        const newData = data.results;
 
-            results.push(...newData);
-            totalFetched += newData.length;
-            currentPage++;
+        results.push(...newData);
+        totalFetched += newData.length;
+        currentPage++;
 
-            if (!data.next || totalFetched >= amount) {
-                break;
-            }
+        if (!data.next || totalFetched >= amount) {
+          break;
         }
+      }
     } catch (error) {
-        console.error('Error fetching data:', error);
-        throw error;
+      console.error('Error fetching data:', error);
+      throw error;
     }
 
     return results.slice(0, amount); // Return only the specified amount of data
-}
+  }
 
-// Usage example
-fetchPaginatedData(20)
+  // Usage example
+  fetchPaginatedData(20)
     .then(results => {
-        console.log(results); // Process the fetched results
+      // Process the fetched results
+      // console.log(results); 
     })
     .catch(error => {
-        console.error('Error:', error);
+      console.error('Error:', error);
     });
 
 
