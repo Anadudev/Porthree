@@ -1,4 +1,5 @@
 import axios from 'axios';
+import api from '../../apiConfig';
 
 /**
  * Fetches user data from the backend API.
@@ -8,7 +9,7 @@ import axios from 'axios';
 async function GetUser(user) {
     // console.log(user);
     try {
-        const response = await axios.get(`http://localhost:8000/api/users/${user.id}/`);
+        const response = await axios.get(`${api.apiHost}/api/users/${user.id}/`);
         if (response && response.status === 200 && response.data) {
             return response.data;
         }
@@ -77,7 +78,7 @@ export async function GetRelation(UrlLink) {
  */
 export async function GetDatas(data) {
     try {
-        const response = await axios.get(`http://localhost:8000/api/${data}/`);
+        const response = await axios.get(`${api.apiHost}/api/${data}/`);
         if (response && response.status === 200 && response.data) {
             return response.data;
         }
@@ -125,7 +126,7 @@ const assembleData = async (id, dataList) => {
  */
 export const getUserData = async (userId, data) => {
     try {
-        const response = await axios.get(`http://localhost:8000/api/${data}/`);
+        const response = await axios.get(`${api.apiHost}/api/${data}/`);
         if (response && response.status === 200 && response.data) {
             const assembled = await assembleData(userId, response.data.results);
             // console.log(assembled);
@@ -151,7 +152,7 @@ export const getUserData = async (userId, data) => {
  */
 export async function GetItem(item, id) {
     try {
-        const response = await axios.get(`http://localhost:8000/api/${item}/${id}/`);
+        const response = await axios.get(`${api.apiHost}/api/${item}/${id}/`);
         if (response && response.status === 200 && response.data) {
             return response.data;
         }

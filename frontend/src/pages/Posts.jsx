@@ -11,6 +11,7 @@ import PostCard from "../components/PortfolioSections/PostCard";
 import { GetRelation } from "../data/GetUser";
 import { ErrorCard } from "./Error";
 import Loading from "../components/PageLoad";
+import api from "../../apiConfig";
 
 const Posts = () => {
   PageTitle("Posts");
@@ -35,8 +36,8 @@ const Posts = () => {
   }
   useEffect(() => {
     async function fetchData() {
-      setUser(await GetRelation(`http://localhost:8000/api/users/${id.id}/`));
-      setResult(await GetRelation(`http://localhost:8000/api/users/${id.id}/projects/?page=${page}&publish=true`))
+      setUser(await GetRelation(`${api.apiHost}/api/users/${id.id}/`));
+      setResult(await GetRelation(`${api.apiHost}/api/users/${id.id}/projects/?page=${page}&publish=true`))
       if (result && result.results) {
         setPosts(result.results);
         if (initialCount === 0) {

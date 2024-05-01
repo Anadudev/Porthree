@@ -29,6 +29,7 @@ import Educations from './pages/Educations';
 import Experiences from './pages/Experiences';
 import AllProjects from './pages/AllProjects';
 import AllBlogPost from './pages/AllBlogPost';
+import Filter from './pages/Filter';
 import './index.css';
 import { GetRelation } from './data/GetUser';
 import {
@@ -36,17 +37,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import MoreSkills from './pages/MoreSkills';
-import Drawer from '@mui/material/Drawer';
-import Button from '@mui/material/Button';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-
+import Play from './pages/Play';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -56,6 +47,16 @@ const router = createBrowserRouter([
   {
     path: "/about",
     element: <About />,
+    errorElement: <Error />,
+  },
+  {
+    path: "/play",
+    element: <Play />,
+    errorElement: <Error />,
+  },
+  {
+    path: "/filter",
+    element: <Filter />,
     errorElement: <Error />,
   },
   {

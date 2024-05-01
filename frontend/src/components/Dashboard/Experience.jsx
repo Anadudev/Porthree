@@ -6,6 +6,7 @@ import {
   DialogContent, DialogActions
 } from '@mui/material';
 import axios from 'axios';
+import api from '../../../apiConfig';
 
 const ExperienceComponent = () => {
   const [experiences, setExperiences] = useState([]);
@@ -28,7 +29,7 @@ const ExperienceComponent = () => {
     const fetchExperiences = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get(`http://localhost:8000/api/users/${userId.id}/experiences/`);
+        const response = await axios.get(`${api.apiHost}/api/users/${userId.id}/experiences/`);
         setExperiences(response.data.results);
       } catch (error) {
         setError(error);
@@ -45,7 +46,7 @@ const ExperienceComponent = () => {
     setError(null);
     try {
       const experienceData = { ...newExperience, user: userId.url };
-      const response = await axios.post(`http://localhost:8000/api/experiences/`, experienceData, {
+      const response = await axios.post(`${api.apiHost}/api/experiences/`, experienceData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -66,7 +67,7 @@ const ExperienceComponent = () => {
     setIsLoading(true);
     setError(null);
     try {
-      await axios.delete(`http://localhost:8000/api/experiences/${experienceId}/`, {
+      await axios.delete(`${api.apiHost}/api/experiences/${experienceId}/`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -92,7 +93,7 @@ const ExperienceComponent = () => {
     try {
       const experienceData = { ...newExperience, user: userId.url };
 
-      const response = await axios.put(`http://localhost:8000/api/experiences/${editingExperience.id}/`, experienceData, {
+      const response = await axios.put(`${api.apiHost}/api/experiences/${editingExperience.id}/`, experienceData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',

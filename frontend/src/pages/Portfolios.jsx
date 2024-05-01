@@ -123,7 +123,7 @@ const Portfolios = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            setResult(await GetRelation(`http://localhost:8000/api/users/?page=${page}`));
+            setResult(await GetRelation(`${api.apiHost}/api/users/?page=${page}`));
 
             if (!result.loading && result.results) {
                 if (result && result.results) {

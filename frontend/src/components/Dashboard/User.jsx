@@ -6,6 +6,7 @@ import axios from 'axios';
 import PhoneNumberInputWithLocation from '../PnoneNumberInput';
 import UserProfileAvatar from './ProfilePicturePlaceholder';
 import UserProfileDisplay from '../UserProfileDisplay';
+import api from '../../../apiConfig';
 
 const UserComponent = () => {
   const [user, setUser] = useState(new FormData()); // State to store user data
@@ -20,7 +21,7 @@ const UserComponent = () => {
     const fetchUser = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get(`http://localhost:8000/api/users/${userId}/`);
+        const response = await axios.get(`${api.apiHost}/api/users/${userId}/`);
         setUser(response.data);
       } catch (error) {
         setError(error);
@@ -58,7 +59,7 @@ const UserComponent = () => {
 
     try {
       while (totalFetched < amount) {
-        const response = await fetch(`http://localhost:8000/api/users/4/posts/?page=${currentPage}`);
+        const response = await fetch(`${api.apiHost}/api/users/4/posts/?page=${currentPage}`);
         const data = await response.json();
         const newData = data.results;
 
@@ -102,7 +103,7 @@ const UserComponent = () => {
         delete user.picture
       }
       // console.log(user)
-      const response = await axios.put(`http://localhost:8000/api/users/${userId}/`, user, {
+      const response = await axios.put(`${api.apiHost}/api/users/${userId}/`, user, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data', // Set the content type to multipart/form-data

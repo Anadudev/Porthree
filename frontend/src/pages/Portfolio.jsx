@@ -16,7 +16,7 @@ import { useLoaderData } from "react-router-dom";
 import GetUser, { getUserData, GetRelation } from "../data/GetUser";
 import Error, { ErrorCard } from "./Error";
 import Loading from "../components/PageLoad";
-
+import api from "../../apiConfig";
 
 function Portfolio() {
     const id = useLoaderData();
@@ -58,7 +58,7 @@ function Portfolio() {
             if (fetchedUser) {
 
                 /* fetch all users tools  */
-                // dataResult = await GetRelation(`http://localhost:8000/api/tools/?user=${fetchedUser.id}`);
+                // dataResult = await GetRelation(`${api.apiHost}/api/tools/?user=${fetchedUser.id}`);
                 for (const tool of fetchedUser.tools) {
                     const data = await GetRelation(tool);
                     relationList.push(data)
@@ -73,7 +73,7 @@ function Portfolio() {
                 setExperiences(dataResult.results);
 
                 /* fetch all users skills  */
-                dataResult = await GetRelation(`http://localhost:8000/api/skills/?user=${fetchedUser.id}`);
+                dataResult = await GetRelation(`${api.apiHost}/api/skills/?user=${fetchedUser.id}`);
                 setSkills(dataResult.results);
 
                 /* fetch all users socials  */
