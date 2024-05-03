@@ -75,32 +75,32 @@ const AllProjects = () => {
     return (
         <React.Fragment>
             <ResponsiveAppBar pages={NavLinks} />
-                <Box padding={{ xs: "10px", sm: "50px" }}>
-                    <Breadcrumb path={location} />
+            <Box padding={{ xs: "10px", sm: "50px" }}>
+                <Breadcrumb path={location} />
 
-                    {projects && <Box sx={{ width: '100%' }}>
-                        <Box
-                            spacing={2}
-                            sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
-                        >
-                            {projects && projects.slice(0, 6).map((data, index) => (
-                                <Box item key={index}>
-                                    <PostCard type='Project' post={data} mode={"Project"} />
-                                </Box>
-                            ))}
-                        </Box>
-                        <Box mt={5} sx={{ display: 'flex', justifyContent: 'center' }}>
-                            <Pagination
-                                count={count}
-                                variant="outlined"
-                                color="primary"
-                                page={page}
-                                onChange={handleChange}
-                            />
-                        </Box>
-                    </Box>}
-                </Box>
-                <Footer/>
+                {projects && projects.length > 0 ? (<Box sx={{ width: '100%' }}>
+                    <Box
+                        spacing={2}
+                        sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
+                    >
+                        {projects && projects.slice(0, 6).map((data, index) => (
+                            <Box item key={index}>
+                                <PostCard type='Project' post={data} mode={"Project"} />
+                            </Box>
+                        ))}
+                    </Box>
+                    <Box mt={5} sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <Pagination
+                            count={count}
+                            variant="outlined"
+                            color="primary"
+                            page={page}
+                            onChange={handleChange}
+                        />
+                    </Box>
+                </Box>) : <Typography textAlign={'center'}>No projects</Typography>}
+            </Box>
+            <Footer />
         </React.Fragment >
     )
 }

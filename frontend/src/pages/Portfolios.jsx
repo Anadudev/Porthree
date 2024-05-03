@@ -113,7 +113,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 const Portfolios = () => {
     PageTitle("Portfolios");
     const [users, setUsers] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
     const [result, setResult] = useState([]);
     const [count, setCount] = useState(0);
@@ -122,9 +122,9 @@ const Portfolios = () => {
     const location = useLocation();
 
     useEffect(() => {
-        const fetchData = async () => {
+        async function fetchData() {
             setResult(await GetRelation(`${api.apiHost}/api/users/?page=${page}`));
-
+            if (result.loading) { setLoading(true) }
             if (!result.loading && result.results) {
                 if (result && result.results) {
                     if (initialCount === 0) {
@@ -144,8 +144,8 @@ const Portfolios = () => {
                     // console.log(user.projects);
                     relationList = [];
                 }
-                setLoading(false);
                 setUsers(userList);
+                setLoading(false);
             }
         };
         fetchData();
@@ -154,9 +154,9 @@ const Portfolios = () => {
         setPage(value);
     };
     if (loading) { return <Loading /> }
-    if (!users || users.length < 1) {
-        return null;
-    }
+    // if (!users || users.length < 1) {
+    //     return null;
+    // }
     // console.log(users);
     return (
         <Box>
@@ -164,7 +164,7 @@ const Portfolios = () => {
             <ResponsiveAppBar pages={NavLinks} />
             <Box padding={{ xs: "10px", sm: "50px" }}>
                 <Breadcrumb path={location} />
-                {users && <Box sx={{ flexGrow: 1, p: 2 }}>
+                {users && users.length > 0 ? (<Box sx={{ flexGrow: 1, p: 2 }}>
                     <Grid
                         container
                         spacing={2}
@@ -183,7 +183,7 @@ const Portfolios = () => {
                                             <Avatar component={Paper} elevation={6} alt={user.username} src={user.picture} sx={{ width: 70, height: 70 }} />
                                         </StyledBadge>
                                     </Box>
-                                    <Paper elevation={5} sx={{ pt: '40px', px: '10px', pb: '10px', borderRadius: '10px', border: `1px solid ${user?.primary_color}`}}>
+                                    <Paper elevation={5} sx={{ pt: '40px', px: '10px', pb: '10px', borderRadius: '10px', border: `1px solid ${user?.primary_color}` }}>
                                         <Box sx={{ display: "flex", justifyContent: 'space-between', mb: 2 }}>
                                             <Box>
                                                 <Typography component='p' className='capitalize text-center pr-2' >projects <br /> <b>{user.projects ? `${user.projects}+` : 0}</b></Typography>
@@ -215,7 +215,7 @@ const Portfolios = () => {
                             </Grid>
                         ))}
                     </Grid>
-                    <Box mt={5} sx={{ display: 'flex', justifyContent: 'center' }}>
+                    {<Box mt={5} sx={{ display: 'flex', justifyContent: 'center' }}>
                         <Pagination
                             count={count}
                             variant="outlined"
@@ -223,8 +223,8 @@ const Portfolios = () => {
                             page={page}
                             onChange={handleChange}
                         />
-                    </Box>
-                </Box>}
+                    </Box>}
+                </Box>) : <Typography textAlign={'center'}> No Portfolios </Typography>}
             </Box>
             <Footer />
         </Box>

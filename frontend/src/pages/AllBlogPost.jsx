@@ -75,7 +75,7 @@ const AllBlogPost = () => {
             <ResponsiveAppBar pages={NavLinks} />
                 <Box padding={{ xs: "10px", sm: "50px" }}>
                     <Breadcrumb path={location} />
-                    {posts && <Box sx={{ width: '100%' }}>
+                    {posts && posts.length > 0 ?(<Box sx={{ width: '100%' }}>
                         <Box
                             spacing={2}
                             sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
@@ -95,7 +95,7 @@ const AllBlogPost = () => {
                                 onChange={handleChange}
                             />
                         </Box>
-                    </Box>}
+                    </Box>) : <Typography textAlign={'center'}>No Posts</Typography>}
                 </Box>
             <Footer/>
         </React.Fragment >
