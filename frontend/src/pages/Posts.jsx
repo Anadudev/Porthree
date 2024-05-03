@@ -6,12 +6,13 @@ import Breadcrumb from "../components/Breadcrumb";
 import { useLocation } from "react-router-dom";
 import PageTitle from "./PageTitle";
 import { useLoaderData } from "react-router-dom";
-import { Box, Pagination } from "@mui/material";
+import { Box, Pagination, Typography } from "@mui/material";
 import PostCard from "../components/PortfolioSections/PostCard";
 import { GetRelation } from "../data/GetUser";
 import { ErrorCard } from "./Error";
 import Loading from "../components/PageLoad";
 import api from "../../apiConfig";
+import Error from "./Error";
 
 const Posts = () => {
   PageTitle("Posts");
@@ -60,7 +61,7 @@ const Posts = () => {
   return (
     <React.Fragment>
       <ResponsiveAppBar pages={UserNavLinks(user)} />
-      {posts && <Box padding={{ xs: "10px", sm: "50px" }}>
+      {posts && posts.length > 0 ?(<Box padding={{ xs: "10px", sm: "50px" }}>
         <Breadcrumb path={location} />
         <Box
           spacing={2}
@@ -81,7 +82,7 @@ const Posts = () => {
             onChange={handleChange}
           />
         </Box>
-      </Box>}
+      </Box>):<Typography>No Posts </Typography>}
       <Footer />
     </React.Fragment>
   );
