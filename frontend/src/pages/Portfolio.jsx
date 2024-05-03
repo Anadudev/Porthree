@@ -22,7 +22,7 @@ function Portfolio() {
     const id = useLoaderData();
     PageTitle(id?.username);
     const currLoc = useLocation();
-
+console.log(id);
     if (id.error) {
         return <ErrorCard
             error={'not found'}
