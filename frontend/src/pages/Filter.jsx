@@ -226,6 +226,7 @@ export function FilterView() {
                 /* reset the pagination navigation on url modification ie(redirection) */
                 setInitialCategory(category.value);
                 setInitialCount(0);
+                setCount(0);
                 setPage(1)
             }
             setResult(await GetRelation(`http://127.0.0.1:8000/api/${category.value}/?page=${page}&publish=true`))
@@ -241,14 +242,22 @@ export function FilterView() {
             // console.log(category.value);
         }
         FetchData();
-    }, [category, page, result.count, count, result.next])
+    }, [category.value,
+        page,
+    result.count,
+        count,
+    result.next,
+        initialCategory,
+        initialCount,
+    ])
     const handleChange = (event, value) => {
+        // console.log(event);
         setPage(value);
     };
     if (loading) {
         return <Loading />
     }
-    // console.log(initialCount);
+    // console.log(page);
     return (
         <Box>
             {data && data.length > 0 ? (<Box sx={{ width: '100%' }}>
