@@ -195,6 +195,8 @@ const Project = () => {
                     {tools?.map((data, index) => (
                       <Chip
                         key={index}
+                        component={RL} 
+                        to={`/filter/projects`}
                         label={data.tool || ""}
                         className="m-0.5 capitalize"
                         variant="outlined"
@@ -218,6 +220,7 @@ const Project = () => {
                 {tags?.map((data, index) => (
                   <Chip
                     key={index}
+                    component={RL} to={`/filter/posts`} 
                     label={data.tag || ""}
                     className="m-0.5 capitalize"
                     variant="outlined"

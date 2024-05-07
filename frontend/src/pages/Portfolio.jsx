@@ -22,7 +22,7 @@ function Portfolio() {
     const id = useLoaderData();
     PageTitle(id?.username);
     const currLoc = useLocation();
-console.log(id);
+// console.log(id);
     if (id.error) {
         return <ErrorCard
             error={'not found'}
@@ -58,7 +58,7 @@ console.log(id);
             if (fetchedUser) {
 
                 /* fetch all users tools  */
-                // dataResult = await GetRelation(`${api.apiHost}/api/tools/?user=${fetchedUser.id}`);
+                // dataResult = await GetRelation(`http://localhost:8000/api/tools/?user=${fetchedUser.id}`);
                 for (const tool of fetchedUser.tools) {
                     const data = await GetRelation(tool);
                     relationList.push(data)
@@ -73,7 +73,7 @@ console.log(id);
                 setExperiences(dataResult.results);
 
                 /* fetch all users skills  */
-                dataResult = await GetRelation(`${api.apiHost}/api/skills/?user=${fetchedUser.id}`);
+                dataResult = await GetRelation(`http://localhost:8000/api/skills/?user=${fetchedUser.id}`);
                 setSkills(dataResult.results);
 
                 /* fetch all users socials  */

@@ -38,7 +38,7 @@ const Login = () => {
       // e.preventDefault();
 
       try {
-        const response = await axios.post(`${api.apiHost}/auth_app/login/`, values);
+        const response = await axios.post(`http://localhost:8000/auth_app/login/`, values);
         if (response.status === 200) {
           // The login was successful
           const token = response.data.access; // The JWT token

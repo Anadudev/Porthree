@@ -25,7 +25,7 @@ const Hero = ({ props }) => {
           <Box className="flex justify-center align-middle h-full">
             <Box className="self-center h-fit">
               <Box className='mb-10' textAlign={{ xs: 'center', sm: 'left' }}>
-                <Typography variant="h4" component="h2" sx={{ fontWeight: '900' }} >{props.first_name || 'props'} {props.last_name || ''}</Typography>
+                <Typography variant="h4" component="h2" sx={{ fontWeight: '900' }} >{props.first_name || ''} {props.last_name || ''}</Typography>
                 <Typography variant="h2" component="h1" sx={{ fontWeight: '900', marginBottom: "30px", color: props?.primary_color || '' }}>{props.career || ''}</Typography>
                 <Typography variant="p" mb={'20px'} component="p" className='text-2xl italic'>{props.bio || ''}</Typography>
               </Box>

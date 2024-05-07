@@ -40,10 +40,10 @@ const Post = () => {
         const fetchData = async () => {
             async function handler() {
                 // let relate = await GetRelation(post.user);
-                setUser(await GetItem('users', Number(post.user.split('/')[5])));
+                setUser(await GetRelation(post.user));
                 const tagCollection = []
-                for (const tag in post.tags) {
-                    tagCollection.push(await GetItem('tags', Number(post.tags[tag].split('/')[5])))
+                for (const tag of post.tags) {
+                    tagCollection.push(await GetRelation(tag))
                 }
                 setTags(tagCollection)
             }
@@ -88,7 +88,7 @@ const Post = () => {
                         </CardContent>
                         <Box px={'10px'}>
                             <Box sx={{ flexGrow: 1 }}>
-                                {tags?.map((data, index) => (<Chip key={index} label={data.tag || ''} className="m-0.5 capitalize" variant="outlined" />))}
+                                {tags?.map((data, index) => (<Chip key={index} component={RL} to={`/filter/posts`} label={data.tag || ''} className="m-0.5 capitalize" variant="outlined" />))}
 
                             </Box>
                         </Box>

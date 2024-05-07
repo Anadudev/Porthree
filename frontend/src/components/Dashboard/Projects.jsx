@@ -31,7 +31,7 @@ const ProjectsComponent = () => {
     const fetchProjects = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get(`${api.apiHost}/api/users/${userId.id}/projects/`);
+        const response = await axios.get(`http://localhost:8000/api/users/${userId.id}/projects/`);
         setProjects(response.data.results);
       } catch (error) {
         setError(error);
@@ -48,7 +48,7 @@ const ProjectsComponent = () => {
     setError(null);
     try {
       const projectData = { ...newProject, user: userId.url };
-      const response = await axios.post(`${api.apiHost}/api/projects/`, projectData, {
+      const response = await axios.post(`http://localhost:8000/api/projects/`, projectData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
@@ -71,7 +71,7 @@ const ProjectsComponent = () => {
     setIsLoading(true);
     setError(null);
     try {
-      await axios.delete(`${api.apiHost}/api/projects/${projectId}/`, {
+      await axios.delete(`http://localhost:8000/api/projects/${projectId}/`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
@@ -101,7 +101,7 @@ const ProjectsComponent = () => {
         delete newProject.image;
       };
       const projectData = { ...newProject, user: userId.url };
-      const response = await axios.put(`${api.apiHost}/api/projects/${editingProject.id}/`, projectData, {
+      const response = await axios.put(`http://localhost:8000/api/projects/${editingProject.id}/`, projectData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',

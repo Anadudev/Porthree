@@ -37,8 +37,8 @@ const Posts = () => {
   }
   useEffect(() => {
     async function fetchData() {
-      setUser(await GetRelation(`${api.apiHost}/api/users/${id.id}/`));
-      setResult(await GetRelation(`${api.apiHost}/api/users/${id.id}/projects/?page=${page}&publish=true`))
+      setUser(await GetRelation(`http://localhost:8000/api/users/${id.id}/`));
+      setResult(await GetRelation(`http://localhost:8000/api/users/${id.id}/posts/?page=${page}&publish=true`))
       if (result && result.results) {
         setPosts(result.results);
         if (initialCount === 0) {
@@ -61,28 +61,30 @@ const Posts = () => {
   return (
     <React.Fragment>
       <ResponsiveAppBar pages={UserNavLinks(user)} />
-      {posts && posts.length > 0 ?(<Box padding={{ xs: "10px", sm: "50px" }}>
+      <Box padding={{ xs: "10px", sm: "50px" }}>
         <Breadcrumb path={location} />
-        <Box
-          spacing={2}
-          sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
-        >
-          {posts.map((post, index) => (
-            // <Item sx={{ [heights[index]]: true  }}>
-            <PostCard key={index} post={post} mode={"Blog Post"} />
-            // </Item>
-          ))}
-        </Box>
-        <Box mt={5} sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Pagination
-            count={count}
-            variant="outlined"
-            color="primary"
-            page={page}
-            onChange={handleChange}
-          />
-        </Box>
-      </Box>):<Typography>No Posts </Typography>}
+        {posts && posts.length > 0 ? (<Box padding={{ xs: "10px", sm: "50px" }}>
+          <Box
+            spacing={2}
+            sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
+          >
+            {posts.map((post, index) => (
+              // <Item sx={{ [heights[index]]: true  }}>
+              <PostCard key={index} post={post} mode={"Blog Post"} />
+              // </Item>
+            ))}
+          </Box>
+          <Box mt={5} sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Pagination
+              count={count}
+              variant="outlined"
+              color="primary"
+              page={page}
+              onChange={handleChange}
+            />
+          </Box>
+        </Box>) : <Typography textAlign={'center'}>No Posts </Typography>}
+      </Box>
       <Footer />
     </React.Fragment>
   );

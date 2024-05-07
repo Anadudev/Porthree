@@ -40,7 +40,7 @@ const PostsComponent = () => {
   const fetchPosts = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get(`${api.apiHost}/api/users/${userId.id}/posts/`);
+      const response = await axios.get(`http://localhost:8000/api/users/${userId.id}/posts/`);
       setPosts(response.data.results);
       setPublishedPosts(response.data.results.filter(post => post.publish));
       setUnpublishedPosts(response.data.results.filter(post => !post.publish));
@@ -56,7 +56,7 @@ const PostsComponent = () => {
     setError(null);
     try {
       const postData = { ...newPost, user: userId.url };
-      const response = await axios.post(`${api.apiHost}/api/posts/`, postData, {
+      const response = await axios.post(`http://localhost:8000/api/posts/`, postData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
@@ -80,7 +80,7 @@ const PostsComponent = () => {
     setIsLoading(true);
     setError(null);
     try {
-      await axios.delete(`${api.apiHost}/api/posts/${postId}/`, {
+      await axios.delete(`http://localhost:8000/api/posts/${postId}/`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -109,7 +109,7 @@ const PostsComponent = () => {
         delete newPost.post_image;
       };
       const postData = { ...newPost, user: userId.url };
-      const response = await axios.put(`${api.apiHost}/api/posts/${editingPost.id}/`, postData, {
+      const response = await axios.put(`http://localhost:8000/api/posts/${editingPost.id}/`, postData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',

@@ -32,7 +32,7 @@ const EducationsComponent = () => {
     const fetchEducations = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get(`${api.apiHost}/api/users/${userId.id}/educations/`);
+        const response = await axios.get(`http://localhost:8000/api/users/${userId.id}/educations/`);
         setEducations(response.data.results);
       } catch (error) {
         setError(error);
@@ -52,7 +52,7 @@ const EducationsComponent = () => {
       const educationData = { ...newEducation, user: userId.url };
       // console.log(educationData)
       // Send the POST request with the Authorization header
-      const response = await axios.post(`${api.apiHost}/api/educations/`, educationData, {
+      const response = await axios.post(`http://localhost:8000/api/educations/`, educationData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json', // Assuming the API expects JSON data
@@ -75,7 +75,7 @@ const EducationsComponent = () => {
     setError(null); // Clear previous errors
     try {
       // Send the DELETE request with the Authorization header
-      await axios.delete(`${api.apiHost}/api/educations/${educationId}/`, {
+      await axios.delete(`http://localhost:8000/api/educations/${educationId}/`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -103,7 +103,7 @@ const EducationsComponent = () => {
       const educationData = { ...newEducation, user: userId.url };
 
       // Send the PUT request with the Authorization header
-      const response = await axios.put(`${api.apiHost}/api/educations/${editingEducation.id}/`, educationData, {
+      const response = await axios.put(`http://localhost:8000/api/educations/${editingEducation.id}/`, educationData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json', // Assuming the API expects JSON data

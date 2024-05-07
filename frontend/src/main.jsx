@@ -29,15 +29,15 @@ import Educations from './pages/Educations';
 import Experiences from './pages/Experiences';
 import AllProjects from './pages/AllProjects';
 import AllBlogPost from './pages/AllBlogPost';
-import Filter from './pages/Filter';
+import Filter, { FilterView } from './pages/Filter';
 import './index.css';
-import { GetRelation } from './data/GetUser';
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
 import MoreSkills from './pages/MoreSkills';
 import Play from './pages/Play';
+import { GetRelation } from './data/GetUser';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -57,7 +57,19 @@ const router = createBrowserRouter([
   {
     path: "/filter",
     element: <Filter />,
+
     errorElement: <Error />,
+    children: [
+      {
+        path: "/filter/:category",
+        element: <FilterView />,
+        loader: async function loader({ params }) {
+          const value = params.category;
+          const data = await GetRelation(`http://127.0.0.1:8000/api/${value}`);
+          return { data, value };
+        },
+      },
+    ],
   },
   {
     path: "/portfolios",
@@ -79,11 +91,7 @@ const router = createBrowserRouter([
     element: <Portfolio />,
     errorElement: <Error />,
     loader: async ({ params }) => {
-      try {
-        return await fetch(`http://127.0.0.1:8000/api/user/${params.username}`)
-      } catch (error) {
-        return null
-      }
+      return (await GetRelation(`http://127.0.0.1:8000/api/user/${params.username}`)) || null;
     },
   },
   {
@@ -91,13 +99,7 @@ const router = createBrowserRouter([
     element: <Posts />,
     errorElement: <Error />,
     loader: async ({ params }) => {
-      try {
-        const user = await fetch(`http://127.0.0.1:8000/api/user/${params.username}`)
-        return user.status != 200 ? null : user
-      } catch (error) {
-        return null
-      }
-
+      return (await GetRelation(`http://127.0.0.1:8000/api/user/${params.username}`)) || null;
     },
   },
   {
@@ -105,12 +107,7 @@ const router = createBrowserRouter([
     element: <MoreSkills />,
     errorElement: <Error />,
     loader: async ({ params }) => {
-      try {
-        const user = await fetch(`http://127.0.0.1:8000/api/user/${params.username}`)
-        return user.status != 200 ? null : user
-      } catch (error) {
-        return null
-      }
+      return (await GetRelation(`http://127.0.0.1:8000/api/user/${params.username}`)) || null;
 
     },
   },

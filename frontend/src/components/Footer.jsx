@@ -9,16 +9,18 @@ export default function Footer() {
   return (
     <Paper elevation={0} sx={{ height: '10rem' }}>
       <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, padding: '10px' }} elevation={3}>
-        <BottomNavigation>
+        <BottomNavigation
+        sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}
+        >
           <Typography
-            noWrap
+            // noWrap
             sx={{
               fontWeight: 700,
               color: 'inherit',
             }}
             className='text-center'
           >Porthree copyright {year} </Typography>
-          <BottomNavigationAction />
+          {/* <BottomNavigationAction /> */}
         </BottomNavigation>
       </Paper>
     </Paper>

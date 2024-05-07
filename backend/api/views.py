@@ -118,6 +118,20 @@ class TagViewSet(viewsets.ModelViewSet):
     filterset_fields = ["tag", "id"]
 
 
+class AllTagViewSet(viewsets.ModelViewSet):
+    """
+    A ViewSet that provides a REST API view for managing the Tag model.
+    It adds representations of the Tag to the API view without pagination.
+    """
+
+    permission_classes = [IsAuthenticated | ReadOnly]
+    queryset = Tag.objects.all().order_by("-tag")
+    serializer_class = TagSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ["tag", "id"]
+    pagination_class = None
+
+
 class ToolViewSet(viewsets.ModelViewSet):
     """adds representations of the Tool to the API view"""
 
@@ -126,6 +140,25 @@ class ToolViewSet(viewsets.ModelViewSet):
     serializer_class = ToolSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_fields = ["tool", "id"]
+
+
+class AllToolViewSet(viewsets.ModelViewSet):
+    """
+    Adds representations of all the Tool to the API view.
+
+    Args:
+        viewsets (_type_): The viewsets class to be used.
+
+    Returns:
+        _type_: The viewset object.
+    """
+
+    permission_classes = [IsAuthenticated | ReadOnly]
+    queryset = Tool.objects.all().order_by("-tool")
+    serializer_class = ToolSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ["tool", "id"]
+    pagination_class = None
 
 
 class SocialViewSet(viewsets.ModelViewSet):

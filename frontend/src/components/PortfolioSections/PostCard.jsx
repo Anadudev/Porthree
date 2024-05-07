@@ -18,23 +18,30 @@ import { Button, CardActionArea } from '@mui/material';
 
 export function ProjectCard({ project, user }) {
     return (
-        <Card sx={{ width: 345, margin: 1, border: `1px solid ${user?.secondary_color}` }} >
-            <CardActionArea component={RL} to={`/${user.username}/projects/${project.slug}`} >
-                <CardMedia
-                    component="img"
-                    sx={{ height: "12rem" }}
-                    image={project?.image}
-                    alt="Project Thumbnail"
-                />
-                <CardContent  sx={{ height: 150 }}>
-                    <Typography gutterBottom variant="h5" component="div" color={user.secondary_color}>
-                        {(<HTMLRenderer htmlContent={Limiter(project?.title)}/>) || ""}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        {(<HTMLRenderer htmlContent={Limiter(project.content, 190)} />) || ""}
-                    </Typography>
-                </CardContent>
-            </CardActionArea>
+        <Card sx={{
+            width: 345,
+            margin: 1,
+            border: `2px solid ${user.secondary_color}`,
+            borderRadius: '10px'
+        }} className='border-[2px]'>
+            <RL to={`/${user.username}/projects/${project.slug}`} >
+                <CardActionArea>
+                    <CardMedia
+                        component="img"
+                        sx={{ height: "12rem" }}
+                        image={project?.image || BgImage}
+                        alt="Project Thumbnail"
+                    />
+                    <CardContent sx={{ minHeight: 200 }}>
+                        <Typography gutterBottom variant="h5" component="div" color={user.secondary_color}>
+                            {(<HTMLRenderer htmlContent={Limiter(project?.title)} />) || ""}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                            {(<HTMLRenderer htmlContent={Limiter(project.content, 190)} />) || ""}
+                        </Typography>
+                    </CardContent>
+                </CardActionArea>
+            </RL>
             <CardActions>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                     <Avatar alt="Remy Sharp" src={user.picture || ''} sx={{ mr: 1 }} />
@@ -51,7 +58,7 @@ export function ProjectCard({ project, user }) {
 
 function BlogCard({ post, user }) {
     return (
-        <Card sx={{ width: 345, margin: 1, border: `1px solid ${user?.secondary_color}` }} className="border">
+        <Card sx={{ width: 345, margin: 1, border: `1px solid ${user?.secondary_color}` }}>
             <CardHeader
                 avatar={
                     <Avatar alt={user.username} aria-label="recipe" src={user.picture}>
@@ -65,18 +72,21 @@ function BlogCard({ post, user }) {
                 title={<Typography variant="h6" component={RL} to={`/${user.username}`} className='capitalize' sx={{ color: user?.primary_color || '' }}> {user.username || ""}</Typography>}
                 subheader={<TimeAgo date={post.created_at} /> || ""}
             />
-            <CardMedia
-                component="img"
-                sx={{ height: "12rem" }}
-                image={post.post_image || BgImage}
-                alt={"Post thumbnail"}
-            />
-            <CardContent sx={{ height: 150 }}>
-                <Typography gutterBottom variant="h5" component={RL} to={`/${user.username}/posts/${post.slug}`} sx={{ color: user?.secondary_color || '', }}>
-                    {(<HTMLRenderer htmlContent={Limiter(post.title)} />) || ""}
-                </Typography>
-                <Typography my={2} variant="body2" color="text.secondary" component={RL} to={`/${user.username}/posts/${post.slug}`}>{(<HTMLRenderer htmlContent={Limiter(post.content, 150)} />)}</Typography>
-            </CardContent>
+            <RL to={`/${user.username}/posts/${post.slug}`} >
+                <CardMedia
+                    component="img"
+                    sx={{ height: "12rem" }}
+                    image={post.post_image || BgImage}
+                    alt={"Post thumbnail"}
+                />
+
+                <CardContent sx={{ height: 200 }}>
+                    <Typography gutterBottom variant="h5" sx={{ color: user?.secondary_color || '', }}>
+                        {(<HTMLRenderer htmlContent={Limiter(post.title)} />) || ""}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">{(<HTMLRenderer htmlContent={Limiter(post.content, 150)} />)}</Typography>
+                </CardContent>
+            </RL>
         </Card>
     )
 }
@@ -126,9 +136,9 @@ const PostCard = ({ post, mode }) => {
             setUser(await GetRelation(post.user));
             // collect post tools
             let collection = []
-            const tools = post.tools;
+            const tools = post.tools || [];
 
-            // console.log(user)
+            // console.log(tools)
             for (const tool of tools) {
                 const data = await GetRelation(tool);
                 // const data = await GetItem("tools", relate.id);
@@ -149,7 +159,7 @@ const PostCard = ({ post, mode }) => {
         }
         fetchData();
     }, [post]);
-    // console.log(post);
+    // console.log(mode);
     return (mode === "Project" ? <ProjectCard project={post} user={user} /> : <BlogCard post={post} user={user} />);
 }
 
