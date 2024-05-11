@@ -19,7 +19,10 @@ import { ErrorCard } from "./Error";
 import Limiter from "../components/Limiter";
 import { Link as RL } from "react-router-dom";
 import HTMLRenderer from "../components/HtmlRender";
-import { GetRelation, GetItem } from "../data/GetUser";
+import { GetRelation } from "../data/GetUser";
+import { useDispatch } from 'react-redux';
+import { ToggleTagChip, ToggleToolChip } from '../features/FilterChip/FilterChipSlice';
+import { useNavigate } from 'react-router-dom';
 
 
 const HtmlTooltip = styled(({ className, ...props }) => (
@@ -59,27 +62,36 @@ const Project = () => {
   const [tools, setTools] = useState([]);
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [contributors, setContributors] = useState([]);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const toggleChip = (chipType = '', value) => {
+    dispatch(chipType === 'tag' ? ToggleTagChip(value) : ToggleToolChip(value));
+    // console.log(chipState.tags)
+    navigate(`/filter/projects`);
+  }
+
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     const fetchDataForUser = async () => {
       async function handler() {
-        setUser(await GetItem("users", Number(project.user.split('/')[5])));
+        setUser(await GetRelation(project.user));
         let Collection = [];
-        for (const tag in project.tags) {
-          Collection.push(await GetItem("tags", Number(project.tags[tag].split('/')[5])));
+        for (const tag of project.tags) {
+          Collection.push(await GetRelation(tag));
         }
         setTags(Collection);
         /* get project tools */
         Collection = [];
-        for (const tool in project.tools) {
-          Collection.push(await GetItem("tools", Number(project.tools[tool].split('/')[5])));
+        for (const tool of project.tools) {
+          Collection.push(await GetRelation(tool));
         }
         setTools(Collection);
         /* get project contributors */
         Collection = [];
-        for (const contributors in project.contributors) {
+        for (const contributor of project.contributors) {
           Collection.push(
-            await GetItem("users", Number(project.contributors[contributors].split('/')[5]))
+            await GetRelation(contributor)
           );
         }
         setContributors(Collection);
@@ -195,8 +207,7 @@ const Project = () => {
                     {tools?.map((data, index) => (
                       <Chip
                         key={index}
-                        component={RL} 
-                        to={`/filter/projects`}
+                        onClick={() => toggleChip('tool', [data.id, data.tool + '_tool'])}
                         label={data.tool || ""}
                         className="m-0.5 capitalize"
                         variant="outlined"
@@ -220,7 +231,7 @@ const Project = () => {
                 {tags?.map((data, index) => (
                   <Chip
                     key={index}
-                    component={RL} to={`/filter/posts`} 
+                    onClick={() => toggleChip('tag', [data.id, data.tag + '_tag'])}
                     label={data.tag || ""}
                     className="m-0.5 capitalize"
                     variant="outlined"

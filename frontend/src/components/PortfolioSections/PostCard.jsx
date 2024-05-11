@@ -58,7 +58,11 @@ export function ProjectCard({ project, user }) {
 
 function BlogCard({ post, user }) {
     return (
-        <Card sx={{ width: 345, margin: 1, border: `1px solid ${user?.secondary_color}` }}>
+        <Card sx={{
+            width: 345,
+            margin: 1,
+            border: `1px solid ${user?.secondary_color}`
+        }} className='border-[2px]'>
             <CardHeader
                 avatar={
                     <Avatar alt={user.username} aria-label="recipe" src={user.picture}>

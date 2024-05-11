@@ -19,10 +19,17 @@ import { GetItem } from '../data/GetUser';
 import { Link as RL } from 'react-router-dom';
 import HTMLRenderer from '../components/HtmlRender';
 import { GetRelation } from '../data/GetUser';
+import { useDispatch } from 'react-redux';
+import { ToggleTagChip, ToggleToolChip } from '../features/FilterChip/FilterChipSlice';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Post = () => {
     PageTitle("Post");
     const postList = useLoaderData();
+    const navigate = useNavigate();
+    const chipState = useSelector((state) => state.filterChipValue.value);
+
     if (!postList) {
         return <Error />
     }
@@ -30,6 +37,12 @@ const Post = () => {
         return (<h1>Post Not Found</h1>);
     }
     const post = postList.results[0];
+    const dispatch = useDispatch();
+    const toggleChip = (chipType = '', value) => {
+        dispatch(chipType === 'tag' ? ToggleTagChip(value) : ToggleToolChip(value));
+        // console.log(chipState.tags)
+        navigate(`/filter/posts`);
+    }
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [user, setUser] = useState('');
@@ -61,7 +74,7 @@ const Post = () => {
                     <Card sx={{ width: "60rem" }}>
                         <CardMedia
                             component="img"
-                            sx={{height:"25rem"}}
+                            sx={{ height: "25rem" }}
                             image={post.post_image || BgImage}
                             alt="green iguana"
                         />
@@ -88,8 +101,7 @@ const Post = () => {
                         </CardContent>
                         <Box px={'10px'}>
                             <Box sx={{ flexGrow: 1 }}>
-                                {tags?.map((data, index) => (<Chip key={index} component={RL} to={`/filter/posts`} label={data.tag || ''} className="m-0.5 capitalize" variant="outlined" />))}
-
+                                {tags?.map((data, index) => (<Chip key={index} onClick={() => toggleChip('tag', [data.id, data.tag + '_tag'])} label={data.tag || ''} className="m-0.5 capitalize" variant="outlined" />))}
                             </Box>
                         </Box>
                         <CardActions>

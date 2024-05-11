@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { useLocation, useSearchParams, useOutletContext } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { useLoaderData, Outlet, useNavigate, Link as RL } from "react-router-dom";
@@ -27,14 +27,16 @@ import Typography from '@mui/material/Typography';
 import Loading from '../components/PageLoad';
 import { Pagination } from '@mui/material';
 import PostCard from '../components/PortfolioSections/PostCard';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { decrement, increment, incrementByAmount, reset } from '../features/counter/counterSlice';
+import { ToggleTagChip, ToggleToolChip, ResetChip } from '../features/FilterChip/FilterChipSlice';
 
 /**
- * Renders a PaperComponent with draggable functionality.
- *
- * @param {Object} props - The props for the PaperComponent.
- * @return {JSX.Element} The rendered PaperComponent.
- */
+* Renders a PaperComponent with draggable functionality.
+*
+* @param {Object} props - The props for the PaperComponent.
+* @return {JSX.Element} The rendered PaperComponent.
+*/
 function PaperComponent(props) {
     return (
         <Draggable
@@ -55,16 +57,28 @@ function PaperComponent(props) {
  */
 export function FilterChip({ index, label }) {
     const [activeChip, setActiveChip] = useState(false);
+    const dispatch = useDispatch();
+    const chipState = useSelector((state) => state.filterChipValue.value);
 
-    const handleChipClick = () => {
-        activeChip ? setActiveChip(false) : setActiveChip(true);
-        // console.log(activeChip);
+    useEffect(() => {
+        if (label.tag + '_tag' in chipState.tags || label.tool + '_tool' in chipState.tools) {
+            setActiveChip(true)
+            // console.log('exists');
+        } else {
+            setActiveChip(false)
+
+        }
+    }, [chipState.tags, chipState.tools])
+
+    const toggleChipFilter = (value, chipType) => {
+        dispatch(chipType === 'tag' ? ToggleTagChip(value) : ToggleToolChip(value));
+        // console.log(chipState);
     };
-
+    // console.log(chipState)
     return (
         <div>
             <Chip
-                onClick={handleChipClick}
+                onClick={() => toggleChipFilter([label.id, (label.tag ? label.tag + '_tag' : label.tool + '_tool')], label.tag ? 'tag' : 'tool')}
                 key={index}
                 color={'primary'}
                 variant={activeChip ? '' : 'outlined'}
@@ -85,9 +99,11 @@ export function FilterChip({ index, label }) {
  * @return {JSX.Element} The JSX element representing the floating draggable filter dialog component.
  */
 export function DraggableFilterDialog({ data, item }) {
+
+    const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
 
-
+    // console.log(data)
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -95,6 +111,17 @@ export function DraggableFilterDialog({ data, item }) {
     const handleClose = () => {
         setOpen(false);
     };
+
+
+    const handleChipReset = (chipType) => {
+
+        dispatch(ResetChip(chipType));
+        // console.log(chipType);
+    }
+
+
+    // const count = useSelector((state) => state.counter.value);
+    // console.log(count);
 
     return (
         <React.Fragment>
@@ -123,8 +150,8 @@ export function DraggableFilterDialog({ data, item }) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button autoFocus onClick={handleClose}>
-                        Apply
+                    <Button autoFocus onClick={() => handleChipReset(item)}>
+                        Reset Filter
                     </Button>
                 </DialogActions>
             </Dialog>
@@ -141,11 +168,12 @@ export function DraggableFilterDialog({ data, item }) {
  */
 export function CategorySelect() {
     const navigate = useNavigate()
-
+    const dispatch = useDispatch();
     const [selectedCategory, setSelectedCategory] = React.useState('');
 
     const handleChange = (event) => {
         setSelectedCategory(event.target.value);
+        dispatch(reset())
         navigate(`/filter/${event.target.value}/`);
     };
 
@@ -211,6 +239,7 @@ export function SelectCategory() {
  * @return {JSX.Element} The JSX element representing the filtered view.
  */
 export function FilterView() {
+    const dispatch = useDispatch();
     const category = useLoaderData();
     const [data, setData] = useState('');
     const [loading, setLoading] = useState(true);
@@ -219,37 +248,44 @@ export function FilterView() {
     const [count, setCount] = useState(0);
     const [initialCount, setInitialCount] = useState(0);
     const [initialCategory, setInitialCategory] = useState('');
+    const chipState = useSelector((state) => state.filterChipValue.value);
+    let tagqp = '';
+    let toolqp = '';
+
+    for (const [key, data] of Object.entries(chipState.tags)) {
+        tagqp += `&tags=${data}`;
+    }
+    for (const [key, data] of Object.entries(chipState.tools)) {
+        toolqp += `&tools=${data}`;
+    }
 
     useEffect(() => {
         async function FetchData() {
             if (initialCategory !== category.value) {
-                /* reset the pagination navigation on url modification ie(redirection) */
                 setInitialCategory(category.value);
                 setInitialCount(0);
-                setCount(0);
                 setPage(1)
             }
-            setResult(await GetRelation(`http://127.0.0.1:8000/api/${category.value}/?page=${page}&publish=true`))
+            // console.log(tagqp, toolqp);
+
+            setResult(await GetRelation(`http://127.0.0.1:8000/api/${category.value}/?page=${page}&publish=true${tagqp}${toolqp}`))
+            'http://127.0.0.1:8000/api/projects/?slug=&id=&publish=true&tags=1&user='
             if (result && result.results) {
                 setData(result.results);
-                if (initialCount === 0) {
+                if (initialCount < 1) {
                     setInitialCount(Math.ceil(result.count / result.results.length));
                 }
-
-                setCount(initialCount || Math.ceil(result.count / result.results.length));
+                result.count > data.length ? setCount(initialCount) : setCount(result.count);
                 setLoading(false);
             }
-            // console.log(category.value);
         }
         FetchData();
-    }, [category.value,
-        page,
-    result.count,
-        count,
-    result.next,
-        initialCategory,
-        initialCount,
+    }, [category.value, page,
+    result.count, count,
+    result.next, initialCategory,
+    chipState.tools, chipState.tags
     ])
+
     const handleChange = (event, value) => {
         // console.log(event);
         setPage(value);
@@ -257,7 +293,7 @@ export function FilterView() {
     if (loading) {
         return <Loading />
     }
-    // console.log(page);
+    // console.log(data);
     return (
         <Box>
             {data && data.length > 0 ? (<Box sx={{ width: '100%' }}>
@@ -292,23 +328,12 @@ export function FilterView() {
  */
 function Filter() {
 
-    const routerResponse = useLoaderData();
     const location = useLocation();
-    // const [category, setCategory] = useState('');
-
-    const [queryString, setQuerySrting] = useSearchParams();
-    const [reset, setReset] = useState(0);
-
-    // console.log(...queryString)
-    /* for (const [key, value] of queryString.entries()) {
-        console.log(key, value);
-    }
- */
 
     return (
         <React.Fragment>
             <ResponsiveAppBar pages={NavLinks} />
-            <Box padding={{ xs: "10px", sm: "50px" }}>
+            <Box padding={{ xs: "10px", sm: "50px" }} sx={{ minHeight: '90vh' }}>
                 <Breadcrumb path={location} />
                 <Box>
                     <Box mb={4}>
