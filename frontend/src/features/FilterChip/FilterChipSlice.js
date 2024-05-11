@@ -32,10 +32,10 @@ export const FilterChipSlice = createSlice({
             state.value.tools = value;
             // console.log(action)
         },
-        ResetChip(state, action) {
-            action.payload === 'tags' ? state.value.tags = {} : state.value.tools = {};
-            // console.log(state.value, action.payload)
+        ResetChip(state, { payload }) {
+            state.value[payload] = {};
         },
+
     },
 });
 
