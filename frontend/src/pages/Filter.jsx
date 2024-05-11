@@ -113,9 +113,9 @@ export function DraggableFilterDialog({ data, item }) {
     };
 
 
-    const handleChipReset = (chipType) => {
+    const handleChipReset = () => {
 
-        dispatch(ResetChip(chipType));
+        dispatch(ResetChip(item));
         // console.log(chipType);
     }
 
@@ -150,7 +150,7 @@ export function DraggableFilterDialog({ data, item }) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button autoFocus onClick={() => handleChipReset(item)}>
+                    <Button autoFocus onClick={handleChipReset}>
                         Reset Filter
                     </Button>
                 </DialogActions>
@@ -173,7 +173,7 @@ export function CategorySelect() {
 
     const handleChange = (event) => {
         setSelectedCategory(event.target.value);
-        dispatch(reset())
+        dispatch(ResetChip('tools'));
         navigate(`/filter/${event.target.value}/`);
     };
 
@@ -239,7 +239,7 @@ export function SelectCategory() {
  * @return {JSX.Element} The JSX element representing the filtered view.
  */
 export function FilterView() {
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const category = useLoaderData();
     const [data, setData] = useState('');
     const [loading, setLoading] = useState(true);
@@ -263,27 +263,37 @@ export function FilterView() {
         async function FetchData() {
             if (initialCategory !== category.value) {
                 setInitialCategory(category.value);
-                setInitialCount(0);
                 setPage(1)
+                // setCount(0);
             }
-            // console.log(tagqp, toolqp);
+            console.log(category);
 
             setResult(await GetRelation(`http://127.0.0.1:8000/api/${category.value}/?page=${page}&publish=true${tagqp}${toolqp}`))
-            'http://127.0.0.1:8000/api/projects/?slug=&id=&publish=true&tags=1&user='
             if (result && result.results) {
+                // console.log(initialCount);
                 setData(result.results);
-                if (initialCount < 1) {
-                    setInitialCount(Math.ceil(result.count / result.results.length));
+                // if (result.previous == null) {
+                //     setInitialCount(Math.ceil(result.count / data.length));
+                // }
+                if (result.previous == null && result.count > data.length) {
+                    setCount(Math.ceil(result.count / data.length));
+                } else if (result.previous == null && result.count == data.length) {
+                    setCount(1);
+
                 }
-                result.count > data.length ? setCount(initialCount) : setCount(result.count);
+                // initialCount ? setCount(initialCount) : setCount(1);
                 setLoading(false);
+            } else {
+                setPage(1)
+                // console.log(page, result);
             }
         }
         FetchData();
     }, [category.value, page,
     result.count, count,
-    result.next, initialCategory,
-    chipState.tools, chipState.tags
+    result.next,
+    chipState.tools, chipState.tags,
+        tagqp, toolqp
     ])
 
     const handleChange = (event, value) => {
@@ -293,7 +303,6 @@ export function FilterView() {
     if (loading) {
         return <Loading />
     }
-    // console.log(data);
     return (
         <Box>
             {data && data.length > 0 ? (<Box sx={{ width: '100%' }}>
