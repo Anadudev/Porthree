@@ -266,7 +266,7 @@ export function FilterView() {
                 setPage(1)
                 // setCount(0);
             }
-            console.log(category);
+            // console.log(category);
 
             setResult(await GetRelation(`http://127.0.0.1:8000/api/${category.value}/?page=${page}&publish=true${tagqp}${toolqp}`))
             if (result && result.results) {
