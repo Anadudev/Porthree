@@ -21,9 +21,10 @@ import { Link as RL } from "react-router-dom";
 import HTMLRenderer from "../components/HtmlRender";
 import { GetRelation } from "../data/GetUser";
 import { useDispatch } from 'react-redux';
-import { ToggleTagChip, ToggleToolChip } from '../features/FilterChip/FilterChipSlice';
+import { ToggleTagChip, ToggleToolChip, ResetChip } from '../features/FilterChip/FilterChipSlice';
 import { useNavigate } from 'react-router-dom';
-
+import Comment from "../components/Comment";
+import {ReplyFormDialog} from "../components/Comment";
 
 const HtmlTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -66,6 +67,8 @@ const Project = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const toggleChip = (chipType = '', value) => {
+    dispatch(ResetChip('tools'))
+    dispatch(ResetChip('tags'));
     dispatch(chipType === 'tag' ? ToggleTagChip(value) : ToggleToolChip(value));
     // console.log(chipState.tags)
     navigate(`/filter/projects`);
@@ -122,7 +125,7 @@ const Project = () => {
             <CardContent>
               <Typography
                 gutterBottom
-                variant="h2"
+                variant="h3"
                 component="h1"
                 sx={{ fontWeight: "900", color: `${user?.secondary_color || ''}` }}
                 className="text-center"
@@ -206,6 +209,7 @@ const Project = () => {
                     Tools:{" "}
                     {tools?.map((data, index) => (
                       <Chip
+                        sx={{ m: 0.3 }}
                         key={index}
                         onClick={() => toggleChip('tool', [data.id, data.tool + '_tool'])}
                         label={data.tool || ""}
@@ -230,6 +234,7 @@ const Project = () => {
                 Tags:{" "}
                 {tags?.map((data, index) => (
                   <Chip
+                    sx={{ m: 0.3 }}
                     key={index}
                     onClick={() => toggleChip('tag', [data.id, data.tag + '_tag'])}
                     label={data.tag || ""}
@@ -247,10 +252,23 @@ const Project = () => {
                 <ShareIcon />
               </IconButton>
               <IconButton aria-label="comment">
-                <CommentIcon />
+              <ReplyFormDialog actionType={'comment'} />
               </IconButton>
             </CardActions>
           </Card>
+          <Box sx={{ width: '90%', maxWidth: "60rem", alignSelf: 'center' }}>
+                        <Typography
+                            variant='h5'
+                            sx={{
+                                fontWeight: '900',
+                                color: `${user?.secondary_color || ''}`,
+                                textAlign: 'center',
+                                my: 2
+                            }}>1k Comments</Typography>
+                        <Card>
+                            <Comment />
+                        </Card>
+                    </Box>
         </Box>
       </Box>
       <Footer />

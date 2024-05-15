@@ -20,15 +20,15 @@ import { Link as RL } from 'react-router-dom';
 import HTMLRenderer from '../components/HtmlRender';
 import { GetRelation } from '../data/GetUser';
 import { useDispatch } from 'react-redux';
-import { ToggleTagChip, ToggleToolChip } from '../features/FilterChip/FilterChipSlice';
+import { ToggleTagChip, ToggleToolChip, ResetChip } from '../features/FilterChip/FilterChipSlice';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import Comment from '../components/Comment';
+import { ReplyFormDialog } from '../components/Comment';
 
 const Post = () => {
     PageTitle("Post");
     const postList = useLoaderData();
     const navigate = useNavigate();
-    const chipState = useSelector((state) => state.filterChipValue.value);
 
     if (!postList) {
         return <Error />
@@ -39,8 +39,9 @@ const Post = () => {
     const post = postList.results[0];
     const dispatch = useDispatch();
     const toggleChip = (chipType = '', value) => {
+        dispatch(ResetChip('tags'));
+        dispatch(ResetChip('tools'));
         dispatch(chipType === 'tag' ? ToggleTagChip(value) : ToggleToolChip(value));
-        // console.log(chipState.tags)
         navigate(`/filter/posts`);
     }
 
@@ -70,8 +71,8 @@ const Post = () => {
             <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
             <Box padding={{ xs: "10px", sm: "50px" }}>
                 <Breadcrumb path={useLocation()} />
-                <Box className="flex justify-center">
-                    <Card sx={{ width: "60rem" }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column' }} className="justify-center align-middle">
+                    <Card sx={{ width: '90%', maxWidth: "60rem", alignSelf: 'center' }}>
                         <CardMedia
                             component="img"
                             sx={{ height: "25rem" }}
@@ -79,7 +80,7 @@ const Post = () => {
                             alt="green iguana"
                         />
                         <CardContent>
-                            <Typography gutterBottom variant="h2" component="h1" sx={{ fontWeight: '900', color: `${user?.secondary_color || ''}` }} className="text-center">
+                            <Typography gutterBottom variant="h3" component="h1" sx={{ fontWeight: '900', color: `${user?.secondary_color || ''}` }} className="text-center">
                                 {(<HTMLRenderer htmlContent={post.title} />) || ''}
                             </Typography>
                             <Box className="border-y flex py-2 my-4">
@@ -101,7 +102,14 @@ const Post = () => {
                         </CardContent>
                         <Box px={'10px'}>
                             <Box sx={{ flexGrow: 1 }}>
-                                {tags?.map((data, index) => (<Chip key={index} onClick={() => toggleChip('tag', [data.id, data.tag + '_tag'])} label={data.tag || ''} className="m-0.5 capitalize" variant="outlined" />))}
+                                {tags?.map((data, index) => (
+                                    <Chip
+                                        sx={{ m: 0.3 }}
+                                        key={index}
+                                        onClick={() => toggleChip('tag', [data.id, data.tag + '_tag'])}
+                                        label={data.tag || ''}
+                                        className="m-0.5 capitalize" variant="outlined" />
+                                ))}
                             </Box>
                         </Box>
                         <CardActions>
@@ -112,10 +120,23 @@ const Post = () => {
                                 <ShareIcon />
                             </IconButton>
                             <IconButton aria-label="comment">
-                                <CommentIcon />
+                                <ReplyFormDialog actionType={'comment'} />
                             </IconButton>
                         </CardActions>
                     </Card>
+                    <Box sx={{ width: '90%', maxWidth: "60rem", alignSelf: 'center' }}>
+                        <Typography
+                            variant='h5'
+                            sx={{
+                                fontWeight: '900',
+                                color: `${user?.secondary_color || ''}`,
+                                textAlign: 'center',
+                                my: 2
+                            }}>1k Comments</Typography>
+                        <Card>
+                            <Comment />
+                        </Card>
+                    </Box>
                 </Box>
             </Box>
             <Footer />
