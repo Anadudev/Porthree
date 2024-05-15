@@ -24,7 +24,7 @@ import { useDispatch } from 'react-redux';
 import { ToggleTagChip, ToggleToolChip, ResetChip } from '../features/FilterChip/FilterChipSlice';
 import { useNavigate } from 'react-router-dom';
 import Comment from "../components/Comment";
-import {ReplyFormDialog} from "../components/Comment";
+import { ReplyFormDialog } from "../components/Comment";
 
 const HtmlTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -114,8 +114,8 @@ const Project = () => {
       <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
       <Box padding={{ xs: "10px", sm: "50px" }}>
         <Breadcrumb path={useLocation()} />
-        <Box className="flex flex-wrap justify-center">
-          <Card sx={{ width: "60rem" }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column' }} className="justify-center align-middle">
+          <Card sx={{ width: '90%', maxWidth: "60rem", alignSelf: 'center' }}>
             <CardMedia
               component="img"
               sx={{ height: "25rem" }}
@@ -252,23 +252,23 @@ const Project = () => {
                 <ShareIcon />
               </IconButton>
               <IconButton aria-label="comment">
-              <ReplyFormDialog actionType={'comment'} />
+                <ReplyFormDialog actionType={'comment'} />
               </IconButton>
             </CardActions>
           </Card>
           <Box sx={{ width: '90%', maxWidth: "60rem", alignSelf: 'center' }}>
-                        <Typography
-                            variant='h5'
-                            sx={{
-                                fontWeight: '900',
-                                color: `${user?.secondary_color || ''}`,
-                                textAlign: 'center',
-                                my: 2
-                            }}>1k Comments</Typography>
-                        <Card>
-                            <Comment />
-                        </Card>
-                    </Box>
+            <Typography
+              variant='h5'
+              sx={{
+                fontWeight: '900',
+                color: `${user?.secondary_color || ''}`,
+                textAlign: 'center',
+                my: 2
+              }}>1k Comments</Typography>
+            <Card>
+              <Comment />
+            </Card>
+          </Box>
         </Box>
       </Box>
       <Footer />
