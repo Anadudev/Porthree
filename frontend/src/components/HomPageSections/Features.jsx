@@ -1,12 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import {
+  Tabs,
+  Tab,
+  Typography,
+  Box,
+  Grid
+} from '@mui/material';
 import SectionTitle from './SectionTitle';
-import { Grid } from '@mui/material';
-import HeroImage from '../../assets/HomeAssets/undraw_portfolio_website_re_jsdd.svg'
 import PostImage from '../../assets/HomeAssets/undraw_books_re_8gea.svg'
 import ProjectImage from '../../assets/HomeAssets/undraw_creation_process_re_kqa9.svg'
 import ColabImage from '../../assets/HomeAssets/undraw_share_link_re_54rx.svg'

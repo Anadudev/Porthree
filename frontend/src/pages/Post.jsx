@@ -1,22 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import DrawerAppBar from '../components/Nav';
+import ResponsiveAppBar from '../components/Nav';
 import Footer from '../components/Footer';
 import { UserNavLinks } from '../data/NavLinks';
 import Breadcrumb from '../components/Breadcrumb';
 import { useLocation, useLoaderData } from 'react-router-dom';
 import PageTitle from './PageTitle';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import {
-    Typography,
-    Link,
-    Avatar,
-    CardActions,
-    Box,
-    Chip,
+    Typography, Link, Avatar,
+    CardActions, Box, CardContent,
+    CardMedia, Chip, Card, IconButton,
 } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import CommentIcon from '@mui/icons-material/Comment';
@@ -26,10 +19,17 @@ import { GetItem } from '../data/GetUser';
 import { Link as RL } from 'react-router-dom';
 import HTMLRenderer from '../components/HtmlRender';
 import { GetRelation } from '../data/GetUser';
+import { useDispatch } from 'react-redux';
+import { ToggleTagChip, ToggleToolChip, ResetChip } from '../features/FilterChip/FilterChipSlice';
+import { useNavigate } from 'react-router-dom';
+import Comment from '../components/Comment';
+import { ReplyFormDialog } from '../components/Comment';
 
 const Post = () => {
     PageTitle("Post");
     const postList = useLoaderData();
+    const navigate = useNavigate();
+
     if (!postList) {
         return <Error />
     }
@@ -37,6 +37,13 @@ const Post = () => {
         return (<h1>Post Not Found</h1>);
     }
     const post = postList.results[0];
+    const dispatch = useDispatch();
+    const toggleChip = (chipType = '', value) => {
+        dispatch(ResetChip('tags'));
+        dispatch(ResetChip('tools'));
+        dispatch(chipType === 'tag' ? ToggleTagChip(value) : ToggleToolChip(value));
+        navigate(`/filter/posts`);
+    }
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [user, setUser] = useState('');
@@ -44,36 +51,36 @@ const Post = () => {
     const [tags, setTags] = useState([]);
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
-        const fetchDataForUser = async () => {
+        const fetchData = async () => {
             async function handler() {
-                let relate = await GetRelation(post.user);
-                setUser(await GetItem('users', Number(post.user.split('/')[5])));
+                // let relate = await GetRelation(post.user);
+                setUser(await GetRelation(post.user));
                 const tagCollection = []
-                for (const tag in post.tags) {
-                    tagCollection.push(await GetItem('tags', Number(post.tags[tag].split('/')[5])))
+                for (const tag of post.tags) {
+                    tagCollection.push(await GetRelation(tag))
                 }
                 setTags(tagCollection)
             }
             handler();
         };
-        fetchDataForUser();
+        fetchData();
     }, [post]);
 
     return (
         <React.Fragment>
-            <DrawerAppBar pages={UserNavLinks(user)} />
-            <Box padding={{xs:"10px", sm:"50px"}}>
+            <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
+            <Box padding={{ xs: "10px", sm: "50px" }}>
                 <Breadcrumb path={useLocation()} />
-                <Box className="flex justify-center">
-                    <Card sx={{ maxWidth: 1000 }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column' }} className="justify-center align-middle">
+                    <Card sx={{ width: '90%', maxWidth: "60rem", alignSelf: 'center' }}>
                         <CardMedia
                             component="img"
-                            height="140"
-                            image={post.image || BgImage}
+                            sx={{ height: "25rem" }}
+                            image={post.post_image || BgImage}
                             alt="green iguana"
                         />
                         <CardContent>
-                            <Typography gutterBottom variant="h2" component="h1" sx={{ fontWeight: '900' }} className="text-center">
+                            <Typography gutterBottom variant="h3" component="h1" sx={{ fontWeight: '900', color: `${user?.secondary_color || ''}` }} className="text-center">
                                 {(<HTMLRenderer htmlContent={post.title} />) || ''}
                             </Typography>
                             <Box className="border-y flex py-2 my-4">
@@ -84,7 +91,7 @@ const Post = () => {
                                 />
                                 <Box>
                                     <Typography sx={{ fontWeight: 700 }}>{user.first_name} {user.last_name || ''}</Typography>
-                                    <Link component={RL} to={`/${user.username}`} sx={{ fontWeight: 700 }} className="capitalize">{user.username || ''}</Link>
+                                    <Link component={RL} to={`/${user.username}`} sx={{ fontWeight: 700, color: `${user?.primary_color || ''}` }} className="capitalize">{user.username || ''}</Link>
                                     <Typography sx={{ fontWeight: 700 }}>{user.career || ''}</Typography>
                                 </Box>
                             </Box>
@@ -95,8 +102,14 @@ const Post = () => {
                         </CardContent>
                         <Box px={'10px'}>
                             <Box sx={{ flexGrow: 1 }}>
-                                {tags?.map((data, index) => (<Chip key={index} label={data.tag || ''} className="m-0.5 capitalize" variant="outlined" />))}
-
+                                {tags?.map((data, index) => (
+                                    <Chip
+                                        sx={{ m: 0.3 }}
+                                        key={index}
+                                        onClick={() => toggleChip('tag', [data.id, data.tag + '_tag'])}
+                                        label={data.tag || ''}
+                                        className="m-0.5 capitalize" variant="outlined" />
+                                ))}
                             </Box>
                         </Box>
                         <CardActions>
@@ -107,10 +120,23 @@ const Post = () => {
                                 <ShareIcon />
                             </IconButton>
                             <IconButton aria-label="comment">
-                                <CommentIcon />
+                                <ReplyFormDialog actionType={'comment'} />
                             </IconButton>
                         </CardActions>
                     </Card>
+                    <Box sx={{ width: '90%', maxWidth: "60rem", alignSelf: 'center' }}>
+                        <Typography
+                            variant='h5'
+                            sx={{
+                                fontWeight: '900',
+                                color: `${user?.secondary_color || ''}`,
+                                textAlign: 'center',
+                                my: 2
+                            }}>1k Comments</Typography>
+                        <Card>
+                            <Comment />
+                        </Card>
+                    </Box>
                 </Box>
             </Box>
             <Footer />
@@ -118,4 +144,4 @@ const Post = () => {
     )
 }
 
-export default Post
+export default Post;

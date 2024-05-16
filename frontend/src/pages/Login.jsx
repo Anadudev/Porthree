@@ -1,35 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import DrawerAppBar from '../components/Nav';
+import React, { useState } from 'react';
+import ResponsiveAppBar from '../components/Nav';
 import { NavLinks } from '../data/NavLinks';
 import Footer from '../components/Footer';
 import Breadcrumb from '../components/Breadcrumb';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { Container, TextField, Button, Box, Typography } from '@mui/material'; // Import Typography
+import {
+  Container, TextField, Button,
+  Box, Typography, Alert,
+} from '@mui/material';
 import { useNavigate, Link } from 'react-router-dom'; // Import Link
 import api from '../../apiConfig';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import Alert from '@mui/material/Alert';
 import PageTitle from './PageTitle';
 import GetUser from '../data/GetUser';
 
 const Login = () => {
   const navigate = useNavigate();
   PageTitle("Login");
-  /*
-  const storedUserJson = localStorage.getItem("user")
-  if (storedUserJson && localStorage.getItem("access_token")) {
-    console.log(storedUserJson);
-    const storedUser = JSON.parse(storedUserJson)
-    if (typeof storedUser.username != 'undefined') {
-      useEffect(() => {
-        navigate(`/dashboard/${storedUser.username}`);
-      }, [storedUser, navigate])
-    }
-  } */
-
-
   const [errorMessage, setErrorMessage] = useState('');
 
   const formik = useFormik({
@@ -49,7 +38,7 @@ const Login = () => {
       // e.preventDefault();
 
       try {
-        const response = await axios.post(`${api.apiHost}/auth_app/login/`, values);
+        const response = await axios.post(`http://localhost:8000/auth_app/login/`, values);
         if (response.status === 200) {
           // The login was successful
           const token = response.data.access; // The JWT token
@@ -73,7 +62,7 @@ const Login = () => {
 
   return (
     <div onClick={() => (setErrorMessage(''))} >
-      <DrawerAppBar pages={NavLinks} />
+      <ResponsiveAppBar pages={NavLinks} />
       <div className='p-[50px]'>
         <Breadcrumb path={useLocation()} />
         <Container>

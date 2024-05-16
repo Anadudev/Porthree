@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from "react";
-import DrawerAppBar from "../components/Nav";
+import ResponsiveAppBar from "../components/Nav";
 import { UserNavLinks } from "../data/NavLinks";
 import Footer from "../components/Footer";
 import Breadcrumb from "../components/Breadcrumb";
 import { useLocation } from "react-router-dom";
 import PageTitle from "./PageTitle";
 import { useLoaderData } from "react-router-dom";
-import Box from "@mui/material/Box";
-import Masonry from "@mui/lab/Masonry";
+import { Box, Pagination, Typography } from "@mui/material";
 import PostCard from "../components/PortfolioSections/PostCard";
-import GetUser, { GetRelation } from "../data/GetUser";
+import { GetRelation } from "../data/GetUser";
 import { ErrorCard } from "./Error";
 import Loading from "../components/PageLoad";
+import api from "../../apiConfig";
+import Error from "./Error";
 
 const Posts = () => {
+  PageTitle("Posts");
   const id = useLoaderData();
 
   if (!id) {
@@ -23,42 +25,65 @@ const Posts = () => {
   const [user, setUser] = useState("");
   const [posts, setPosts] = useState("");
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [result, setResult] = useState([]);
+  const [count, setCount] = useState(0);
+  const [initialCount, setInitialCount] = useState(0);
 
+  const location = useLocation();
 
+  if (!id) {
+    return <Error />;
+  }
   useEffect(() => {
-    async function getter() {
-      const data = await GetUser(id);
-      setUser(data);
-      const postList = await GetRelation(data.url + 'posts');
-      if (!postList.loading) {
-        setLoading(false);
+    async function fetchData() {
+      setUser(await GetRelation(`http://localhost:8000/api/users/${id.id}/`));
+      setResult(await GetRelation(`http://localhost:8000/api/users/${id.id}/posts/?page=${page}&publish=true`))
+      if (result && result.results) {
+        setPosts(result.results);
+        if (initialCount === 0) {
+          setInitialCount(Math.ceil(result.count / result.results.length));
+        }
+        setCount(initialCount || Math.ceil(result.count / result.results.length));
       }
-      setPosts(postList.results);
+      // console.log(result);
+      setLoading(false);
     }
-    getter();
-  }, [id]);
-  PageTitle("Posts");
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, page, result.count, count, result.next]);
+  const handleChange = (event, value) => {
+    setPage(value);
+  };
   if (loading) {
     return <Loading />
   }
   return (
     <React.Fragment>
-      <DrawerAppBar pages={UserNavLinks(user)} />
-
-      <Box padding={{xs:"10px", sm:"50px"}}>
-        <Breadcrumb path={useLocation()} />
-        <Masonry
-          columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
-          spacing={2}
-          className="flex justify-center"
-        >
-          {posts &&
-            posts.map((post, index) => (
+      <ResponsiveAppBar pages={UserNavLinks(user)} />
+      <Box padding={{ xs: "10px", sm: "50px" }}>
+        <Breadcrumb path={location} />
+        {posts && posts.length > 0 ? (<Box padding={{ xs: "10px", sm: "50px" }}>
+          <Box
+            spacing={2}
+            sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
+          >
+            {posts.map((post, index) => (
               // <Item sx={{ [heights[index]]: true  }}>
               <PostCard key={index} post={post} mode={"Blog Post"} />
               // </Item>
             ))}
-        </Masonry>
+          </Box>
+          <Box mt={5} sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Pagination
+              count={count}
+              variant="outlined"
+              color="primary"
+              page={page}
+              onChange={handleChange}
+            />
+          </Box>
+        </Box>) : <Typography textAlign={'center'}>No Posts </Typography>}
       </Box>
       <Footer />
     </React.Fragment>

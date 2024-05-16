@@ -1,29 +1,28 @@
-import * as React from 'react';
-import BottomNavigation from '@mui/material/BottomNavigation';
-import Typography from '@mui/material/Typography';
-import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import Paper from '@mui/material/Paper';
-
+import React from 'react';
+import {
+  Paper, BottomNavigation, Typography,
+  BottomNavigationAction
+} from '@mui/material';
 
 export default function Footer() {
   const year = new Date().getFullYear();
   return (
-    <div>
-      <Paper elevation={0} sx={{ height: '120px' }}></Paper>
-      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, padding: '10px' }} elevation={3}>
-        <BottomNavigation>
+    <Paper elevation={0} sx={{mt:2}}>
+      <Paper sx={{ /* position: 'fixed', */ bottom: 0, left: 0, right: 0, padding: '10px' }} elevation={3}>
+        <BottomNavigation
+        sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}
+        >
           <Typography
-            noWrap
+            // noWrap
             sx={{
-              display: { xs: 'none', md: 'flex' },
               fontWeight: 700,
               color: 'inherit',
             }}
             className='text-center'
           >Porthree copyright {year} </Typography>
-          <BottomNavigationAction />
+          {/* <BottomNavigationAction /> */}
         </BottomNavigation>
       </Paper>
-    </div>
+    </Paper>
   );
 }

@@ -1,24 +1,23 @@
 import React, { useState, useEffect } from 'react'
-import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
-import { Skills as sk } from '../data/Info';
 import PageTitle from './PageTitle';
-import DrawerAppBar from '../components/Nav';
+import ResponsiveAppBar from '../components/Nav';
 import Breadcrumb from '../components/Breadcrumb';
 import { NavLinks } from '../data/NavLinks';
 import { useLocation } from 'react-router-dom';
-import BgImage from "/src/assets/image.jpg";
-import { Typography, Paper, Avatar, Chip, Button } from '@mui/material';
+import {
+    Typography, Paper, Avatar,
+    Chip, Pagination, Badge,
+    IconButton, Menu, MenuItem,
+    Box
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
-import Badge from '@mui/material/Badge';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { GetDatas, getUserData, GetRelation } from '../data/GetUser';
+import { GetRelation } from '../data/GetUser';
 import { Link } from 'react-router-dom';
 import Limiter from '../components/Limiter';
 import Loading from "../components/PageLoad";
+import Footer from '../components/Footer';
 const ITEM_HEIGHT = 48;
 let relationList = [];
 
@@ -114,53 +113,65 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 const Portfolios = () => {
     PageTitle("Portfolios");
     const [users, setUsers] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const [page, setPage] = useState(1);
+    const [result, setResult] = useState([]);
+    const [count, setCount] = useState(0);
+    const [initialCount, setInitialCount] = useState(0);
+
+    const location = useLocation();
 
     useEffect(() => {
-        const fetchData = async () => {
-            const result = await GetDatas('users');
+        async function fetchData() {
+            setResult(await GetRelation(`http://localhost:8000/api/users/?page=${page}`));
+            if (result.loading) { setLoading(true) }
+            if (!result.loading && result.results) {
+                if (result && result.results) {
+                    if (initialCount === 0) {
+                        setInitialCount(Math.ceil(result.count / result.results.length));
+                    }
 
-            if (!result.loading) {
+                    setCount(initialCount || Math.ceil(result.count / result.results.length));
+                }
                 const userList = result.results;
 
                 for (const user of userList) {
-                    user.projects = await GetRelation(user.url + 'projects/');
-                    // console.log(await GetRelation(user.url+'projects/'));
+                    user.projects = (await GetRelation(user.url + 'projects/?publish=true')).count;
 
-                    user.posts = await GetRelation(user.url + 'posts/');
+                    user.posts = (await GetRelation(user.url + 'posts/?publish=true')).count;
 
                     user.dataSkills = await gatterRelations(user.skills);
-                    // console.log(user);
+                    // console.log(user.projects);
                     relationList = [];
                 }
-
-                setLoading(false);
                 setUsers(userList);
+                setLoading(false);
             }
         };
-
         fetchData();
-    }, []);
-
+    }, [page, result.count, count, result.next]);
+    const handleChange = (event, value) => {
+        setPage(value);
+    };
     if (loading) { return <Loading /> }
-    if (!users || users.length < 1) {
-        return null;
-    }
+    // if (!users || users.length < 1) {
+    //     return null;
+    // }
     // console.log(users);
     return (
-        <Box component="section" id="skills">
+        <Box>
 
-            <DrawerAppBar pages={NavLinks} />
+            <ResponsiveAppBar pages={NavLinks} />
             <Box padding={{ xs: "10px", sm: "50px" }}>
-                <Breadcrumb path={useLocation()} />
-                <Box sx={{ flexGrow: 1, p: 2 }}>
+                <Breadcrumb path={location} />
+                {users && users.length > 0 ? (<Box sx={{ flexGrow: 1, p: 2 }}>
                     <Grid
                         container
                         spacing={2}
                         alignItems={'center'}
                         justifyContent={'center'}
                     >
-                        {users?.map((user, index) => (
+                        {users.map((user, index) => (
                             <Grid key={index} {...{ xs: 12, sm: 6, md: 4, lg: 3 }}>
                                 <Box>
                                     <Box sx={{ display: 'flex', justifyContent: 'center', mb: '-20px' }}>
@@ -172,8 +183,8 @@ const Portfolios = () => {
                                             <Avatar component={Paper} elevation={6} alt={user.username} src={user.picture} sx={{ width: 70, height: 70 }} />
                                         </StyledBadge>
                                     </Box>
-                                    <Paper elevation={5} sx={{ pt: '40px', px: '10px', pb: '10px', borderRadius: '10px' }}>
-                                        <Box sx={{ display: "flex", justifyContent: 'space-between' }}>
+                                    <Paper elevation={5} sx={{ pt: '40px', px: '10px', pb: '10px', borderRadius: '10px', border: `1px solid ${user?.primary_color}` }}>
+                                        <Box sx={{ display: "flex", justifyContent: 'space-between', mb: 2 }}>
                                             <Box>
                                                 <Typography component='p' className='capitalize text-center pr-2' >projects <br /> <b>{user.projects ? `${user.projects}+` : 0}</b></Typography>
                                             </Box>
@@ -192,7 +203,7 @@ const Portfolios = () => {
                                         <Box className="mt-3 flex justify-center">
                                             <Chip
                                                 label="Portfolio"
-                                                color="success"
+                                                sx={{ color: `${user?.secondary_color || ''}` }}
                                                 component={Link}
                                                 to={`/${user.username}`}
                                                 variant="outlined"
@@ -204,8 +215,18 @@ const Portfolios = () => {
                             </Grid>
                         ))}
                     </Grid>
-                </Box>
+                    {<Box mt={5} sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <Pagination
+                            count={count}
+                            variant="outlined"
+                            color="primary"
+                            page={page}
+                            onChange={handleChange}
+                        />
+                    </Box>}
+                </Box>) : <Typography textAlign={'center'}> No Portfolios </Typography>}
             </Box>
+            <Footer />
         </Box>
     );
 }

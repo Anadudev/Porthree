@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Typography, Button, TextField, List, ListItem, ListItemText, Dialog, DialogTitle, DialogContent, DialogActions, FormControlLabel, Switch } from '@mui/material';
+import {
+  Grid, Typography, Button,
+  TextField, List, ListItem,
+  ListItemText, Dialog, DialogTitle,
+  DialogContent, DialogActions, FormControlLabel,
+  Switch
+} from '@mui/material';
 import axios from 'axios';
-
+import ImageUploadandPreview from './ImageUploadandPreview';
+import api from '../../../apiConfig';
 const ProjectsComponent = () => {
   const [projects, setProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [newProject, setNewProject] = useState({
+    image: null,
     title: '',
     content: '',
     demo: '',
@@ -43,15 +51,16 @@ const ProjectsComponent = () => {
       const response = await axios.post(`http://localhost:8000/api/projects/`, projectData, {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
       });
 
       setProjects([...projects, response.data]);
-      setNewProject({ title: '', content: '', demo: '', video: '', publish: false }); // Reset publish status
+      setNewProject({ image: null, title: '', content: '', demo: '', video: '', publish: false }); // Reset publish status
       setOpenDialog(false);
     } catch (error) {
-      // console.log(error);
+      console.log(newProject);
+      console.log(error);
       setError(error);
     } finally {
       setIsLoading(false);
@@ -65,11 +74,13 @@ const ProjectsComponent = () => {
       await axios.delete(`http://localhost:8000/api/projects/${projectId}/`, {
         headers: {
           Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
         },
       });
 
       setProjects(projects.filter(project => project.id !== projectId));
     } catch (error) {
+      console.log(error);
       setError(error);
     } finally {
       setIsLoading(false);
@@ -86,12 +97,14 @@ const ProjectsComponent = () => {
     setIsLoading(true);
     setError(null);
     try {
+      if (!(newProject.image instanceof File)) {
+        delete newProject.image;
+      };
       const projectData = { ...newProject, user: userId.url };
-
       const response = await axios.put(`http://localhost:8000/api/projects/${editingProject.id}/`, projectData, {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
       });
 
@@ -140,6 +153,11 @@ const ProjectsComponent = () => {
                 <DialogContent>
                   <form onSubmit={handleSubmit}>
                     <Grid container spacing={2}>
+                          <ImageUploadandPreview 
+                            newProject={newProject}
+                            setNewProject={setNewProject}
+                            editingProject={editingProject}
+                            nature="project" />
                       <Grid item xs={12}>
                         <TextField
                           label="Title"

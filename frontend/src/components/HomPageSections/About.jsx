@@ -1,6 +1,6 @@
 import React from 'react'
 import SectionTitle from './SectionTitle'
-import { Grid, Box, Typography, Paper, ButtonGroup, Button } from '@mui/material'
+import { Grid, Box, Typography } from '@mui/material'
 import HeroImage from '../../assets/HomeAssets/undraw_portfolio_website_re_jsdd.svg'
 
 
@@ -15,7 +15,7 @@ const About = () => {
               <img src={HeroImage} alt="Hero illustration" />
             </Box>
           </Grid>
-          <Grid item xs={12} sm={12} md marginTop={{xs:5, md:0}}>
+          <Grid item xs={12} sm={12} md marginTop={{ xs: 5, md: 0 }}>
             <Box className="flex justify-center align-middle h-full">
               <Box className="self-center h-fit">
                 <Box className='mb-10' textAlign={{ xs: 'center', sm: 'right' }}>

@@ -1,7 +1,10 @@
 import React, { useRef, useState } from 'react';
 import axios from 'axios';
-import { Container, Grid, TextField, Button, Box } from '@mui/material';
-import DrawerAppBar from '../components/Nav';
+import {
+  Container, Grid, TextField,
+  Button, Alert
+} from '@mui/material';
+import ResponsiveAppBar from '../components/Nav';
 import Footer from '../components/Footer';
 import { useNavigate } from 'react-router-dom';
 import api from '../../apiConfig';
@@ -10,8 +13,8 @@ import { useLocation } from 'react-router-dom';
 import Breadcrumb from '../components/Breadcrumb';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import Alert from '@mui/material/Alert';
 import PageTitle from './PageTitle';
+
 
 const Signup = () => {
   PageTitle("SignUp");
@@ -40,7 +43,7 @@ const Signup = () => {
     }),
     onSubmit: async (values, { setErrors }) => {
       try {
-        const response = await axios.post(`${api.apiHost}/auth_app/signup/`, values);
+        const response = await axios.post(`http://localhost:8000/auth_app/signup/`, values);
         const success_message = `Account successfully created ${response.data.username}`;
         setSuccess(<Alert severity="success">{success_message}.</Alert>);
         setTimeout(() => {
@@ -61,7 +64,7 @@ const Signup = () => {
 
   return (
     <div>
-      <DrawerAppBar pages={NavLinks} />
+      <ResponsiveAppBar pages={NavLinks} />
       <div className='p-[50px]'>
         <Breadcrumb path={useLocation()} />
         <Container>

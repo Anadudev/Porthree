@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import DrawerAppBar from "../components/Nav";
+import ResponsiveAppBar from "../components/Nav";
 import { UserNavLinks } from "../data/NavLinks";
 import Footer from "../components/Footer";
 import Breadcrumb from "../components/Breadcrumb";
@@ -14,14 +14,15 @@ import Contact from "../components/PortfolioSections/Contact";
 import PageTitle from "./PageTitle";
 import { useLoaderData } from "react-router-dom";
 import GetUser, { getUserData, GetRelation } from "../data/GetUser";
-import { ErrorCard } from "./Error";
+import Error, { ErrorCard } from "./Error";
 import Loading from "../components/PageLoad";
+import api from "../../apiConfig";
 
 function Portfolio() {
     const id = useLoaderData();
     PageTitle(id?.username);
     const currLoc = useLocation();
-
+// console.log(id);
     if (id.error) {
         return <ErrorCard
             error={'not found'}
@@ -30,6 +31,7 @@ function Portfolio() {
             nav={true}
         />
     }
+
     const [user, setUser] = useState([]);
     const [tools, setTools] = useState(null);
     const [educations, setEducations] = useState(null);
@@ -56,6 +58,7 @@ function Portfolio() {
             if (fetchedUser) {
 
                 /* fetch all users tools  */
+                // dataResult = await GetRelation(`http://localhost:8000/api/tools/?user=${fetchedUser.id}`);
                 for (const tool of fetchedUser.tools) {
                     const data = await GetRelation(tool);
                     relationList.push(data)
@@ -70,13 +73,9 @@ function Portfolio() {
                 setExperiences(dataResult.results);
 
                 /* fetch all users skills  */
-                relationList = [];
-                for (const skill of fetchedUser.skills) {
-                    const data = await GetRelation(skill);
-                    relationList.push(data)
-                }
+                dataResult = await GetRelation(`http://localhost:8000/api/skills/?user=${fetchedUser.id}`);
+                setSkills(dataResult.results);
 
-                setSkills(relationList);
                 /* fetch all users socials  */
                 setSocials(await getUserData(fetchedUser.id, "socials"));
                 /* fetch all users projects  */
@@ -89,6 +88,7 @@ function Portfolio() {
         };
         fetchDataForUser();
     }, [id]);
+
     if (loading) { return <Loading /> }
 
     // console.log(skills)
@@ -101,22 +101,17 @@ function Portfolio() {
         socials,
         projects,
     ];
+
     for (const data of errHandle) {
         if (data && data.status && data.statusText) {
             return <Error err={data} />;
         }
     }
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const contacts = {
-        phone: user?.phone,
-        email: user?.email,
-        location: user?.location,
-    };
 
     return (
         <React.Fragment>
-            <DrawerAppBar pages={UserNavLinks(user)} />
-            <Box padding={{xs:"10px", sm:"50px"}} className='scroll-smooth'>
+            <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
+            <Box padding={{ xs: "10px", sm: "50px" }} className='scroll-smooth'>
                 {!user ? (
                     <Typography variant="h1" component="h1">
                         Portfolio not in Porthree
@@ -135,10 +130,10 @@ function Portfolio() {
                                 education={educations}
                             />
                         )}
-                        {skills && <Skills skills={skills} />}
-                        {projects && <Projects projects={projects} />}
-                        {blog && <Blog blog={blog} />}
-                        <Contact contacts={contacts} socials={socials} />
+                        {skills && <Skills skills={skills} custom={user} />}
+                        {projects && <Projects projects={projects} user={user} />}
+                        {blog && <Blog blog={blog} user={user} />}
+                        <Contact contacts={user} socials={socials} />
                     </>
                 )}
             </Box>

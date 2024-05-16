@@ -9,7 +9,6 @@ from .views import (
     UserPostsListView,
     UserExperienceListView,
     UserProjectsListView,
-    ToolViewSet,
 )
 
 
@@ -22,6 +21,10 @@ router.register(r"posts", views.PostViewSet, basename="post")
 router.register(r"projects", views.ProjectViewSet, basename="project")
 # Tag route definition
 router.register(r"tags", views.TagViewSet, basename="tag")
+# All Tags route definition
+router.register(r"all_tags", views.AllTagViewSet, basename="all_tag")
+# all Tools route definition
+router.register(r"all_tools", views.AllToolViewSet, basename="all_tool")
 # Tool route definition
 router.register(r"tools", views.ToolViewSet, basename="tool")
 # Social route definition
@@ -73,5 +76,5 @@ urlpatterns = [
         UserProjectsListView.as_view(),
         name="user-projects-list",
     ),
-    # path("tools/", ToolViewSet.as_view(), name="tools-detail"),
+    # path("all/tags", AllTagViewSet.as_view(), name="all-tags-list"),
 ]

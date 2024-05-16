@@ -8,7 +8,6 @@ from django.db import models
 from django.utils.text import slugify
 
 
-
 class Tool(models.Model):
     """Represents a tool used in a project."""
 
@@ -20,19 +19,6 @@ class Tool(models.Model):
 
     def __str__(self):
         return str(self.tool)
-
-
-class Skill(models.Model):
-    """Represents a skill of a user."""
-
-    id = models.AutoField(primary_key=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    skill = models.CharField(unique=True, max_length=255)
-    detail = models.TextField()
-
-    def __str__(self):
-        return str(self.skill)
 
 
 class UserDetails(AbstractUser):
@@ -53,11 +39,9 @@ class UserDetails(AbstractUser):
     primary_color = models.CharField(max_length=50, blank=True, null=True)
     secondary_color = models.CharField(max_length=50, blank=True, null=True)
     picture = models.ImageField(upload_to="profile_pics/", blank=True, null=True)
+    hide_portfolio = models.BooleanField(default=True)
     tools = models.ManyToManyField(
         Tool, related_name="user_tools", blank=True
-    )  # Many-to-Many with tools
-    skills = models.ManyToManyField(
-        Skill, related_name="user_skills", blank=True
     )  # Many-to-Many with Skills
 
     class Meta:
@@ -81,6 +65,24 @@ class UserDetails(AbstractUser):
         """
         return f"{self.first_name} {self.middle_name} {self.last_name}"
 
+
+class Skill(models.Model):
+    """Represents skills of a user."""
+
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    skill = models.CharField(unique=True, max_length=255)
+    detail = models.TextField()
+
+    def __str__(self):
+        return str(self.skill)
+
+    class Meta:
+        # Ensure that a user cannot have duplicate tools
+        unique_together = ["user", "skill"]
+
 class Tag(models.Model):
     """Represents a tag that can be associated with posts or projects."""
 
@@ -93,13 +95,14 @@ class Tag(models.Model):
         return str(self.tag)
 
 
+
 class Post(models.Model):
     """post model representing users post table in the application"""
 
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
-    slug = models.SlugField(unique=True, blank=True)
+    slug = models.SlugField(max_length=255, unique=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     post_image = models.ImageField(upload_to="post_images/", blank=True, null=True)

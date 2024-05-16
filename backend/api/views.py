@@ -67,7 +67,7 @@ class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     queryset = Post.objects.all().order_by("-created_at")
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ["slug", "id"]
+    filterset_fields = ["slug", "id", "publish", "tags", "user"]
 
 
 class UserPostsListView(generics.ListAPIView):
@@ -77,7 +77,7 @@ class UserPostsListView(generics.ListAPIView):
 
     def get_queryset(self):
         user_id = self.kwargs["user_id"]
-        return Post.objects.filter(user_id=user_id)
+        return Post.objects.filter(user_id=user_id).order_by("-created_at")
 
 
 class ProjectViewSet(viewsets.ModelViewSet):
@@ -87,7 +87,15 @@ class ProjectViewSet(viewsets.ModelViewSet):
     serializer_class = ProjectSerializer
     queryset = Project.objects.all().order_by("-created_at")
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ["slug", "id"]
+    filterset_fields = [
+        "slug",
+        "id",
+        "publish",
+        "tags",
+        "tools",
+        "user",
+        "contributors",
+    ]
 
 
 class UserProjectsListView(generics.ListAPIView):
@@ -97,7 +105,7 @@ class UserProjectsListView(generics.ListAPIView):
 
     def get_queryset(self):
         user_id = self.kwargs["user_id"]
-        return Project.objects.filter(user_id=user_id)
+        return Project.objects.filter(user_id=user_id).order_by("-created_at")
 
 
 class TagViewSet(viewsets.ModelViewSet):
@@ -110,6 +118,20 @@ class TagViewSet(viewsets.ModelViewSet):
     filterset_fields = ["tag", "id"]
 
 
+class AllTagViewSet(viewsets.ModelViewSet):
+    """
+    A ViewSet that provides a REST API view for managing the Tag model.
+    It adds representations of the Tag to the API view without pagination.
+    """
+
+    permission_classes = [IsAuthenticated | ReadOnly]
+    queryset = Tag.objects.all().order_by("-tag")
+    serializer_class = TagSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ["tag", "id"]
+    pagination_class = None
+
+
 class ToolViewSet(viewsets.ModelViewSet):
     """adds representations of the Tool to the API view"""
 
@@ -118,6 +140,25 @@ class ToolViewSet(viewsets.ModelViewSet):
     serializer_class = ToolSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_fields = ["tool", "id"]
+
+
+class AllToolViewSet(viewsets.ModelViewSet):
+    """
+    Adds representations of all the Tool to the API view.
+
+    Args:
+        viewsets (_type_): The viewsets class to be used.
+
+    Returns:
+        _type_: The viewset object.
+    """
+
+    permission_classes = [IsAuthenticated | ReadOnly]
+    queryset = Tool.objects.all().order_by("-tool")
+    serializer_class = ToolSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ["tool", "id"]
+    pagination_class = None
 
 
 class SocialViewSet(viewsets.ModelViewSet):
@@ -137,7 +178,7 @@ class SkillViewSet(viewsets.ModelViewSet):
     queryset = Skill.objects.all().order_by("-created_at")
     serializer_class = SkillSerializer
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ["skill", "id"]
+    filterset_fields = ["skill", "id", "user"]
 
 
 class EducationViewSet(viewsets.ModelViewSet):

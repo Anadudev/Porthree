@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Box, Grid, Typography,
-  CardMedia, Button, ButtonGroup
+  Button, ButtonGroup
 } from '@mui/material';
 
 
@@ -25,8 +25,8 @@ const Hero = ({ props }) => {
           <Box className="flex justify-center align-middle h-full">
             <Box className="self-center h-fit">
               <Box className='mb-10' textAlign={{ xs: 'center', sm: 'left' }}>
-                <Typography variant="h4" component="h2" sx={{ fontWeight: '900' }} >{props.first_name || 'props'} {props.last_name || ''}</Typography>
-                <Typography variant="h2" component="h1" sx={{ fontWeight: '900', marginBottom: "30px" }}>{props.career || ''}</Typography>
+                <Typography variant="h4" component="h2" sx={{ fontWeight: '900' }} >{props.first_name || ''} {props.last_name || ''}</Typography>
+                <Typography variant="h2" component="h1" sx={{ fontWeight: '900', marginBottom: "30px", color: props?.primary_color || '' }}>{props.career || ''}</Typography>
                 <Typography variant="p" mb={'20px'} component="p" className='text-2xl italic'>{props.bio || ''}</Typography>
               </Box>
             </Box>
@@ -34,16 +34,23 @@ const Hero = ({ props }) => {
         </Grid>
         <Grid item xs={12} sm={12} md lg={6}>
           <Box className="flex justify-center align-middle h-full">
-            <CardMedia component="img" image={props.picture || ''} sx={{
+            {/* <CardMedia component="img" image={props.picture || ''} sx={{
               borderRadius: '10px', height: `${props.picture ? "30rem" : ''}`
-            }} />
+            }} /> */}
+            <img
+              srcSet={`${props?.picture}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+              src={`${props?.picture}?w=164&h=164&fit=crop&auto=format`}
+              alt={props?.username + ' profile image'}
+              loading="lazy"
+              style={{ height: '30rem' }}
+            />
           </Box>
         </Grid>
       </Grid>
       <Box>
         <ButtonGroup variant="text" aria-label="Basic button group " color="primary">
-          <Button Link href='#about' color="primary">Download Resume</Button>
-          <Button Link href='#skills' color="primary">Skills</Button>
+          <Button Link href='#about' sx={{ color: `${props?.secondary_color || 'primary'}` }}>Download Resume</Button>
+          <Button Link href='#skills' sx={{ color: `${props?.secondary_color || 'primary'}` }}>Skills</Button>
         </ButtonGroup>
       </Box>
     </Box>

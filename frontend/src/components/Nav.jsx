@@ -1,26 +1,106 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
+import React, { useState, useEffect } from 'react';
+import {
+  AppBar, Box, Toolbar, IconButton,
+  Typography, Menu, Container, Avatar,
+  Button, Tooltip, MenuItem, ButtonGroup,
+} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
 import { Link } from "react-router-dom";
-import ButtonGroup from '@mui/material/ButtonGroup';
 import { userTools } from '../data/NavLinks';
 
-const settings = userTools();
 
-function ResponsiveAppBar({ pages }) {
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import MailIcon from '@mui/icons-material/Mail';
+
+export function TemporaryDrawer({ navItems, color }) {
+  const [open, setOpen] = React.useState(false);
+
+  const toggleDrawer = (newOpen) => () => {
+    setOpen(newOpen);
+  };
+
+  const DrawerList = (
+    <Box sx={{ width: 250, bgcolor: color }} role="presentation" onClick={toggleDrawer(false)}>
+      <List>
+        {navItems.map((item, index) => (
+          <ListItem key={index} disablePadding>
+            {/* <Button
+                    component={Link}
+                    to={page.url}
+                  >
+                    {page.title} */}
+            <ListItemButton component={Link}
+              to={item.url}>
+              <ListItemIcon>
+                {item.icon}
+              </ListItemIcon>
+              <ListItemText primary={item.title} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+      {/* <Divider />
+      <List>
+        {['All mail', 'Trash', 'Spam'].map((text, index) => (
+          <ListItem key={text} disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List> */}
+    </Box>
+  );
+
+  return (
+    <div>
+      <IconButton
+        size="large"
+        aria-label="account of current user"
+        aria-controls="menu-appbar"
+        aria-haspopup="true"
+        onClick={toggleDrawer(true)}
+        color="inherit"
+      >
+        <MenuIcon />
+      </IconButton>
+      <Drawer open={open} onClose={toggleDrawer(false)}>
+        {DrawerList}
+      </Drawer>
+    </div>
+  );
+}
+
+
+
+/**
+ * Renders a responsive app bar with navigation links and user options.
+ *
+ * @param {Object} props - The properties object.
+ * @param {Array} props.pages - An array of objects representing the navigation links.
+ * @param {Object} props.custom - An object containing custom styling properties.
+ * @return {JSX.Element} The rendered responsive app bar.
+ */
+function ResponsiveAppBar({ pages, custom }) {
   if (!pages) { return null }
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+/*   const [settings, setSettings] = useState('')
+  useEffect(() => {
+    setSettings(userTools())
+  }, []) */
+  const settings = userTools();
+
 
   const OutUser = () => (<ButtonGroup variant="text" aria-label="Basic button group " color="inherit">
     <Button component={Link} to='/login' color="inherit">Login</Button>
@@ -30,7 +110,7 @@ function ResponsiveAppBar({ pages }) {
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip title="Open settings">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar alt="U" src={settings[0].user.picture||''} />
+          <Avatar alt="U" src={settings[0]?.user?.picture || ''} />
         </IconButton>
       </Tooltip>
       <Menu
@@ -49,7 +129,7 @@ function ResponsiveAppBar({ pages }) {
         open={Boolean(anchorElUser)}
         onClose={handleCloseUserMenu}
       >
-        {settings?.map((setting, index) => (
+        {settings && settings?.map((setting, index) => (
           <MenuItem key={index} onClick={handleCloseUserMenu}>
             {setting.item || <Button
               component={Link}
@@ -64,7 +144,7 @@ function ResponsiveAppBar({ pages }) {
         ))}
       </Menu>
     </Box>
-  )
+  );
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -80,13 +160,12 @@ function ResponsiveAppBar({ pages }) {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  // console.log(user);
 
   return (
-    <AppBar position="static">
+    <AppBar sx={{ bgcolor: custom?.primary_color || '' }} position="sticky">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          {/* app logo */}
-          {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
           <Typography
             variant="h4"
             noWrap
@@ -104,52 +183,9 @@ function ResponsiveAppBar({ pages }) {
           >
             Porthree
           </Typography>
-          {/* nav toggler */}
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
-            >
-              {pages?.map((page, index) => (
-                <MenuItem key={index} onClick={handleCloseNavMenu}>
-                  <Button
-                    component={Link}
-                    to={page.url}
-                  // onClick={handleCloseNavMenu}
-                  // sx={{ my: 2, color: 'white', display: 'block' }}
-                  >
-                    {page.title}
-                  </Button>
-                </MenuItem>
-              ))}
-            </Menu>
+            <TemporaryDrawer navItems={pages} />
           </Box>
-          {/* site logo */}
-          {/* <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} /> */}
           <Typography
             variant="h5"
             noWrap

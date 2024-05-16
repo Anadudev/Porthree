@@ -4,18 +4,17 @@ import {
   Button, Link,
   List, Box, Paper,
   TextField, FormControl,
-  Grid
+  Grid, ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Divider,
 } from '@mui/material';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Divider from '@mui/material/Divider';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 
-export function ContactForm() {
+export function ContactForm(custom) {
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -53,7 +52,7 @@ export function ContactForm() {
             rows={6}
           />
         </FormControl>
-        <Button varian="outlined">Send</Button>
+        <Button varian="outlined" sx={{ color: `${custom?.secondary_color || ''}` }}>Send</Button>
       </div>
     </Box>
   );
@@ -62,7 +61,7 @@ export function ContactForm() {
 export function ContactList({ contacts, socials }) {
 
   return (
-    <Paper elevation={6} sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+    <Paper elevation={6} sx={{ width: '100%', height: '19rem', bgcolor: 'background.paper' }}>
       <nav aria-label="main mailbox folders">
         <List>
           {contacts.location && <ListItem disablePadding>
@@ -100,10 +99,11 @@ export function ContactList({ contacts, socials }) {
           spacing={2}
           alignItems={'center'}
           justifyContent={'center'}
+          height={'100%'}
         >
           {socials?.map((data, index) => (
-            <Paper elevation={3} key={index} className="px-2 py-1 w-fit m-2">
-              <Link target="_blank" rel="noopener" href={data.url} className='capitalize' sx={{ fontWeight: '900' }}>{data.social}</Link>
+            <Paper elevation={3} key={index} className="px-2 py-1 w-fit m-2 align-bottom self-end">
+              <Link target="_blank" rel="noopener" href={data.url} className='capitalize' sx={{ fontWeight: '900', color: `${contacts?.secondary_color || ''}` }}>{data.social}</Link>
             </Paper>
           ))}
         </Grid>
@@ -114,15 +114,15 @@ export function ContactList({ contacts, socials }) {
 const Contact = ({ contacts, socials }) => {
   return (
     <Box className="mt-20" id='contact'>
+      <SectionHeader title={'contact address'} side={true} custom={contacts} />
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} px={{ md: '100px' }}>
         <Grid item xs={12} sm={6} md={6} mb={{ xs: '40px' }}>
 
-          <SectionHeader title={'contact address'} side={true} />
           <ContactList contacts={contacts} socials={socials} />
         </Grid>
         <Grid item xs={12} sm={6} md={6} mb={{ xs: '40px' }}>
 
-          <ContactForm />
+          <ContactForm custom={contacts} />
         </Grid>
       </Grid>
     </Box>

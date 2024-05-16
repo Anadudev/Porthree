@@ -1,4 +1,5 @@
 import axios from 'axios';
+import api from '../../apiConfig';
 
 /**
  * Fetches user data from the backend API.
@@ -22,6 +23,34 @@ async function GetUser(user) {
     }
     return { loading: true };
 }
+
+export async function fetchPaginatedData(url, amount = 3) {
+    const results = [];
+    let currentPage = 1;
+    let totalFetched = 0;
+
+    try {
+        while (totalFetched <= amount) {
+            const response = await axios.get(`${url}?page=${currentPage}`);
+            const data = response.data;
+            const newData = data.results;
+
+            results.push(...newData);
+            totalFetched += newData.length;
+            currentPage++;
+
+            if (!data.next || totalFetched >= amount) {
+                break;
+            }
+        }
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        throw error;
+    }
+    // console.log(results);
+    return results.slice(0, amount); // Return only the specified amount of data
+}
+
 
 export async function GetRelation(UrlLink) {
     try {

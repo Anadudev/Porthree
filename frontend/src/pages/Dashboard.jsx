@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Outlet, useNavigate } from "react-router-dom";
-import DrawerAppBar from "../components/Nav";
+import { Outlet } from "react-router-dom";
+import ResponsiveAppBar from "../components/Nav";
 import Footer from '../components/Footer';
 import { UserNavLinks } from '../data/NavLinks';
 import Breadcrumb from '../components/Breadcrumb';
 import { useLocation } from 'react-router-dom';
-import { Typography, Button, Container, Grid, Paper, List, ListItem, ListItemText, ListItemIcon } from '@mui/material';
-import LogoutIcon from '@mui/icons-material/Logout';
+import {
+  Container, Grid, Box,
+  Backdrop, SpeedDial, SpeedDialIcon,
+  SpeedDialAction
+} from '@mui/material';
 import UserIcon from '@mui/icons-material/Person';
 import ToolsIcon from '@mui/icons-material/Build';
 import ProjectsIcon from '@mui/icons-material/Work';
 import EducationIcon from '@mui/icons-material/School';
 import WorkIcon from '@mui/icons-material/Work';
 import PostsIcon from '@mui/icons-material/PostAdd';
-import Logout from '../components/Dashboard/Logout';
 import UserComponent from '../components/Dashboard/User';
 import ToolsComponent from '../components/Dashboard/Tools';
 import ProjectsComponent from '../components/Dashboard/Projects';
@@ -21,41 +23,26 @@ import EducationsComponent from '../components/Dashboard/Education';
 import PostsComponent from '../components/Dashboard/Posts';
 import ExperienceComponent from '../components/Dashboard/Experience';
 import PageTitle from './PageTitle';
-import { GetItem } from '../data/GetUser';
 import { useLoaderData } from "react-router-dom";
 
-import Box from '@mui/material/Box';
-import Backdrop from '@mui/material/Backdrop';
-import SpeedDial from '@mui/material/SpeedDial';
-import SpeedDialIcon from '@mui/material/SpeedDialIcon';
-import SpeedDialAction from '@mui/material/SpeedDialAction';
-
-const actions = [
-  { icon: <PostsIcon />, name: 'posts', component: <PostsComponent /> },
-  { icon: <WorkIcon />, name: 'experience', component: < ExperienceComponent /> },
-  { icon: <EducationIcon />, name: 'education', component: < EducationsComponent /> },
-  { icon: <ProjectsIcon />, name: 'projects', component: <ProjectsComponent /> },
-  { icon: <ToolsIcon />, name: 'tools', component: < ToolsComponent /> },
-  { icon: <UserIcon />, name: 'profile', component: <UserComponent /> },
-];
 
 /**
  * Object containing the structure of the dashboard with keys as section names and values as React components.
  */
 const boardStructure = {
-  posts: {component: <PostsComponent />, icon: <PostsIcon />},
-  projects: {component: <ProjectsComponent />,icon: <ProjectsIcon /> },
-  experience: {component: <ExperienceComponent />, icon: <WorkIcon />},
-  education: {component: <EducationsComponent />, icon: <EducationIcon />},
-  tools: {component: <ToolsComponent />, icon: <ToolsIcon />},
-  profile: {component: <UserComponent />, icon: <UserIcon />},
+  posts: { component: <PostsComponent />, icon: <PostsIcon /> },
+  projects: { component: <ProjectsComponent />, icon: <ProjectsIcon /> },
+  experience: { component: <ExperienceComponent />, icon: <WorkIcon /> },
+  education: { component: <EducationsComponent />, icon: <EducationIcon /> },
+  tools: { component: <ToolsComponent />, icon: <ToolsIcon /> },
+  profile: { component: <UserComponent />, icon: <UserIcon /> },
 };
 
-export function SpeedDialTooltipOpen({propActiveLink}) {
+export function SpeedDialTooltipOpen({ propActiveLink }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  function activateLink(active){
+  function activateLink(active) {
     propActiveLink(active);
     handleClose();
   }
@@ -96,9 +83,14 @@ export function SpeedDialTooltipOpen({propActiveLink}) {
 const Dashboard = () => {
   const userData = useLoaderData();
   // console.log("userData",userData);
-  const user = userData.results
-
+  const intialUser = (userData.results)[0];
+  const [user, setUser] = useState(intialUser);
+  const data = JSON.parse(localStorage.getItem('user'))
   const navigation = useLocation();
+
+  useEffect(() => {
+    setUser(data);
+  }, [data])
 
   PageTitle("Dashboard");
   const [activeLink, setActiveLink] = useState('profile');
@@ -112,30 +104,13 @@ const Dashboard = () => {
   // console.log(user);
   return (
     <React.Fragment>
-      <DrawerAppBar pages={UserNavLinks(user[0])} />
+      <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
       <Box padding={{ xs: "10px", sm: "50px" }}>
         <Breadcrumb path={navigation} />
         <Container>
 
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              {/* <nav>
-                <List component="nav" sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
-                  {Object.keys(boardStructure).map((link, index) => (
-                    <ListItem key={index} button onClick={() => handleLinkClick(link)} selected={activeLink === link} sx={{ minWidth: '120px' }}>
-                      <ListItemIcon>
-                        {link === 'profile' && <UserIcon />}
-                        {link === 'tools' && <ToolsIcon />}
-                        {link === 'projects' && <ProjectsIcon />}
-                        {link === 'education' && <EducationIcon />}
-                        {link === 'experience' && <WorkIcon />}
-                        {link === 'posts' && <PostsIcon />}
-                      </ListItemIcon>
-                      <ListItemText primary={link} />
-                    </ListItem>
-                  ))}
-                </List>
-              </nav> */}
             </Grid>
             <SpeedDialTooltipOpen propActiveLink={setActiveLink} />
             <Grid item xs={12}>

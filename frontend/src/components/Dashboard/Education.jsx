@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Typography, Button, TextField, List, ListItem, ListItemText, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import {
+  Grid, Typography, Button,
+  TextField, List, ListItem,
+  ListItemText, Dialog, DialogTitle,
+  DialogContent, DialogActions
+} from '@mui/material';
+import api from '../../../apiConfig';
 import axios from 'axios';
 
 const EducationsComponent = () => {

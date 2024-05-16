@@ -2,10 +2,14 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import { Box } from '@mui/material';
+import { Brightness7, Brightness4 } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
+import { useState, useEffect } from 'react';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-// import App from './App';
 import Home from './pages/Home';
 import About from './pages/About';
 import UserAbout from './pages/UserAbout';
@@ -20,15 +24,22 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import PasswordReset from './pages/PasswordReset';
 import Dashboard from './pages/Dashboard';
-import Logout from './components/Dashboard/Logout.jsx';
-import Educations from './pages/Educations.jsx';
-import Experiences from './pages/Experiences.jsx';
+import Logout from './components/Dashboard/Logout';
+import Educations from './pages/Educations';
+import Experiences from './pages/Experiences';
+import AllProjects from './pages/AllProjects';
+import AllBlogPost from './pages/AllBlogPost';
+import Filter, { FilterView } from './pages/Filter';
 import './index.css';
-import { GetRelation } from './data/GetUser.jsx';
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import MoreSkills from './pages/MoreSkills';
+import Play from './pages/Play';
+import { GetRelation } from './data/GetUser';
+import { store } from './app/store';
+import { Provider } from 'react-redux';
 
 const router = createBrowserRouter([
   {
@@ -42,8 +53,40 @@ const router = createBrowserRouter([
     errorElement: <Error />,
   },
   {
+    path: "/play",
+    element: <Play />,
+    errorElement: <Error />,
+  },
+  {
+    path: "/filter",
+    element: <Filter />,
+
+    errorElement: <Error />,
+    children: [
+      {
+        path: "/filter/:category",
+        element: <FilterView />,
+        loader: async function loader({ params }) {
+          const value = params.category;
+          const data = await GetRelation(`http://127.0.0.1:8000/api/${value}`);
+          return { data, value };
+        },
+      },
+    ],
+  },
+  {
     path: "/portfolios",
     element: <Portfolios />,
+    errorElement: <Error />,
+  },
+  {
+    path: "/posts",
+    element: <AllBlogPost />,
+    errorElement: <Error />,
+  },
+  {
+    path: "/projects",
+    element: <AllProjects />,
     errorElement: <Error />,
   },
   {
@@ -51,11 +94,7 @@ const router = createBrowserRouter([
     element: <Portfolio />,
     errorElement: <Error />,
     loader: async ({ params }) => {
-      try {
-        return await fetch(`http://127.0.0.1:8000/api/user/${params.username}`)
-      } catch (error) {
-        return null
-      }
+      return (await GetRelation(`http://127.0.0.1:8000/api/user/${params.username}`)) || null;
     },
   },
   {
@@ -63,12 +102,15 @@ const router = createBrowserRouter([
     element: <Posts />,
     errorElement: <Error />,
     loader: async ({ params }) => {
-      try {
-        const user = await fetch(`http://127.0.0.1:8000/api/user/${params.username}`)
-        return user.status != 200? null : user
-      } catch (error) {
-        return null
-      }
+      return (await GetRelation(`http://127.0.0.1:8000/api/user/${params.username}`)) || null;
+    },
+  },
+  {
+    path: "/:username/skills",
+    element: <MoreSkills />,
+    errorElement: <Error />,
+    loader: async ({ params }) => {
+      return (await GetRelation(`http://127.0.0.1:8000/api/user/${params.username}`)) || null;
 
     },
   },
@@ -183,8 +225,61 @@ const router = createBrowserRouter([
   },
 ]);
 
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
+
+const lightTheme = createTheme({
+  palette: {
+    mode: 'light',
+  },
+});
+
+
+const ThemeToggle = () => {
+  const [theme, setTheme] = useState(localStorage.getItem('theme') === 'dark' ? darkTheme : lightTheme);
+
+  useEffect(() => {
+    localStorage.setItem('theme', theme.palette.mode);
+  }, [theme]);
+
+  const handleDarkModeToggle = () => {
+    setTheme(theme.palette.mode === 'dark' ? lightTheme : darkTheme);
+  };
+
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          bgcolor: 'transparent',
+          color: 'text.primary',
+          position: 'fixed',
+          paddingRight: 1,
+          py: 1,
+          zIndex: 9999,
+          right: 1,
+          top: "4rem",
+        }}
+      >
+        <IconButton sx={{ ml: 1 }} onClick={handleDarkModeToggle} color="inherit">
+          {theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
+        </IconButton>
+      </Box>
+      <RouterProvider router={router} />
+    </ThemeProvider>
+  );
+};
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+    <ThemeToggle />
+    </Provider>
   </React.StrictMode>,
-)
+);
