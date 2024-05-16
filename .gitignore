@@ -3,6 +3,7 @@
 /venv
 /.vscode
 Porthree/__pycache__/
+Porthree/node_modules
 Porthree/*/__pycache__/
 Porthree/main/migrations/__pycache__/
 *.zip
@@ -15,3 +16,4 @@ get-pip.py
 */*/test_image_*.jpg
 backend/db.sqlite3
 backend/api/migrations/*.py
+node_modules/

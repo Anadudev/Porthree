@@ -246,7 +246,6 @@ export function FilterView() {
     const [page, setPage] = useState(1);
     const [result, setResult] = useState([]);
     const [count, setCount] = useState(0);
-    const [initialCount, setInitialCount] = useState(0);
     const [initialCategory, setInitialCategory] = useState('');
     const chipState = useSelector((state) => state.filterChipValue.value);
     let tagqp = '';
