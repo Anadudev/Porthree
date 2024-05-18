@@ -159,7 +159,7 @@ export function CommentItemsList() {
   );
 }
 
-export function CommentListDialog() {
+export function CommentListDialog({author, listTitle}) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -183,7 +183,7 @@ export function CommentListDialog() {
         scroll={'paper'}
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle>{"Use Google's location service?"}</DialogTitle>
+        <DialogTitle>{listTitle?`All comments on ${author}'s ${listTitle}`:"All Comments"}</DialogTitle>
         <DialogContent dividers={true}>
           <DialogContentText id="alert-dialog-slide-description">
             <CommentItemsList />
@@ -192,8 +192,8 @@ export function CommentListDialog() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Disagree</Button>
-          <Button onClick={handleClose}>Agree</Button>
+          <Button onClick={handleClose}>Close</Button>
+          {/* <Button onClick={handleClose}>Agree</Button> */}
         </DialogActions>
       </Dialog>
     </React.Fragment>
@@ -201,12 +201,12 @@ export function CommentListDialog() {
 }
 
 
-function Comment() {
+function Comment({author  ,listTitle}) {
   return (
     <Box sx={{ padding: 1, }}>
       <CommentItemsList />
       {/* <Button>All Comments</Button> */}
-      <CommentListDialog />
+      <CommentListDialog author={author} listTitle={listTitle}/>
     </Box>
   )
 }

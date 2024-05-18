@@ -12,10 +12,8 @@ import {
 } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
-import CommentIcon from '@mui/icons-material/Comment';
 import BgImage from '/src/assets/image.jpg';
 import Error from './Error';
-import { GetItem } from '../data/GetUser';
 import { Link as RL } from 'react-router-dom';
 import HTMLRenderer from '../components/HtmlRender';
 import { GetRelation } from '../data/GetUser';
@@ -134,7 +132,7 @@ const Post = () => {
                                 my: 2
                             }}>1k Comments</Typography>
                         <Card>
-                            <Comment />
+                            <Comment author={user.username} listTitle={"post"}/>
                         </Card>
                     </Box>
                 </Box>

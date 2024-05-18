@@ -13,7 +13,6 @@ import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import { styled } from "@mui/material/styles";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
-import CommentIcon from "@mui/icons-material/Comment";
 import BgImage from "/src/assets/image.jpg";
 import { ErrorCard } from "./Error";
 import Limiter from "../components/Limiter";
@@ -266,7 +265,7 @@ const Project = () => {
                 my: 2
               }}>1k Comments</Typography>
             <Card>
-              <Comment />
+              <Comment author={user.username} listTitle={"project"}/>
             </Card>
           </Box>
         </Box>
