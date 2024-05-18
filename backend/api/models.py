@@ -83,6 +83,7 @@ class Skill(models.Model):
         # Ensure that a user cannot have duplicate tools
         unique_together = ["user", "skill"]
 
+
 class Tag(models.Model):
     """Represents a tag that can be associated with posts or projects."""
 
@@ -93,7 +94,6 @@ class Tag(models.Model):
 
     def __str__(self):
         return str(self.tag)
-
 
 
 class Post(models.Model):
@@ -227,38 +227,41 @@ class Rating(models.Model):
         return f"Rating {self.rate} for {self.project}"
 
 
-class Comment(models.Model):
-    """Represents a comment on a post by a user."""
+class BaseComment(models.Model):
+    """parent/base model for application comments"""
 
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
     comment = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f"{self.user} commented on {self.post} at {self.created_at}"
-
-
-class Reply(models.Model):
-    """Represents a reply to a comment or a post."""
-
-    id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True)
-    project = models.ForeignKey(
-        Project, on_delete=models.CASCADE, null=True, blank=True
+    reply = models.ForeignKey(
+        "self", on_delete=models.CASCADE, null=True, blank=True, related_name="replies"
     )
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
-    reply = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        abstract = True
+
     def __str__(self):
-        return (
-            f"Reply by {self.user} on {self.post or self.project} at {self.created_at}"
-        )
+        return f"{self.user} commented at {self.created_at}"
+
+
+class PostComment(BaseComment):
+    """represents a user Post comment on a post"""
+
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user} replied {self.post} at {self.created_at}"
+
+
+class ProjectComment(BaseComment):
+    """represents a user project comment on a post"""
+
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user} replied {self.project} at {self.created_at}"
 
 
 class Share(models.Model):
@@ -289,10 +292,6 @@ class Like(models.Model):
     project = models.ForeignKey(
         Project, on_delete=models.CASCADE, null=True, blank=True
     )
-    comment = models.ForeignKey(
-        Comment, on_delete=models.CASCADE, null=True, blank=True
-    )
-    reply = models.ForeignKey(Reply, on_delete=models.CASCADE, null=True, blank=True)
     share = models.ForeignKey(Share, on_delete=models.CASCADE, null=True, blank=True)
     like = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)

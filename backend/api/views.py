@@ -17,8 +17,8 @@ from .models import (
     Education,
     Experience,
     Rating,
-    Comment,
-    Reply,
+    PostComment,
+    ProjectComment,
     Share,
     Like,
 )
@@ -33,8 +33,8 @@ from .serializers import (
     EducationSerializer,
     ExperienceSerializer,
     RatingSerializer,
-    CommentSerializer,
-    ReplySerializer,
+    PostCommentSerializer,
+    ProjectCommentSerializer,
     ShareSerializer,
     LikeSerializer,
 )
@@ -231,24 +231,25 @@ class RatingViewSet(viewsets.ModelViewSet):
     filterset_fields = ["rate", "id"]
 
 
-class CommentViewSet(viewsets.ModelViewSet):
+class PostCommentViewSet(viewsets.ModelViewSet):
     """adds representations of the Comment to the API view"""
 
     permission_classes = [IsAuthenticated | ReadOnly]
-    queryset = Comment.objects.all().order_by("-created_at")
-    serializer_class = CommentSerializer
+    queryset = PostComment.objects.all().order_by("-created_at")
+    serializer_class = PostCommentSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_fields = ["comment", "id"]
 
 
-class ReplyViewSet(viewsets.ModelViewSet):
-    """adds representations of the Reply to the API view"""
+class ProjectCommentViewSet(viewsets.ModelViewSet):
+    """adds representations of the Comment to the API view"""
 
     permission_classes = [IsAuthenticated | ReadOnly]
-    queryset = Reply.objects.all().order_by("-created_at")
-    serializer_class = ReplySerializer
+    queryset = ProjectComment.objects.all().order_by("-created_at")
+    serializer_class = ProjectCommentSerializer
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ["reply", "id"]
+    filterset_fields = ["comment", "id"]
+
 
 
 class ShareViewSet(viewsets.ModelViewSet):

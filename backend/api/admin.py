@@ -10,8 +10,8 @@ from api.models import (
     Education,
     Experience,
     Rating,
-    Comment,
-    Reply,
+    PostComment,
+    ProjectComment,
     Share,
     Like,
 )
@@ -26,7 +26,7 @@ admin.site.register(Skill)
 admin.site.register(Education)
 admin.site.register(Experience)
 admin.site.register(Rating)
-admin.site.register(Comment)
-admin.site.register(Reply)
+admin.site.register(PostComment)
+admin.site.register(ProjectComment)
 admin.site.register(Share)
 admin.site.register(Like)
