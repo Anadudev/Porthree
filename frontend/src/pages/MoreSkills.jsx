@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, Fragment } from 'react'
 import { useLoaderData } from "react-router-dom";
-import GetUser, { GetRelation } from '../data/GetUser';
+import { GetRelation } from '../data/GetUser';
 import {
   Box, Typography, Pagination,
   Dialog, DialogContent,
@@ -55,7 +55,7 @@ const Skills = () => {
 
   useEffect(() => {
     async function fetchData() {
-      setUser((await GetUser(userId)));
+      setUser(await GetRelation(`http://127.0.0.1:8000/api/users/${userId.id}/`));
       setResult(await GetRelation(`http://127.0.0.1:8000/api/skills/?page=${page}&user=${userId.id}`));
       if (result && result.results) {
         setSkills(result.results);

@@ -13,7 +13,7 @@ import Blog from "../components/PortfolioSections/Blog";
 import Contact from "../components/PortfolioSections/Contact";
 import PageTitle from "./PageTitle";
 import { useLoaderData } from "react-router-dom";
-import GetUser, { getUserData, GetRelation } from "../data/GetUser";
+import { getUserData, GetRelation } from "../data/GetUser";
 import Error, { ErrorCard } from "./Error";
 import Loading from "../components/PageLoad";
 import api from "../../apiConfig";
@@ -46,7 +46,7 @@ function Portfolio() {
     useEffect(() => {
         const fetchDataForUser = async () => {
             // console.log(id)
-            const fetchedUser = await GetUser(id);
+            const fetchedUser = await GetRelation(`http://127.0.0.1:8000/api/users/${id.id}/`);
             if (!fetchedUser.loading) {
                 // setData(result.data);
                 setLoading(false);

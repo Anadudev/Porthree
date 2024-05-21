@@ -14,7 +14,7 @@ import api from '../../apiConfig';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import PageTitle from './PageTitle';
-import GetUser from '../data/GetUser';
+import {GetRelation} from '../data/GetUser';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -42,7 +42,7 @@ const Login = () => {
         if (response.status === 200) {
           // The login was successful
           const token = response.data.access; // The JWT token
-          const user = await GetUser(response.data.user);
+          const user = await GetRelation(`http://127.0.0.1:8000/api/users/${response.data.user.id}/`);
           // Store the token in local storage or a cookie for future use
           if (!user.loading) {
             localStorage.setItem('access_token', token);

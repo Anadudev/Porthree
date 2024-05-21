@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useLoaderData } from "react-router-dom";
-import GetUser, { GetRelation } from '../data/GetUser';
+import { GetRelation } from '../data/GetUser';
 import AboutCard from '../components/PortfolioSections/AboutCard';
 import { Box, Typography, Card, Pagination } from "@mui/material";
 import ResponsiveAppBar from "../components/Nav";
@@ -26,7 +26,7 @@ const Educations = () => {
   const location = useLocation();
   useEffect(() => {
     async function fetchData() {
-      setUser((await GetUser(userId)));
+      setUser((await GetRelation(`http://127.0.0.1:8000/api/users/${userId.id}/`)));
       setResult(await GetRelation(`http://127.0.0.1:8000/api/users/${userId.id}/educations/?page=${page}`));
       if (result && result.results) {
         setEducations(result.results);
