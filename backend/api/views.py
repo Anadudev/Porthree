@@ -238,7 +238,7 @@ class PostCommentViewSet(viewsets.ModelViewSet):
     queryset = PostComment.objects.all().order_by("-created_at")
     serializer_class = PostCommentSerializer
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ["comment", "id"]
+    filterset_fields = ["comment", "id", "post", "user", "reply"]
 
 
 class ProjectCommentViewSet(viewsets.ModelViewSet):
@@ -248,7 +248,7 @@ class ProjectCommentViewSet(viewsets.ModelViewSet):
     queryset = ProjectComment.objects.all().order_by("-created_at")
     serializer_class = ProjectCommentSerializer
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ["comment", "id"]
+    filterset_fields = ["comment", "id", "project", "user", "reply"]
 
 
 

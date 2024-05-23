@@ -243,25 +243,21 @@ class BaseComment(models.Model):
         abstract = True
 
     def __str__(self):
-        return f"{self.user} commented at {self.created_at}"
+        return f"{self.user} replied a comment"
 
 
 class PostComment(BaseComment):
     """represents a user Post comment on a post"""
 
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.user} replied {self.post} at {self.created_at}"
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True)
 
 
 class ProjectComment(BaseComment):
     """represents a user project comment on a post"""
 
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.user} replied {self.project} at {self.created_at}"
+    project = models.ForeignKey(
+        Project, on_delete=models.CASCADE, null=True, blank=True
+    )
 
 
 class Share(models.Model):
