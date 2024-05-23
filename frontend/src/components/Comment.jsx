@@ -1,48 +1,120 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
+  AccordionSummary,
+  AccordionDetails,
+  Accordion,
   Button, Box, List
   , ListItem, Divider, ListItemText
   , ListItemAvatar, Typography, Avatar
   , Dialog, DialogActions, DialogContent
   , DialogContentText, DialogTitle, Slide
-  , TextField,
+  , TextField, Card
 } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import CommentIcon from '@mui/icons-material/Comment';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import EditIcon from '@mui/icons-material/Edit';
+import ChatIcon from '@mui/icons-material/Chat';
+import { Link } from 'react-router-dom';
+import {
+  GetRelation, PostData,
+  isAuthenticated, deleteData,
+  updateData, currAuthUser
+} from '../data/GetUser';
 
-export function ReplyFormDialog({ actionType }) {
-  const [open, setOpen] = React.useState(false);
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { useNavigate } from 'react-router-dom';
+import Limiter from './Limiter';
+// import { comment } from 'postcss';
+
+export function ReplyFormDialog({ type = '', replyType = '', parent = '', editData , owner}) {
+
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const [toEdit, setToEdit] = useState(false);
+  const [formData, setFormData] = useState({
+    comment: null,
+    user: null,
+  });
 
   const handleClickOpen = () => {
+    if (!isAuthenticated()) {
+      navigate('/login');
+      return;
+    }
     setOpen(true);
   };
 
+  const editOpen = () => {
+    handleClickOpen();
+    setToEdit(true)
+    if (editData) { setFormData(editData) }
+    setOpen(true);
+  }
+
   const handleClose = () => {
     setOpen(false);
+    setFormData({
+      comment: null,
+      user: null,
+    })
+    toEdit && setToEdit(false);
   };
+
+  const handleChange = (event) => {
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value,
+      [replyType]: parent,
+    });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (!isAuthenticated()) {
+      navigate('/login');
+      return;
+    }
+    if (formData.comment) {
+      const user = JSON.parse(localStorage.getItem("user"))
+      formData.user = user.url;
+      PostData(`http://127.0.0.1:8000/api/${type}_comments/`, formData);
+    }
+    toEdit && setToEdit(false);
+    handleClose();
+  }
+  const handleEdit = async (event) => {
+    event.preventDefault();
+    if (!isAuthenticated()) return navigate('/login');
+    if (!formData.comment) return;
+    const user = JSON.parse(localStorage.getItem("user"));
+    formData.user = user.url;
+    try {
+      await updateData(`${editData.url}`, {
+        user: formData.user,
+        comment: formData.comment
+      });
+      toEdit && setToEdit(false);
+      handleClose();
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <React.Fragment>
-      {actionType === 'comment' ?
-
-        <CommentIcon onClick={handleClickOpen} /> : <Button size='small' onClick={handleClickOpen}>reply this</Button>}
+      {owner && editData?<EditIcon sx={{ mr: 1, cursor: 'pointer', fontSize: 20 }} onClick={editOpen} />:''}
+      <CommentIcon fontSize='medium' sx={{ cursor: 'pointer'}} onClick={handleClickOpen} />
       <Dialog
         sx={{ '& .MuiDialog-paper': { width: '80%', maxHeight: 435 } }}
         open={open}
         onClose={handleClose}
         PaperProps={{
           component: 'form',
-          onSubmit: (event) => {
-            event.preventDefault();
-            const formData = new FormData(event.currentTarget);
-            const formJson = Object.fromEntries(formData.entries());
-            const email = formJson.email;
-            console.log(email);
-            handleClose();
-          },
+          onSubmit: toEdit ? handleEdit : handleSubmit
         }}
       >
-        <DialogTitle>Reply to users {actionType === 'comment' ? "post" : "comment"}</DialogTitle>
+        <DialogTitle>Reply this {type}</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -51,6 +123,8 @@ export function ReplyFormDialog({ actionType }) {
             name="comment"
             label="Write reply"
             type="comment"
+            value={formData.comment}
+            onChange={handleChange}
             fullWidth
             rows={4}
             variant="standard"
@@ -65,51 +139,74 @@ export function ReplyFormDialog({ actionType }) {
   );
 }
 
-
-
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 
+function HandleReply({ type, id }) {
+  const [data, setData] = useState([]);
+  const [result, setResult] = useState({});
 
+  useEffect(() => {
+    async function fetchData() {
+      setResult(await GetRelation(`http://127.0.0.1:8000/api/${type}_comments/?reply=${id}`));
+    }
+    fetchData();
+  }, [id, type]);
 
-export function CommentItemsList() {
+  useEffect(() => {
+    if (result.results) {
+      setData(result.results);
+    }
+  }, [result]); // Only update `data` when `result` changes
+
   return (
-    <List sx={{ width: '100%' }}>
-      <ListItem alignItems="flex-start">
-        <ListItemAvatar>
-          <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-        </ListItemAvatar>
-        <ListItemText
-          primary="Brunch this weekend?"
-          secondary={
-            <React.Fragment>
-              <Typography
-                sx={{ display: 'inline' }}
-                component="span"
-                variant="body2"
-                color="text.primary"
-              >
-                Ali Connors
-              </Typography>
-              {" — I'll be in your neighborhood doing errands this…"}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-      <Box sx={{ textAlign: 'right', pb: 0.1 }}>
-        <FavoriteIcon sx={{ mx: 1, cursor: 'pointer', fontSize: 20 }} />
-        <ReplyFormDialog />
-      </Box>
+    data.length > 0 ? (
+      <div>
+        <Accordion>
+          <AccordionSummary
+            expandIcon={<ArrowDropDownIcon />}
+            aria-controls="panel2-content"
+            id="panel2-header"
+          >
+            <Typography>{result.count} {result.count > 1 ? ' Replies' : ' Reply'}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>
+              <CommentItemsList comments={data} type={type} />
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+      </div>
+    ) : <div></div>
+  )
+}
 
-      <Divider variant="inset" component="li" />
+
+export function CommentItem({ data, type }) {
+  const limit = 100;
+  const [user, setUser] = useState([]);
+  const [more, setMore] = useState(limit);
+  useEffect(() => {
+    async function FetchUser() {
+      setUser(await GetRelation(data.user));
+    }
+    FetchUser();
+  }, [data])
+  const owner = currAuthUser(user?.username);
+  const handleMore = () => {
+    more <= limit ? setMore(data.comment.length) : setMore(limit);
+  }
+
+  return (
+    <React.Fragment>
       <ListItem alignItems="flex-start">
         <ListItemAvatar>
-          <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
+          <Avatar alt={user.username} src={user.picture} />
         </ListItemAvatar>
         <ListItemText
-          primary="Summer BBQ"
+          primary={`${user.first_name || ''} ${user.last_name || ''}`}
           secondary={
             <React.Fragment>
               <Typography
@@ -118,48 +215,39 @@ export function CommentItemsList() {
                 variant="body2"
                 color="text.primary"
               >
-                to Scott, Alex, Jennifer
+                {user.username || ''}
               </Typography>
-              {" — Wish I could come, but I'm out of town this…"}
+              {` - ${Limiter(data.comment, more)}`}
+              <Button size='small' onClick={handleMore} sx={{ float: 'right', display: data.comment.length <= limit ? 'none' : 'inline' }}>See {more <= limit ? 'more' : 'less'}</Button>
             </React.Fragment>
           }
         />
       </ListItem>
-      <Box sx={{ textAlign: 'right', pb: 0.1 }}>
-        <FavoriteIcon sx={{ mx: 1, cursor: 'pointer', fontSize: 20 }} />
-        <ReplyFormDialog />
+      <Box sx={{ textAlign: 'right', pb: 0.1, pr:1 }}>
+        {owner && <DeleteForeverIcon sx={{ mx: 1, cursor: 'pointer', fontSize: 20 }} onClick={() => deleteData(data.url)} />}
+        <ReplyFormDialog type={type} replyType={'reply'} parent={data.url} editData={data} owner={owner}/>
+        <FavoriteIcon sx={{ ml: 5, cursor: 'pointer', fontSize: 20 }} />
       </Box>
-      <Divider variant="inset" component="li" />
-      <ListItem alignItems="flex-start">
-        <ListItemAvatar>
-          <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-        </ListItemAvatar>
-        <ListItemText
-          primary="Oui Oui"
-          secondary={
-            <React.Fragment>
-              <Typography
-                sx={{ display: 'inline' }}
-                component="span"
-                variant="body2"
-                color="text.primary"
-              >
-                Sandra Adams
-              </Typography>
-              {' — Do you have Paris recommendations? Have you ever…'}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-      <Box sx={{ textAlign: 'right', pb: 0.1 }}>
-        <FavoriteIcon sx={{ mx: 1, cursor: 'pointer', fontSize: 20 }} />
-        <ReplyFormDialog />
-      </Box>
-    </List>
+      <HandleReply type={type} id={data.id} />
+    </React.Fragment>
+  )
+}
+
+
+export function CommentItemsList({ comments, type }) {
+  return (
+    comments && comments.length > 0 ? <React.Fragment>
+      {comments?.map((comment, index) => (
+        <List key={index} sx={{ width: '100%' }}>
+          <Divider variant="inset" component="li" />
+          <CommentItem data={comment} type={type} />
+        </List>
+      ))}
+    </React.Fragment> : ''
   );
 }
 
-export function CommentListDialog({author, listTitle}) {
+export function CommentListDialog({ author, listTitle }) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -183,7 +271,7 @@ export function CommentListDialog({author, listTitle}) {
         scroll={'paper'}
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle>{listTitle?`All comments on ${author}'s ${listTitle}`:"All Comments"}</DialogTitle>
+        <DialogTitle>{listTitle ? `All comments on ${author}'s ${listTitle}` : "All Comments"}</DialogTitle>
         <DialogContent dividers={true}>
           <DialogContentText id="alert-dialog-slide-description">
             <CommentItemsList />
@@ -201,14 +289,37 @@ export function CommentListDialog({author, listTitle}) {
 }
 
 
-function Comment({author  ,listTitle}) {
+export default function Comment({ author, listTitle, parent }) {
+  const [requestValue, setRequestValue] = useState({});
+  const [comments, setComments] = useState([]);
+
+  useEffect(() => {
+    async function AsyncCommentsFetch() {
+      const response = await GetRelation(`http://127.0.0.1:8000/api/${listTitle}_comments/?${listTitle}=${parent}`);
+      setRequestValue(response);
+      if (response.results) {
+        setComments(response.results);
+      }
+    }
+    AsyncCommentsFetch();
+  }, [listTitle, parent]);
+
   return (
-    <Box sx={{ padding: 1, }}>
-      <CommentItemsList />
-      {/* <Button>All Comments</Button> */}
-      <CommentListDialog author={author} listTitle={listTitle}/>
-    </Box>
+    comments && (<React.Fragment>
+      <Typography
+        variant='h5'
+        sx={{
+          fontWeight: '900',
+          color: `${author?.secondary_color || ''}`,
+          textAlign: 'center',
+          my: 2
+        }}>{requestValue.count}{requestValue.count > 1 ? ` Comments` : ` Comment`}</Typography>
+      <Card>
+        {requestValue.count > 0 ? <Box sx={{ padding: 1, }}>
+          <CommentItemsList comments={comments} type={listTitle} />
+          {/* <CommentListDialog author={author.username} listTitle={listTitle} /> */}
+        </Box> : ''}
+      </Card>
+    </React.Fragment>)
   )
 }
-
-export default Comment;
