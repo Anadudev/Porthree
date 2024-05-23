@@ -118,22 +118,12 @@ const Post = () => {
                                 <ShareIcon />
                             </IconButton>
                             <IconButton aria-label="comment">
-                                <ReplyFormDialog actionType={'comment'} />
+                                <ReplyFormDialog type={'post'} replyType={'post'} parent={post.url}/>
                             </IconButton>
                         </CardActions>
                     </Card>
                     <Box sx={{ width: '90%', maxWidth: "60rem", alignSelf: 'center' }}>
-                        <Typography
-                            variant='h5'
-                            sx={{
-                                fontWeight: '900',
-                                color: `${user?.secondary_color || ''}`,
-                                textAlign: 'center',
-                                my: 2
-                            }}>1k Comments</Typography>
-                        <Card>
-                            <Comment author={user.username} listTitle={"post"}/>
-                        </Card>
+                            <Comment author={user} listTitle={"post"} parent={post.id} />
                     </Box>
                 </Box>
             </Box>
