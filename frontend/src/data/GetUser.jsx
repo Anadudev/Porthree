@@ -166,4 +166,85 @@ export async function GetItem(item, id) {
     return { loading: true };
 }
 
-// export default GetUser;
+/**
+ * Checks if the user is authenticated by verifying the presence of a "user" and "access_token" in the local storage.
+ *
+ * @return {boolean} Returns true if the user is authenticated, false otherwise.
+ */
+export function isAuthenticated() {
+    return localStorage.getItem("user") !== null && localStorage.getItem('access_token') !== null;
+}
+
+/**
+ * Checks if the currently authenticated user is the same as the provided user.
+ *
+ * @param {Object} user - The user object to compare with the authenticated user.
+ * @return {boolean} Returns true if the authenticated user is the same as the provided user, false otherwise.
+ */
+export function currAuthUser(user) {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    return isAuthenticated() && storedUser.username === user;
+}
+
+/**
+ * Sends a POST request to the specified endpoint with the provided data.
+ *
+ * @param {string} endpoint - The URL of the endpoint to send the request to.
+ * @param {Object} data - The data to send in the request body.
+ * @return {Promise<Object>} - A promise that resolves to the response data if the request is successful,
+ *                            or throws an error if the request fails.
+ */
+export async function PostData(endpoint, data) {
+    try {
+        if (isAuthenticated()) {
+            const response = await axios.post(endpoint, data, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            // console.log(response.data);
+            return response.data;
+        }
+    } catch (error) {
+        console.error('Error making POST request:', error);
+        throw error; // Optionally, you can handle the error or throw it to be handled by the calling function
+    }
+    return { loading: true };
+}
+
+export async function updateData(endpoint, data) {
+    if (isAuthenticated()) {
+        try {
+            const response = await axios.put(endpoint, data, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            console.log("Comment updated successfully:", response.data);
+        } catch (error) {
+            console.error("Error updating comment:", error);
+        }
+    }
+
+    // Return after the asynchronous request is complete
+    return { loading: true };
+}
+
+export async function deleteData(endpoint) {
+    try {
+        if (isAuthenticated()) {
+            axios.delete(endpoint, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            // console.log("deleted");
+        }
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
