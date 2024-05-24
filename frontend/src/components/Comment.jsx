@@ -171,7 +171,7 @@ function HandleReply({ type, id }) {
   return (
     data.length > 0 ? (
       <div>
-        <Accordion>
+        <Accordion elevation={3}>
           <AccordionSummary
             expandIcon={<ArrowDropDownIcon />}
             aria-controls="panel2-content"
@@ -250,7 +250,7 @@ export function CommentItemsList({ comments, type }) {
     comments && comments.length > 0 ? <React.Fragment>
       {comments?.map((comment, index) => (
         <List key={index} sx={{ width: '100%' }}>
-          <Divider variant="inset" component="li" />
+          {/* <Divider variant="inset" component="li" /> */}
           <CommentItem data={comment} type={type} />
         </List>
       ))}
