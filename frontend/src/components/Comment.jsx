@@ -14,8 +14,6 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import CommentIcon from '@mui/icons-material/Comment';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
-import ChatIcon from '@mui/icons-material/Chat';
-import { Link } from 'react-router-dom';
 import {
   GetRelation, PostData,
   isAuthenticated, deleteData,
@@ -27,7 +25,7 @@ import { useNavigate } from 'react-router-dom';
 import Limiter from './Limiter';
 // import { comment } from 'postcss';
 
-export function ReplyFormDialog({ type = '', replyType = '', parent = '', editData , owner}) {
+export function ReplyFormDialog({ type = '', replyType = '', parent = '', editData, owner }) {
 
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -103,8 +101,8 @@ export function ReplyFormDialog({ type = '', replyType = '', parent = '', editDa
 
   return (
     <React.Fragment>
-      {owner && editData?<EditIcon sx={{ mr: 1, cursor: 'pointer', fontSize: 20 }} onClick={editOpen} />:''}
-      <CommentIcon fontSize='medium' sx={{ cursor: 'pointer'}} onClick={handleClickOpen} />
+      {owner && editData ? <EditIcon sx={{ mr: 1, cursor: 'pointer', fontSize: 20 }} onClick={editOpen} /> : ''}
+      <CommentIcon fontSize='medium' sx={{ cursor: 'pointer' }} onClick={handleClickOpen} />
       <Dialog
         sx={{ '& .MuiDialog-paper': { width: '80%', maxHeight: 435 } }}
         open={open}
@@ -147,17 +145,26 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function HandleReply({ type, id }) {
   const [data, setData] = useState([]);
   const [result, setResult] = useState({});
+  const [page, setPage] = useState(1);
+
+  const handleMorePage = () => {
+    setPage(page + 1);
+  }
+
+  const handleLessPage = () => {
+    setPage(1);
+  }
 
   useEffect(() => {
     async function fetchData() {
-      setResult(await GetRelation(`http://127.0.0.1:8000/api/${type}_comments/?reply=${id}`));
+      setResult(await GetRelation(`http://127.0.0.1:8000/api/${type}_comments/?reply=${id}&page=${page}`));
     }
     fetchData();
-  }, [id, type]);
+  }, [id, type, page]);
 
   useEffect(() => {
     if (result.results) {
-      setData(result.results);
+      page > 1 ? setData(data.concat(result.results)) : setData(result.results);
     }
   }, [result]); // Only update `data` when `result` changes
 
@@ -175,6 +182,10 @@ function HandleReply({ type, id }) {
           <AccordionDetails>
             <Typography>
               <CommentItemsList comments={data} type={type} />
+              {page == 1 && result.count == data.length ? '' : (<span>
+            {result.next && <Button size='small' onClick={handleMorePage}>Load more</Button>}
+            {result.previous && <Button size='small' onClick={handleLessPage}>Load few</Button>}
+          </span>)}
             </Typography>
           </AccordionDetails>
         </Accordion>
@@ -223,9 +234,9 @@ export function CommentItem({ data, type }) {
           }
         />
       </ListItem>
-      <Box sx={{ textAlign: 'right', pb: 0.1, pr:1 }}>
+      <Box sx={{ textAlign: 'right', pb: 0.1, pr: 1 }}>
         {owner && <DeleteForeverIcon sx={{ mx: 1, cursor: 'pointer', fontSize: 20 }} onClick={() => deleteData(data.url)} />}
-        <ReplyFormDialog type={type} replyType={'reply'} parent={data.url} editData={data} owner={owner}/>
+        <ReplyFormDialog type={type} replyType={'reply'} parent={data.url} editData={data} owner={owner} />
         <FavoriteIcon sx={{ ml: 5, cursor: 'pointer', fontSize: 20 }} />
       </Box>
       <HandleReply type={type} id={data.id} />
@@ -292,17 +303,26 @@ export function CommentListDialog({ author, listTitle }) {
 export default function Comment({ author, listTitle, parent }) {
   const [requestValue, setRequestValue] = useState({});
   const [comments, setComments] = useState([]);
+  const [page, setPage] = useState(1);
+
+  const handleMorePage = () => {
+    setPage(page + 1);
+  }
+
+  const handleLessPage = () => {
+    setPage(1);
+  }
 
   useEffect(() => {
     async function AsyncCommentsFetch() {
-      const response = await GetRelation(`http://127.0.0.1:8000/api/${listTitle}_comments/?${listTitle}=${parent}`);
+      const response = await GetRelation(`http://127.0.0.1:8000/api/${listTitle}_comments/?${listTitle}=${parent}&page=${page}`);
       setRequestValue(response);
       if (response.results) {
-        setComments(response.results);
+        page > 1 ? setComments(comments.concat(response.results)) : setComments(response.results);
       }
     }
     AsyncCommentsFetch();
-  }, [listTitle, parent]);
+  }, [listTitle, parent, page]);
 
   return (
     comments && (<React.Fragment>
@@ -317,6 +337,10 @@ export default function Comment({ author, listTitle, parent }) {
       <Card>
         {requestValue.count > 0 ? <Box sx={{ padding: 1, }}>
           <CommentItemsList comments={comments} type={listTitle} />
+          {page == 1 && requestValue.count == comments.length ? '' : (<span>
+            {requestValue.next && <Button onClick={handleMorePage}>Load more</Button>}
+            {requestValue.previous && <Button onClick={handleLessPage}>Load few</Button>}
+          </span>)}
           {/* <CommentListDialog author={author.username} listTitle={listTitle} /> */}
         </Box> : ''}
       </Card>
