@@ -19,7 +19,8 @@ import { Button, CardActionArea } from '@mui/material';
 export function ProjectCard({ project, user }) {
     return (
         <Card sx={{
-            width: 345,
+            minWidth: 300,
+            maxWidth: 400,
             margin: 1,
             border: `2px solid ${user.secondary_color}`,
             borderRadius: '10px'
@@ -59,7 +60,8 @@ export function ProjectCard({ project, user }) {
 function BlogCard({ post, user }) {
     return (
         <Card sx={{
-            width: 345,
+            minWidth: 300,
+            maxWidth: 400,
             margin: 1,
             border: `1px solid ${user?.secondary_color}`
         }} className='border-[2px]'>

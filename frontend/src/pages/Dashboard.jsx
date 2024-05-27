@@ -105,7 +105,7 @@ const Dashboard = () => {
   return (
     <React.Fragment>
       <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
-      <Box padding={{ xs: "10px", sm: "50px" }}>
+      <Box padding={{ xs: "10px", sm: "50px", minHeight: '90vh' }}>
         <Breadcrumb path={navigation} />
         <Container>
 

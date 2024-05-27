@@ -75,7 +75,7 @@ const AllProjects = () => {
     return (
         <React.Fragment>
             <ResponsiveAppBar pages={NavLinks} />
-            <Box padding={{ xs: "10px", sm: "50px" }}>
+            <Box padding={{ xs: "10px", sm: "50px", minHeight: '90vh' }}>
                 <Breadcrumb path={location} />
 
                 {projects && projects.length > 0 ? (<Box sx={{ width: '100%' }}>
@@ -98,7 +98,7 @@ const AllProjects = () => {
                             onChange={handleChange}
                         />
                     </Box>
-                </Box>) : <Typography textAlign={'center'}>No projects</Typography>}
+                </Box>) : ''}
             </Box>
             <Footer />
         </React.Fragment >

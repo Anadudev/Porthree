@@ -46,14 +46,15 @@ const About = ({ user, tools, education, experience }) => {
       <SectionHeader title={'about'} custom={user} />
       <Box>
         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} px={{ md: '100px' }}>
-          <Grid item xs={12} sm={6} md={6} mb={{ xs: '40px' }}>
-            <Typography variant='h5' component={'p'} className='uppercase'>who am i?</Typography>
-            <Typography my={'20px'}>{user.about}</Typography>
-          </Grid>
-          <Grid item xs={12} sm={6} md={6} mb={{ xs: '40px' }}>
+          {user.about &&
+            <Grid item xs={12} sm={6} md={6} mb={{ xs: '40px' }}>
+              <Typography variant='h5' component={'p'} className='uppercase'>who am i?</Typography>
+              <Typography my={'20px'}>{user.about}</Typography>
+            </Grid>}
+          {tools.length > 0 && <Grid item xs={12} sm={6} md={6} mb={{ xs: '40px' }}>
             <Typography variant='h5' component={'p'} className='uppercase'>my tools</Typography>
             <ToolsList tools={tools} />
-          </Grid>
+          </Grid>}
         </Grid>
       </Box>
       {/* TODO: add a modal/popover element to view full detail */}

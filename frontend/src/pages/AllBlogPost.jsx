@@ -36,6 +36,7 @@ CustomTabPanel.propTypes = {
     index: PropTypes.number.isRequired,
     value: PropTypes.number.isRequired,
 };
+
 const AllBlogPost = () => {
     PageTitle('All Posts')
     const [posts, setPosts] = useState('');
@@ -69,11 +70,10 @@ const AllBlogPost = () => {
     if (loading) {
         return <Loading />
     }
-    // console.log(posts);
     return (
         <React.Fragment>
             <ResponsiveAppBar pages={NavLinks} />
-                <Box padding={{ xs: "10px", sm: "50px" }}>
+                <Box padding={{ xs: "10px", sm: "50px", minHeight:'100vh' }}>
                     <Breadcrumb path={location} />
                     {posts && posts.length > 0 ?(<Box sx={{ width: '100%' }}>
                         <Box
@@ -95,7 +95,7 @@ const AllBlogPost = () => {
                                 onChange={handleChange}
                             />
                         </Box>
-                    </Box>) : <Typography textAlign={'center'}>No Posts</Typography>}
+                    </Box>) : ''}
                 </Box>
             <Footer/>
         </React.Fragment >

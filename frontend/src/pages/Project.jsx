@@ -111,7 +111,7 @@ const Project = () => {
   return (
     <React.Fragment>
       <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
-      <Box padding={{ xs: "10px", sm: "50px" }}>
+      <Box padding={{ xs: "10px", sm: "50px", minHeight: '90vh' }}>
         <Breadcrumb path={useLocation()} />
         <Box sx={{ display: 'flex', flexDirection: 'column' }} className="justify-center align-middle">
           <Card sx={{ width: '90%', maxWidth: "60rem", alignSelf: 'center' }}>

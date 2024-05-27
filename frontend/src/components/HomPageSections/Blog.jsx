@@ -66,20 +66,6 @@ const Blog = () => {
     <Box id='blog'>
       <SectionTitle title={'posts'} caption={'some posts by users on our platform'} />
       <Box sx={{ width: '100%' }}>
-        {/* <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            aria-label="basic tabs example"
-            scrollButtons
-            allowScrollButtonsMobile
-            centered
-          >
-            <Tab label="Item One" {...a11yProps(0)} />
-            <Tab label="Item Two" {...a11yProps(1)} />
-            <Tab label="Item Three" {...a11yProps(2)} />
-          </Tabs>
-        </Box> */}
         <CustomTabPanel value={value} index={0}>
           <Box
             spacing={2}
@@ -91,7 +77,7 @@ const Blog = () => {
               </Box>
             )))}
           </Box>
-          <Button component={Link} to={`/posts`}>More...</Button>
+          <Button component={Link} to={`/posts`}>Explore More posts...</Button>
         </CustomTabPanel>
       </Box>
     </Box>

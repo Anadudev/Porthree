@@ -14,7 +14,7 @@ import api from '../../apiConfig';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import PageTitle from './PageTitle';
-import {GetRelation} from '../data/GetUser';
+import { GetRelation } from '../data/GetUser';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -63,7 +63,7 @@ const Login = () => {
   return (
     <div onClick={() => (setErrorMessage(''))} >
       <ResponsiveAppBar pages={NavLinks} />
-      <div className='p-[50px]'>
+      <Box padding={{ xs: "10px", sm: "50px", minHeight: '90vh' }}>
         <Breadcrumb path={useLocation()} />
         <Container>
           <Box
@@ -113,8 +113,8 @@ const Login = () => {
             </form>
           </Box>
         </Container>
-        <Footer />
-      </div>
+      </Box>
+      <Footer />
     </div>
   );
 };

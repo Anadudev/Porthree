@@ -162,7 +162,7 @@ const Portfolios = () => {
         <Box>
 
             <ResponsiveAppBar pages={NavLinks} />
-            <Box padding={{ xs: "10px", sm: "50px" }}>
+            <Box padding={{ xs: "10px", sm: "50px", minHeight: '90vh' }}>
                 <Breadcrumb path={location} />
                 {users && users.length > 0 ? (<Box sx={{ flexGrow: 1, p: 2 }}>
                     <Grid

@@ -82,10 +82,10 @@ const Skills = () => {
     <Fragment>
 
       <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
-      <Box padding={{ xs: "10px", sm: "50px" }}>
+      <Box padding={{ xs: "10px", sm: "50px", minHeight: '90vh' }}>
         <Breadcrumb path={location} />
         <Box className='flex justify-center'>
-          {skills && <Box>
+          {skills && skills.length > 0 ? <Box>
             <Box sx={{ flexGrow: 1, p: 2 }}>
               <Grid
                 container
@@ -134,7 +134,7 @@ const Skills = () => {
                 />
               </Box>
             </Box>
-          </Box>}
+          </Box> : ''}
         </Box>
       </Box>
       <Footer />

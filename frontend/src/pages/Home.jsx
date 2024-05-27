@@ -17,7 +17,7 @@ const Home = () => {
     return (
         <React.Fragment>
             <ResponsiveAppBar pages={NavLinks} />
-            <Box padding={{ xs: "10px", sm: "50px" }}>
+            <Box padding={{ xs: "10px", sm: "50px", minHeight: '90vh' }}>
                 <Hero />
                 <About />
                 <Features />

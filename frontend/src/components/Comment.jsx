@@ -118,6 +118,7 @@ export function ReplyFormDialog({ type = '', replyType = '', parent = '', editDa
             autoFocus
             multiline
             margin="dense"
+            id="comment"
             name="comment"
             label="Write reply"
             type="comment"

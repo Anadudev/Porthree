@@ -81,7 +81,7 @@ const Projects = () => {
                 </Box>
               )))}
           </Box>
-          <Button component={Link} to={`/projects`}>More...</Button>
+          <Button component={Link} to={`/projects`}>Explore More Projects...</Button>
         </CustomTabPanel>
       </Box>
     </Box>

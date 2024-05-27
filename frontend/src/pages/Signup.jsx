@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import axios from 'axios';
 import {
   Container, Grid, TextField,
-  Button, Alert
+  Button, Alert, Box
 } from '@mui/material';
 import ResponsiveAppBar from '../components/Nav';
 import Footer from '../components/Footer';
@@ -65,7 +65,7 @@ const Signup = () => {
   return (
     <div>
       <ResponsiveAppBar pages={NavLinks} />
-      <div className='p-[50px]'>
+      <Box padding={{ xs: "10px", sm: "50px", minHeight: '90vh' }}>
         <Breadcrumb path={useLocation()} />
         <Container>
           {success}
@@ -148,8 +148,8 @@ const Signup = () => {
             </Grid>
           </form>
         </Container>
+      </Box>
         <Footer />
-      </div>
     </div>
   );
 };

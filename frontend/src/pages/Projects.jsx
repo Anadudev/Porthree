@@ -58,7 +58,7 @@ const Projects = () => {
   return (
     <React.Fragment>
       <ResponsiveAppBar pages={UserNavLinks(user)} />
-      {projects && <Box padding={{ xs: "10px", sm: "50px" }}>
+      {projects && <Box padding={{ xs: "10px", sm: "50px", minHeight: '90vh' }}>
         <Breadcrumb path={location} />
         <Box
           spacing={2}

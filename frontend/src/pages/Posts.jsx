@@ -61,7 +61,7 @@ const Posts = () => {
   return (
     <React.Fragment>
       <ResponsiveAppBar pages={UserNavLinks(user)} />
-      <Box padding={{ xs: "10px", sm: "50px" }}>
+      <Box padding={{ xs: "10px", sm: "50px", minHeight: '90vh' }}>
         <Breadcrumb path={location} />
         {posts && posts.length > 0 ? (<Box padding={{ xs: "10px", sm: "50px" }}>
           <Box

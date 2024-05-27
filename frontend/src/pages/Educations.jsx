@@ -53,7 +53,7 @@ const Educations = () => {
     <React.Fragment>
 
       <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
-      <Box padding={{ xs: "10px", sm: "50px" }}>
+      <Box padding={{ xs: "10px", sm: "50px",minHeight:'90vh' }}>
         <Breadcrumb path={location} />
         <Box className='flex justify-center'>
           {educations && <Card className={`p-2 xl:p-6 w-[60rem]`}>
