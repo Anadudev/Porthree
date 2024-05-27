@@ -22,7 +22,7 @@ function Portfolio() {
     const id = useLoaderData();
     PageTitle(id?.username);
     const currLoc = useLocation();
-// console.log(id);
+    // console.log(id);
     if (id.error) {
         return <ErrorCard
             error={'not found'}
@@ -111,7 +111,7 @@ function Portfolio() {
     return (
         <React.Fragment>
             <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
-            <Box padding={{ xs: "10px", sm: "50px" }} className='scroll-smooth'>
+            <Box padding={{ xs: "10px", sm: "50px", minHeight: '90vh' }} className='scroll-smooth'>
                 {!user ? (
                     <Typography variant="h1" component="h1">
                         Portfolio not in Porthree
@@ -120,16 +120,13 @@ function Portfolio() {
                     <>
                         <Breadcrumb path={currLoc} />
                         <Hero props={user} />
-                        {!user && !tools && !experiences && !educations ? (
-                            ""
-                        ) : (
-                            <About
-                                user={user}
-                                tools={tools}
-                                experience={experiences}
-                                education={educations}
-                            />
-                        )}
+                        {user && tools.length>0 && experiences && educations && <About
+                            user={user}
+                            tools={tools}
+                            experience={experiences}
+                            education={educations}
+                        />
+                        }
                         {skills && <Skills skills={skills} custom={user} />}
                         {projects && <Projects projects={projects} user={user} />}
                         {blog && <Blog blog={blog} user={user} />}
