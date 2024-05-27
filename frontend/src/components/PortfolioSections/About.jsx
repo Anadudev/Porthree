@@ -9,7 +9,7 @@ import {
 import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggestOutlined';
 import AboutCard from './AboutCard';
 import { Link } from 'react-router-dom';
-
+import Limiter from '../Limiter';
 
 export function ToolsList({ tools }) {
   if (!tools || tools.length === 0) {
@@ -49,7 +49,7 @@ const About = ({ user, tools, education, experience }) => {
           {user.about &&
             <Grid item xs={12} sm={6} md={6} mb={{ xs: '40px' }}>
               <Typography variant='h5' component={'p'} className='uppercase'>who am i?</Typography>
-              <Typography my={'20px'}>{user.about}</Typography>
+              <Typography my={'20px'}>{Limiter(user.about, 500)}</Typography>
             </Grid>}
           {tools.length > 0 && <Grid item xs={12} sm={6} md={6} mb={{ xs: '40px' }}>
             <Typography variant='h5' component={'p'} className='uppercase'>my tools</Typography>
