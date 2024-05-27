@@ -2,10 +2,51 @@
 AbstractUser: to extend the builtin use model
 models: to setup a django model
 """
-
+from functools import wraps
+import os
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.text import slugify
+
+
+def delete_old_image(field_name):
+    """A decorator to handle the deletion
+    of old images when a new one is uploaded
+
+    Args:
+        field_name (__class__):  a parameter to
+        specify which field should be checked for
+        old file deletion.
+    """
+
+    def decorator(func):
+        @wraps(func)
+        def wrapper(instance, *args, **kwargs):
+            # Get the model class
+            Model = instance.__class__
+            # Get the primary key of the instance
+            pk = instance.pk
+
+            # check if the primary key exists
+            if pk:
+                # Retrieve old instance from the database
+                old_instance = Model.objects.get(pk=pk)
+                # Retrieve the old instance file
+                old_file = getattr(old_instance, field_name)
+                # Retrieve the new instance file
+                new_file = getattr(instance, field_name)
+
+                # Checking if new file is same old file
+                if old_file and old_file != new_file:
+                    # Checking if old file file path exists
+                    if os.path.isfile(old_file.path):
+                        # Delete the old file if found
+                        os.remove(old_file.path)
+            return func(instance, *args, **kwargs)
+
+        return wrapper
+
+    return decorator
 
 
 class Tool(models.Model):
@@ -48,6 +89,12 @@ class UserDetails(AbstractUser):
         """ensuring the email field is unique"""
 
         constraints = [models.UniqueConstraint(fields=["email"], name="unique_email")]
+
+    @delete_old_image("picture")
+    def save(self, *args, **kwargs):
+        """Improves the built in function to
+        properly clear static garbage files"""
+        super(UserDetails, self).save(*args, **kwargs)
 
     def __str__(self):
         """returns the string representation of the  model
