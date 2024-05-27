@@ -47,12 +47,7 @@ function Portfolio() {
         const fetchDataForUser = async () => {
             // console.log(id)
             const fetchedUser = await GetRelation(`http://127.0.0.1:8000/api/users/${id.id}/`);
-            if (!fetchedUser.loading) {
-                // setData(result.data);
-                setLoading(false);
-                setUser(fetchedUser);
 
-            }
             let dataResult = [];
             let relationList = [];
             if (fetchedUser) {
@@ -67,23 +62,28 @@ function Portfolio() {
                 setTools(relationList);
                 /* fetch all users educations  */
                 dataResult = await GetRelation(fetchedUser.url + "educations/");
-                setEducations(dataResult.results);
+                if (dataResult.results) { setEducations(dataResult.results); }
                 /* fetch all users experiences  */
                 dataResult = await GetRelation(fetchedUser.url + "experiences/");
-                setExperiences(dataResult.results);
+                if (dataResult.results) { setExperiences(dataResult.results); }
 
                 /* fetch all users skills  */
                 dataResult = await GetRelation(`http://localhost:8000/api/skills/?user=${fetchedUser.id}`);
-                setSkills(dataResult.results);
+                if (dataResult.results) { setSkills(dataResult.results); }
 
                 /* fetch all users socials  */
                 setSocials(await getUserData(fetchedUser.id, "socials"));
                 /* fetch all users projects  */
                 dataResult = await GetRelation(fetchedUser.url + "projects/");
-                setProjects(dataResult.results);
+                if (dataResult.results) { setProjects(dataResult.results); }
                 /* fetch all users posts  */
                 dataResult = await GetRelation(fetchedUser.url + "posts/");
-                setBlog(dataResult.results);
+                if (dataResult.results) { setBlog(dataResult.results); }
+                if (!fetchedUser.loading) {
+                    // setData(result.data);
+                    setLoading(false);
+                    setUser(fetchedUser);
+                }
             }
         };
         fetchDataForUser();
@@ -120,7 +120,7 @@ function Portfolio() {
                     <>
                         <Breadcrumb path={currLoc} />
                         <Hero props={user} />
-                        {user && tools.length>0 && experiences && educations && <About
+                        {user && tools.length > 0 && experiences && educations && <About
                             user={user}
                             tools={tools}
                             experience={experiences}
