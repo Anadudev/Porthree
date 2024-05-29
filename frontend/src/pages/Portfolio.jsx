@@ -108,6 +108,8 @@ function Portfolio() {
         }
     }
 
+    // console.log(user.about);
+
     return (
         <React.Fragment>
             <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
@@ -120,13 +122,12 @@ function Portfolio() {
                     <>
                         <Breadcrumb path={currLoc} />
                         <Hero props={user} />
-                        {user && tools.length > 0 && experiences && educations && <About
+                        <About
                             user={user}
                             tools={tools}
                             experience={experiences}
                             education={educations}
                         />
-                        }
                         {skills && <Skills skills={skills} custom={user} />}
                         {projects && <Projects projects={projects} user={user} />}
                         {blog && <Blog blog={blog} user={user} />}
