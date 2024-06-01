@@ -4,11 +4,11 @@ import {
   AccordionDetails,
   Accordion,
   Button, Box, List
-  , ListItem, Divider, ListItemText
+  , ListItem, ListItemText
   , ListItemAvatar, Typography, Avatar
   , Dialog, DialogActions, DialogContent
   , DialogContentText, DialogTitle, Slide
-  , TextField, Card
+  , TextField, Card, Chip
 } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import CommentIcon from '@mui/icons-material/Comment';
@@ -19,13 +19,62 @@ import {
   isAuthenticated, deleteData,
   updateData, currAuthUser
 } from '../data/GetUser';
-
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useNavigate } from 'react-router-dom';
 import Limiter from './Limiter';
 // import { comment } from 'postcss';
+import { useSelector, useDispatch } from 'react-redux';
+import { updater } from '../features/DataUpdate/DataUpdateSlice';
+
+
+export function ConfirmDeletionDialog({ comment, title, body }) {
+  const [open, setOpen] = React.useState(false);
+  const dispatch = useDispatch();
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const deleteComment = () => {
+    deleteData(comment?.url);
+    dispatch(updater());
+    handleClose();
+  }
+
+  return (
+    <React.Fragment>
+      <DeleteForeverIcon sx={{ mx: 1, cursor: 'pointer', fontSize: 20 }} onClick={handleClickOpen} />
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {title || ""}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {body || ""}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={deleteComment} autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </React.Fragment>
+  );
+}
+
 
 export function ReplyFormDialog({ type = '', replyType = '', parent = '', editData, owner }) {
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -57,6 +106,7 @@ export function ReplyFormDialog({ type = '', replyType = '', parent = '', editDa
       user: null,
     })
     toEdit && setToEdit(false);
+    dispatch(updater())
   };
 
   const handleChange = (event) => {
@@ -101,7 +151,7 @@ export function ReplyFormDialog({ type = '', replyType = '', parent = '', editDa
 
   return (
     <React.Fragment>
-      {owner && editData ? <EditIcon sx={{ mr: 1, cursor: 'pointer', fontSize: 20 }} onClick={editOpen} /> : ''}
+      {owner && editData ? <EditIcon sx={{ cursor: 'pointer', fontSize: 20 }} onClick={editOpen} /> : ''}
       <CommentIcon fontSize='medium' sx={{ cursor: 'pointer' }} onClick={handleClickOpen} />
       <Dialog
         sx={{ '& .MuiDialog-paper': { width: '80%', maxHeight: 435 } }}
@@ -147,6 +197,7 @@ function HandleReply({ type, id }) {
   const [data, setData] = useState([]);
   const [result, setResult] = useState({});
   const [page, setPage] = useState(1);
+  const update_reply = useSelector((state) => state.dataUpdate.value)
 
   const handleMorePage = () => {
     setPage(page + 1);
@@ -161,7 +212,7 @@ function HandleReply({ type, id }) {
       setResult(await GetRelation(`http://127.0.0.1:8000/api/${type}_comments/?reply=${id}&page=${page}`));
     }
     fetchData();
-  }, [id, type, page]);
+  }, [id, type, page, update_reply]);
 
   useEffect(() => {
     if (result.results) {
@@ -184,9 +235,9 @@ function HandleReply({ type, id }) {
             <Typography>
               <CommentItemsList comments={data} type={type} />
               {page == 1 && result.count == data.length ? '' : (<span>
-            {result.next && <Button size='small' onClick={handleMorePage}>Load more</Button>}
-            {result.previous && <Button size='small' onClick={handleLessPage}>Load few</Button>}
-          </span>)}
+                {result.next && <Button size='small' onClick={handleMorePage}>Load more</Button>}
+                {result.previous && <Button size='small' onClick={handleLessPage}>Load few</Button>}
+              </span>)}
             </Typography>
           </AccordionDetails>
         </Accordion>
@@ -230,15 +281,23 @@ export function CommentItem({ data, type }) {
                 {user.username || ''}
               </Typography>
               {` - ${Limiter(data.comment, more)}`}
-              <Button size='small' onClick={handleMore} sx={{ float: 'right', display: data.comment.length <= limit ? 'none' : 'inline' }}>See {more <= limit ? 'more' : 'less'}</Button>
+              {data.comment.length > limit && <Box
+                sx={{ textAlign: 'right', mb: 1 }}>
+                <Chip
+                  size='small'
+                  onClick={handleMore}
+                  variant={more <= limit ? "contained" : "outlined"}
+                  label={`See ${more <= limit ? 'more' : 'less'}`} />
+              </Box>
+              }
             </React.Fragment>
           }
         />
       </ListItem>
-      <Box sx={{ textAlign: 'right', pb: 0.1, pr: 1 }}>
-        {owner && <DeleteForeverIcon sx={{ mx: 1, cursor: 'pointer', fontSize: 20 }} onClick={() => deleteData(data.url)} />}
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', pb: 0.1, pr: 1 }}>
+        {owner && <ConfirmDeletionDialog comment={data} title={"Are you sure you want to delete this comment?"} body={`This will delete the current comment and all replies under it.  This action cannot be undone.`} />}
         <ReplyFormDialog type={type} replyType={'reply'} parent={data.url} editData={data} owner={owner} />
-        <FavoriteIcon sx={{ ml: 5, cursor: 'pointer', fontSize: 20 }} />
+        <FavoriteIcon sx={{ cursor: 'pointer', fontSize: 20 }} />
       </Box>
       <HandleReply type={type} id={data.id} />
     </React.Fragment>
@@ -302,6 +361,8 @@ export function CommentListDialog({ author, listTitle }) {
 
 
 export default function Comment({ author, listTitle, parent }) {
+  const update_comment = useSelector((state) => state.dataUpdate.value)
+
   const [requestValue, setRequestValue] = useState({});
   const [comments, setComments] = useState([]);
   const [page, setPage] = useState(1);
@@ -323,7 +384,7 @@ export default function Comment({ author, listTitle, parent }) {
       }
     }
     AsyncCommentsFetch();
-  }, [listTitle, parent, page]);
+  }, [listTitle, parent, page, update_comment]);
 
   return (
     comments && (<React.Fragment>
