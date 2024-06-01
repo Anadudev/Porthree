@@ -10,19 +10,17 @@ import {
   , DialogContentText, DialogTitle, Slide
   , TextField, Card, Chip
 } from '@mui/material';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import CommentIcon from '@mui/icons-material/Comment';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import EditIcon from '@mui/icons-material/Edit';
+import {
+  FavoriteIcon, CommentIcon, DeleteForeverIcon,
+  EditIcon, ArrowDropDownIcon
+} from '@mui/icons-material';
 import {
   GetRelation, PostData,
   isAuthenticated, deleteData,
   updateData, currAuthUser
 } from '../data/GetUser';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useNavigate } from 'react-router-dom';
 import Limiter from './Limiter';
-// import { comment } from 'postcss';
 import { useSelector, useDispatch } from 'react-redux';
 import { updater } from '../features/DataUpdate/DataUpdateSlice';
 
@@ -106,8 +104,12 @@ export function ReplyFormDialog({ type = '', replyType = '', parent = '', editDa
       user: null,
     })
     toEdit && setToEdit(false);
-    dispatch(updater())
   };
+
+  const realTimeUpdate = () => {
+    handleClose();
+    dispatch(updater())
+  }
 
   const handleChange = (event) => {
     setFormData({
@@ -129,7 +131,7 @@ export function ReplyFormDialog({ type = '', replyType = '', parent = '', editDa
       PostData(`http://127.0.0.1:8000/api/${type}_comments/`, formData);
     }
     toEdit && setToEdit(false);
-    handleClose();
+    realTimeUpdate();
   }
   const handleEdit = async (event) => {
     event.preventDefault();
@@ -143,7 +145,7 @@ export function ReplyFormDialog({ type = '', replyType = '', parent = '', editDa
         comment: formData.comment
       });
       toEdit && setToEdit(false);
-      handleClose();
+      realTimeUpdate();
     } catch (error) {
       console.error(error);
     }
