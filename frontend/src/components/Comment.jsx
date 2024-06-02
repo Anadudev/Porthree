@@ -10,10 +10,11 @@ import {
   , DialogContentText, DialogTitle, Slide
   , TextField, Card, Chip
 } from '@mui/material';
-import {
-  FavoriteIcon, CommentIcon, DeleteForeverIcon,
-  EditIcon, ArrowDropDownIcon
-} from '@mui/icons-material';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import CommentIcon from '@mui/icons-material/Comment';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import EditIcon from '@mui/icons-material/Edit';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import {
   GetRelation, PostData,
   isAuthenticated, deleteData,
