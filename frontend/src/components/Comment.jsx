@@ -23,7 +23,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import Limiter from './Limiter';
 import { useSelector, useDispatch } from 'react-redux';
-import { updater } from '../features/DataUpdate/DataUpdateSlice';
+import { updater, setPageUpdate } from '../features/DataUpdate/DataUpdateSlice';
 
 
 export function ConfirmDeletionDialog({ comment, title, body }) {
@@ -38,8 +38,9 @@ export function ConfirmDeletionDialog({ comment, title, body }) {
   };
 
   const deleteComment = () => {
-    deleteData(comment?.url);
+    deleteData(comment.url);
     dispatch(updater());
+    dispatch(setPageUpdate(true));
     handleClose();
   }
 
@@ -110,6 +111,7 @@ export function ReplyFormDialog({ type = '', replyType = '', parent = '', editDa
   const realTimeUpdate = () => {
     handleClose();
     dispatch(updater())
+    dispatch(setPageUpdate(true))
   }
 
   const handleChange = (event) => {
@@ -201,6 +203,7 @@ function HandleReply({ type, id }) {
   const [result, setResult] = useState({});
   const [page, setPage] = useState(1);
   const update_reply = useSelector((state) => state.dataUpdate.value)
+  const dispatch = useDispatch();
 
   const handleMorePage = () => {
     setPage(page + 1);
@@ -211,6 +214,12 @@ function HandleReply({ type, id }) {
   }
 
   useEffect(() => {
+    /* reset the page back to 1 to reduce server api calls */
+    if (update_reply.pageRestValue) {
+      console.log(update_reply.pageRestValue);
+      setPage(1);
+      dispatch(setPageUpdate(false));
+    }
     async function fetchData() {
       setResult(await GetRelation(`http://127.0.0.1:8000/api/${type}_comments/?reply=${id}&page=${page}`));
     }
@@ -297,8 +306,9 @@ export function CommentItem({ data, type }) {
           }
         />
       </ListItem>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', pb: 0.1, pr: 1 }}>
-        {owner && <ConfirmDeletionDialog comment={data} title={"Are you sure you want to delete this comment?"} body={`This will delete the current comment and all replies under it.  This action cannot be undone.`} />}
+      <Box sx={{ display: 'flex', justifyContent: 'space-around', pb: 0.1, pr: 1 }}>
+        {owner && <ConfirmDeletionDialog comment={data} title={"Are you sure you want to delete this comment?"}
+          body={`This will delete the current comment and all replies under it.  This action cannot be undone.`} />}
         <ReplyFormDialog type={type} replyType={'reply'} parent={data.url} editData={data} owner={owner} />
         <FavoriteIcon sx={{ cursor: 'pointer', fontSize: 20 }} />
       </Box>
@@ -313,7 +323,6 @@ export function CommentItemsList({ comments, type }) {
     comments && comments.length > 0 ? <React.Fragment>
       {comments?.map((comment, index) => (
         <List key={index} sx={{ width: '100%' }}>
-          {/* <Divider variant="inset" component="li" /> */}
           <CommentItem data={comment} type={type} />
         </List>
       ))}
@@ -321,50 +330,10 @@ export function CommentItemsList({ comments, type }) {
   );
 }
 
-export function CommentListDialog({ author, listTitle }) {
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  return (
-    <React.Fragment>
-      <Button onClick={handleClickOpen}>
-        All comments
-      </Button>
-      <Dialog
-        open={open}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={handleClose}
-        scroll={'paper'}
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle>{listTitle ? `All comments on ${author}'s ${listTitle}` : "All Comments"}</DialogTitle>
-        <DialogContent dividers={true}>
-          <DialogContentText id="alert-dialog-slide-description">
-            <CommentItemsList />
-            <CommentItemsList />
-            <CommentItemsList />
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
-          {/* <Button onClick={handleClose}>Agree</Button> */}
-        </DialogActions>
-      </Dialog>
-    </React.Fragment>
-  );
-}
-
 
 export default function Comment({ author, listTitle, parent }) {
   const update_comment = useSelector((state) => state.dataUpdate.value)
+  const dispatch = useDispatch();
 
   const [requestValue, setRequestValue] = useState({});
   const [comments, setComments] = useState([]);
@@ -382,12 +351,20 @@ export default function Comment({ author, listTitle, parent }) {
     async function AsyncCommentsFetch() {
       const response = await GetRelation(`http://127.0.0.1:8000/api/${listTitle}_comments/?${listTitle}=${parent}&page=${page}`);
       setRequestValue(response);
+      /* reset the page back to 1 to reduce server api calles */
+      if (update_comment.pageRestValue) {
+        console.log(update_comment.pageRestValue);
+        setPage(1);
+        dispatch(setPageUpdate(false));
+      }
+      /* handle more comments display */
       if (response.results) {
         page > 1 ? setComments(comments.concat(response.results)) : setComments(response.results);
       }
+
     }
     AsyncCommentsFetch();
-  }, [listTitle, parent, page, update_comment]);
+  }, [listTitle, parent, page, update_comment.updaterValue]);
 
   return (
     comments && (<React.Fragment>
@@ -406,7 +383,6 @@ export default function Comment({ author, listTitle, parent }) {
             {requestValue.next && <Button onClick={handleMorePage}>Load more</Button>}
             {requestValue.previous && <Button onClick={handleLessPage}>Load few</Button>}
           </span>)}
-          {/* <CommentListDialog author={author.username} listTitle={listTitle} /> */}
         </Box> : ''}
       </Card>
     </React.Fragment>)
