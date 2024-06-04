@@ -2,6 +2,7 @@
 AbstractUser: to extend the builtin use model
 models: to setup a django model
 """
+
 from functools import wraps
 import os
 from django.contrib.auth.models import AbstractUser
@@ -327,16 +328,22 @@ class Share(models.Model):
 
 
 class Like(models.Model):
-    """Represents a like on a post, project, comment, reply, or share."""
+    """Represents a like on a post, project, comment, reply."""
 
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True)
+    post_comment = models.ForeignKey(
+        PostComment, on_delete=models.CASCADE, null=True, blank=True
+    )
+    project_comment = models.ForeignKey(
+        ProjectComment, on_delete=models.CASCADE, null=True, blank=True
+    )
     project = models.ForeignKey(
         Project, on_delete=models.CASCADE, null=True, blank=True
     )
     share = models.ForeignKey(Share, on_delete=models.CASCADE, null=True, blank=True)
-    like = models.BooleanField(default=True)
+    like = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
