@@ -81,7 +81,7 @@ class UserDetails(AbstractUser):
     primary_color = models.CharField(max_length=50, blank=True, null=True)
     secondary_color = models.CharField(max_length=50, blank=True, null=True)
     picture = models.ImageField(upload_to="profile_pics/", blank=True, null=True)
-    hide_portfolio = models.BooleanField(default=True)
+    visibility = models.BooleanField(default=False)
     tools = models.ManyToManyField(
         Tool, related_name="user_tools", blank=True
     )  # Many-to-Many with Skills
