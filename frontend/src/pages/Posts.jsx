@@ -13,6 +13,7 @@ import { ErrorCard } from "./Error";
 import Loading from "../components/PageLoad";
 import api from "../../apiConfig";
 import Error from "./Error";
+import Grid from "@mui/material/Unstable_Grid2/Grid2";
 
 const Posts = () => {
   PageTitle("Posts");
@@ -64,16 +65,18 @@ const Posts = () => {
       <Box padding={{ xs: "10px", sm: "50px", minHeight: '90vh' }}>
         <Breadcrumb path={location} />
         {posts && posts.length > 0 ? (<Box padding={{ xs: "10px", sm: "50px" }}>
-          <Box
-            spacing={2}
-            sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
-          >
-            {posts.map((post, index) => (
-              // <Item sx={{ [heights[index]]: true  }}>
-              <PostCard key={index} post={post} mode={"Blog Post"} />
-              // </Item>
+          <Box sx={{ flexGrow: 1 }}>
+          <Grid container
+            spacing={{ xs: 2, md: 3 }}
+            columns={{ xs: 1, sm: 8, md: 12 }}
+            sx={{justifyContent:'center'}}>
+            {posts && posts.slice(0, 6).map((data, index) => (
+              <Grid xs={2} sm={4} md={4} key={index}>
+                <PostCard type='Post' post={data} mode={"Post"} />
+              </Grid>
             ))}
-          </Box>
+          </Grid>
+        </Box>
           <Box mt={5} sx={{ display: 'flex', justifyContent: 'center' }}>
             <Pagination
               count={count}

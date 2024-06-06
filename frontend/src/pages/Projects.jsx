@@ -11,7 +11,8 @@ import PostCard from "../components/PortfolioSections/PostCard";
 import { GetRelation } from "../data/GetUser";
 import Error from "./Error";
 import Loading from "../components/PageLoad";
-import api from "../../apiConfig";
+import Grid from "@mui/material/Unstable_Grid2/Grid2";
+
 
 const Projects = () => {
   PageTitle("Projects");
@@ -60,15 +61,17 @@ const Projects = () => {
       <ResponsiveAppBar pages={UserNavLinks(user)} />
       {projects && <Box padding={{ xs: "10px", sm: "50px", minHeight: '90vh' }}>
         <Breadcrumb path={location} />
-        <Box
-          spacing={2}
-          sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
-        >
-          {projects.map((project, index) => (
-            // <Item sx={{ [heights[index]]: true  }}>
-            <PostCard key={index} post={project} mode={"Project"} />
-            // </Item>
-          ))}
+        <Box sx={{ flexGrow: 1 }}>
+          <Grid container
+            spacing={{ xs: 2, md: 3 }}
+            columns={{ xs: 1, sm: 8, md: 12 }}
+            sx={{ justifyContent: 'center' }}>
+            {projects && projects.slice(0, 6).map((data, index) => (
+              <Grid xs={2} sm={4} md={4} key={index}>
+                <PostCard type='Project' post={data} mode={"Project"} />
+              </Grid>
+            ))}
+          </Grid>
         </Box>
         <Box mt={5} sx={{ display: 'flex', justifyContent: 'center' }}>
           <Pagination
