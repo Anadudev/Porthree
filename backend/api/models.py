@@ -59,6 +59,12 @@ class Tool(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    @delete_old_image("icon")
+    def save(self, *args, **kwargs):
+        """Improves the built in function to
+        properly clear static garbage files"""
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return str(self.tool)
 
@@ -95,7 +101,7 @@ class UserDetails(AbstractUser):
     def save(self, *args, **kwargs):
         """Improves the built in function to
         properly clear static garbage files"""
-        super(UserDetails, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         """returns the string representation of the  model
@@ -160,9 +166,11 @@ class Post(models.Model):
         Tag, related_name="posts", blank=True
     )  # Many-to-Many with Tag
 
+
     def __str__(self):
         return str(self.title)
 
+    @delete_old_image("post_image")
     def save(self, *args, **kwargs):
         """automatically generates posts slug from post title"""
         if not self.slug:
@@ -197,7 +205,10 @@ class Project(models.Model):
     def __str__(self):
         return str(self.title)
 
+    @delete_old_image("image")
     def save(self, *args, **kwargs):
+        """Improves the built in function to
+        properly clear static garbage files"""
         if not self.slug:
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
@@ -220,6 +231,12 @@ class Social(models.Model):
 
     def __str__(self):
         return str(self.social)
+
+    @delete_old_image("icon")
+    def save(self, *args, **kwargs):
+        """Improves the built in function to
+        properly clear static garbage files"""
+        super().save(*args, **kwargs)
 
 
 class Education(models.Model):
