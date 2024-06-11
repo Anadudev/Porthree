@@ -47,6 +47,7 @@ class UserDetailsSerializer(serializers.HyperlinkedModelSerializer):
             "picture",
             "groups",
             "tools",
+            "visibility",
         ]
 
 
