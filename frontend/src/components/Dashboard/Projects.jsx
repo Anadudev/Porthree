@@ -9,6 +9,9 @@ import {
 import axios from 'axios';
 import ImageUploadandPreview from './ImageUploadandPreview';
 import api from '../../../apiConfig';
+import Limiter from '../Limiter';
+import HTMLRenderer from '../HtmlRender';
+
 const ProjectsComponent = () => {
   const [projects, setProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -99,7 +102,7 @@ const ProjectsComponent = () => {
     try {
       if (!(newProject.image instanceof File)) {
         delete newProject.image;
-      };
+      }
       const projectData = { ...newProject, user: userId.url };
       const response = await axios.put(`http://localhost:8000/api/projects/${editingProject.id}/`, projectData, {
         headers: {
@@ -153,11 +156,11 @@ const ProjectsComponent = () => {
                 <DialogContent>
                   <form onSubmit={handleSubmit}>
                     <Grid container spacing={2}>
-                          <ImageUploadandPreview 
-                            newProject={newProject}
-                            setNewProject={setNewProject}
-                            editingProject={editingProject}
-                            nature="project" />
+                      <ImageUploadandPreview
+                        newProject={newProject}
+                        setNewProject={setNewProject}
+                        editingProject={editingProject}
+                        nature="project" />
                       <Grid item xs={12}>
                         <TextField
                           label="Title"
@@ -224,7 +227,7 @@ const ProjectsComponent = () => {
               <List>
                 {projects.map((project, index) => (
                   <ListItem key={index}>
-                    <ListItemText primary={project.title} secondary={project.content} />
+                    <ListItemText primary={project.title} secondary={(<HTMLRenderer htmlContent={Limiter(project.content, 100)}/>)} />
                     <Button variant="contained" color="secondary" onClick={() => handleEditProject(project)}>
                       Edit
                     </Button>

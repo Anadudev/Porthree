@@ -22,6 +22,7 @@ import { ToggleTagChip, ToggleToolChip, ResetChip } from '../features/FilterChip
 import { useNavigate } from 'react-router-dom';
 import Comment from '../components/Comment';
 import { ReplyFormDialog } from '../components/Comment';
+import { TimeSinceComponent } from '../components/PortfolioSections/PostCard';
 
 const Post = () => {
     PageTitle("Post");
@@ -87,10 +88,15 @@ const Post = () => {
                                     src={user.image || "/static/images/avatar/1.jpg"}
                                     sx={{ width: 56, height: 56, margin: '5px', marginRight: "10px" }}
                                 />
-                                <Box>
-                                    <Typography sx={{ fontWeight: 700 }}>{user.first_name} {user.last_name || ''}</Typography>
-                                    <Link component={RL} to={`/${user.username}`} sx={{ fontWeight: 700, color: `${user?.primary_color || ''}` }} className="capitalize">{user.username || ''}</Link>
-                                    <Typography sx={{ fontWeight: 700 }}>{user.career || ''}</Typography>
+                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                                    <Box>
+                                        <Typography sx={{ fontWeight: 700 }}>{user.first_name} {user.last_name || ''}</Typography>
+                                        <Link component={RL} to={`/${user.username}`} sx={{ fontWeight: 700, color: `${user?.primary_color || ''}` }} className="capitalize">{user.username || ''}</Link>
+                                        <Typography sx={{ fontWeight: 700 }}>{user.career || ''}</Typography>
+                                    </Box>
+                                    <Box >
+                                        <TimeSinceComponent data={post} />
+                                    </Box>
                                 </Box>
                             </Box>
                             <Typography variant="p"
@@ -118,12 +124,12 @@ const Post = () => {
                                 <ShareIcon />
                             </IconButton>
                             <IconButton aria-label="comment">
-                                <ReplyFormDialog type={'post'} replyType={'post'} parent={post.url}/>
+                                <ReplyFormDialog type={'post'} replyType={'post'} parent={post.url} />
                             </IconButton>
                         </CardActions>
                     </Card>
                     <Box sx={{ width: '90%', maxWidth: "60rem", alignSelf: 'center' }}>
-                            <Comment author={user} listTitle={"post"} parent={post.id} />
+                        <Comment author={user} listTitle={"post"} parent={post.id} />
                     </Box>
                 </Box>
             </Box>

@@ -1,20 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import {
-    Card, Chip, Box, Paper, Link,
+    Card, Box,
     CardHeader, CardMedia, CardContent,
-    CardActions, Collapse, Avatar,
+    CardActions, Avatar,
     IconButton, Typography, styled
 } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import BgImage from "/src/assets/image.jpg";
 import TimeAgo from 'react-timeago';
 import Limiter from '../Limiter';
-import { GetItem, GetRelation } from '../../data/GetUser';
+import { GetRelation } from '../../data/GetUser';
 import { Link as RL } from 'react-router-dom';
 import HTMLRenderer from '../HtmlRender';
 
-import { Button, CardActionArea } from '@mui/material';
+import { CardActionArea } from '@mui/material';
+
+/**
+ * Renders a component that displays the time since a data object was created or updated.
+ *
+ * @param {Object} data - The data object containing the created_at and updated_at properties.
+ * @return {JSX.Element|string} - The rendered component displaying the time since the data was created or updated, or an empty string if data is falsy.
+ */
+export const TimeSinceComponent = ({ data }) => (
+    data ?
+        <small>
+            {new Date(data.created_at) < new Date(data.updated_at) ?
+                <span>Updated <TimeAgo date={data.updated_at} /></span> :
+                <span> <TimeAgo date={data.created_at} /></span>}
+        </small> : ""
+)
+
 
 export function ProjectCard({ project, user }) {
     return (
@@ -28,7 +43,7 @@ export function ProjectCard({ project, user }) {
                 <CardActionArea>
                     <CardMedia
                         component="img"
-                        sx={{ height: "12rem" }}
+                        sx={{height:"12rem"}}
                         image={project?.image || BgImage}
                         alt="Project Thumbnail"
                     />
@@ -42,7 +57,7 @@ export function ProjectCard({ project, user }) {
                     </CardContent>
                 </CardActionArea>
             </RL>
-            <CardActions>
+            <CardActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                     <Avatar alt="Remy Sharp" src={user.picture || ''} sx={{ mr: 1 }} />
                     <Typography color={user.primary_color} variant='h6' component={RL} to={`/${user.username}`} className='capitalize'>
@@ -50,7 +65,7 @@ export function ProjectCard({ project, user }) {
                         {user.username}
                     </Typography>
                 </Box>
-                <Typography><TimeAgo date={project.created_at} /></Typography>
+                <TimeSinceComponent data={project} />
             </CardActions>
         </Card>
     );
@@ -75,7 +90,7 @@ function BlogCard({ post, user }) {
                     </IconButton>
                 }
                 title={<Typography variant="h6" component={RL} to={`/${user.username}`} className='capitalize' sx={{ color: user?.primary_color || '' }}> {user.username || ""}</Typography>}
-                subheader={<TimeAgo date={post.created_at} /> || ""}
+                subheader={<TimeSinceComponent data={post} />}
             />
             <RL to={`/${user.username}/posts/${post.slug}`} >
                 <CardMedia
@@ -85,7 +100,7 @@ function BlogCard({ post, user }) {
                     alt={"Post thumbnail"}
                 />
 
-                <CardContent sx={{ height: 200 }}>
+                <CardContent sx={{ minHeight: 200 }}>
                     <Typography gutterBottom variant="h5" sx={{ color: user?.secondary_color || '', }}>
                         {(<HTMLRenderer htmlContent={Limiter(post.title)} />) || ""}
                     </Typography>
@@ -122,7 +137,6 @@ const PostCard = ({ post, mode }) => {
         return null;
     }
     const [expanded, setExpanded] = React.useState(false);
-    // console.log(post);
     /**
      * Handles the click event to expand or collapse the post card details.
      */
@@ -143,7 +157,6 @@ const PostCard = ({ post, mode }) => {
             let collection = []
             const tools = post.tools || [];
 
-            // console.log(tools)
             for (const tool of tools) {
                 const data = await GetRelation(tool);
                 // const data = await GetItem("tools", relate.id);
@@ -164,7 +177,6 @@ const PostCard = ({ post, mode }) => {
         }
         fetchData();
     }, [post]);
-    // console.log(mode);
     return (mode === "Project" ? <ProjectCard project={post} user={user} /> : <BlogCard post={post} user={user} />);
 }
 

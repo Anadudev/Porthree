@@ -24,7 +24,7 @@ import { useNavigate } from 'react-router-dom';
 import Limiter from './Limiter';
 import { useSelector, useDispatch } from 'react-redux';
 import { updater, setPageUpdate } from '../features/DataUpdate/DataUpdateSlice';
-
+import TimeAgo from 'react-timeago';
 
 export function ConfirmDeletionDialog({ comment, title, body }) {
   const [open, setOpen] = React.useState(false);
@@ -283,7 +283,7 @@ export function CommentItem({ data, type }) {
         <ListItemText
           primary={`${user.first_name || ''} ${user.last_name || ''}`}
           secondary={
-            <React.Fragment>
+            <Box>
               <Typography
                 sx={{ display: 'inline' }}
                 component="span"
@@ -292,7 +292,11 @@ export function CommentItem({ data, type }) {
               >
                 {user.username || ''}
               </Typography>
-              {` - ${Limiter(data.comment, more)}`}
+              <small>
+                {new Date(data.created_at) < new Date(data.updated_at) ?
+                  <span> <br />Edited - </span> : <br />}
+              </small>
+              {`${Limiter(data.comment, more)}`}
               {data.comment.length > limit && <Box
                 sx={{ textAlign: 'right', mb: 1 }}>
                 <Chip
@@ -302,7 +306,7 @@ export function CommentItem({ data, type }) {
                   label={`See ${more <= limit ? 'more' : 'less'}`} />
               </Box>
               }
-            </React.Fragment>
+            </Box>
           }
         />
       </ListItem>
