@@ -311,7 +311,7 @@ export function FilterView() {
                         sx={{ justifyContent: 'center' }}>
                         {data && data.slice(0, 6).map((value, index) => (
                             <Grid xs={2} sm={4} md={4} key={index}>
-                                <PostCard type='Project' post={value} mode={"Project"} />
+                                <PostCard type='Project' post={value} mode={value.tools ? "Project" : "Post"} />
                             </Grid>
                         ))}
                     </Grid>
