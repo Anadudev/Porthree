@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Paper, BottomNavigation, Typography,
+  Paper, BottomNavigation, Typography,Box
 } from '@mui/material';
 
 /**
@@ -11,8 +11,7 @@ import {
 export default function Footer() {
   const year = new Date().getFullYear();
   return (
-    <Paper elevation={0} sx={{mt:2}} >
-      <Paper sx={{ bottom: 0, left: 0, right: 0, padding: '10px' }} elevation={3}>
+    <Box  sx={{mt:2, borderTop:`2px solid` }} >
         <BottomNavigation
         sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}
         >
@@ -26,7 +25,6 @@ export default function Footer() {
           >Porthree copyright {year} </Typography>
           {/* <BottomNavigationAction /> */}
         </BottomNavigation>
-      </Paper>
-    </Paper>
+    </Box>
   );
 }
