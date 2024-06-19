@@ -174,7 +174,7 @@ const PostsComponent = () => {
                 {unpublishedPosts.map((post, index) => (
                   <div key={index}>
                     <ListItem>
-                      <ListItemText primary={post.title} secondary={(<HTMLRenderer htmlContent={Limiter(post.content, 50)} />)} />
+                      <ListItemText primary={post.title} secondary={(<HTMLRenderer htmlContent={Limiter(post.content, 100)} />)} />
                       <Button variant="contained" color="secondary" onClick={() => handleEditPost(post)}>
                         Edit
                       </Button>
