@@ -18,6 +18,8 @@ import { Link } from 'react-router-dom';
 import Limiter from '../components/Limiter';
 import Loading from "../components/PageLoad";
 import Footer from '../components/Footer';
+import TimeAgo from 'react-timeago';
+
 const ITEM_HEIGHT = 48;
 let relationList = [];
 
@@ -154,10 +156,6 @@ const Portfolios = () => {
         setPage(value);
     };
     if (loading) { return <Loading /> }
-    // if (!users || users.length < 1) {
-    //     return null;
-    // }
-    // console.log(users);
     return (
         <Box>
 
@@ -200,6 +198,9 @@ const Portfolios = () => {
                                             </Box>
                                         </Box>
                                         <Typography variant='p' component='p'>{Limiter(user.bio, 100)}</Typography>
+                                        <Typography textAlign={'center'} sx={{ mt: 1 }}>
+                                            <small>Joined <TimeAgo date={user.date_joined} /></small>
+                                        </Typography>
                                         <Box className="mt-3 flex justify-center">
                                             <Chip
                                                 label="Portfolio"
