@@ -1,5 +1,5 @@
 
-**Porthree**, built by aspiring software engineers at **Holberton** School (**ALX**), is a personal portfolio management platform designed to empower individuals to showcase their skills, achievements, and experiences in a captivating and professional manner. It aims to simplify the process of creating and maintaining a portfolio, freeing users to focus on career growth and personal development.
+**Porthree** is a portfolio project built by software engineers from **Holberton** School (**ALX**). It is a personal portfolio management platform designed to empower individuals to showcase their skills, achievements, and experiences in a captivating and professional manner. It aims to simplify the process of creating and maintaining a portfolio, freeing users to focus on career growth and personal development.
 
 ## Motivation
 
