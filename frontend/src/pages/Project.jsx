@@ -14,7 +14,6 @@ import { styled } from "@mui/material/styles";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import BgImage from "/src/assets/image.jpg";
-import { ErrorCard } from "./Error";
 import Limiter from "../components/Limiter";
 import { Link as RL } from "react-router-dom";
 import HTMLRenderer from "../components/HtmlRender";
@@ -25,6 +24,7 @@ import { useNavigate } from 'react-router-dom';
 import Comment from "../components/Comment";
 import { ReplyFormDialog } from "../components/Comment";
 import { TimeSinceComponent } from "../components/PortfolioSections/PostCard";
+import HiddenPortfolioCard from "../components/HiddenPortfolioCard";
 
 
 const HtmlTooltip = styled(({ className, ...props }) => (
@@ -99,7 +99,7 @@ const Project = () => {
   if (project.length < 1) {
     return <h1>Project Not Found</h1>;
   }
-  return (
+  return user.visibility ? (
     <React.Fragment>
       <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
       <Box padding={{ xs: "10px", sm: "50px", minHeight: '90vh' }}>
@@ -254,7 +254,7 @@ const Project = () => {
       </Box>
       <Footer />
     </React.Fragment>
-  );
+  ) : <HiddenPortfolioCard user={user.username}/>;
 };
 
 export default Project;

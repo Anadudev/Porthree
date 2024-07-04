@@ -10,7 +10,7 @@ import PageTitle from './PageTitle';
 import Breadcrumb from '../components/Breadcrumb';
 import { useLocation } from 'react-router-dom';
 import Loading from '../components/PageLoad';
-
+import HiddenPortfolioCard from '../components/HiddenPortfolioCard';
 
 const Educations = () => {
   const userId = useLoaderData();
@@ -49,11 +49,11 @@ const Educations = () => {
     return <Loading />
   }
   // console.log(user);
-  return (
+  return user.visibility ? (
     <React.Fragment>
 
       <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
-      <Box padding={{ xs: "10px", sm: "50px",minHeight:'90vh' }}>
+      <Box padding={{ xs: "10px", sm: "50px", minHeight: '90vh' }}>
         <Breadcrumb path={location} />
         <Box className='flex justify-center'>
           {educations && <Card className={`p-2 xl:p-6 w-[60rem]`}>
@@ -77,7 +77,7 @@ const Educations = () => {
 
     </React.Fragment >
 
-  )
+  ) : <HiddenPortfolioCard user={user.username} />
 }
 
 export default Educations;

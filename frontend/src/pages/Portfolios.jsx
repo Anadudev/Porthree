@@ -132,16 +132,12 @@ const Portfolios = () => {
                     if (initialCount === 0) {
                         setInitialCount(Math.ceil(result.count / result.results.length));
                     }
-
                     setCount(initialCount || Math.ceil(result.count / result.results.length));
                 }
                 const userList = result.results;
-
                 for (const user of userList) {
                     user.projects = (await GetRelation(user.url + 'projects/?publish=true')).count;
-
                     user.posts = (await GetRelation(user.url + 'posts/?publish=true')).count;
-
                     user.dataSkills = await gatterRelations(user.skills);
                     // console.log(user.projects);
                     relationList = [];
@@ -149,7 +145,7 @@ const Portfolios = () => {
                 setUsers(userList);
                 setLoading(false);
             }
-        };
+        }
         fetchData();
     }, [page, result.count, count, result.next]);
     const handleChange = (event, value) => {
@@ -158,7 +154,6 @@ const Portfolios = () => {
     if (loading) { return <Loading /> }
     return (
         <Box>
-
             <ResponsiveAppBar pages={NavLinks} />
             <Box padding={{ xs: "10px", sm: "50px", minHeight: '90vh' }}>
                 <Breadcrumb path={location} />

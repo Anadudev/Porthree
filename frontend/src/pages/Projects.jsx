@@ -12,7 +12,7 @@ import { GetRelation } from "../data/GetUser";
 import Error from "./Error";
 import Loading from "../components/PageLoad";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
-
+import HiddenPortfolioCard from "../components/HiddenPortfolioCard";
 
 const Projects = () => {
   PageTitle("Projects");
@@ -56,7 +56,7 @@ const Projects = () => {
     return <Loading />;
   }
   // console.log(id);
-  return (
+  return user.visibility ? (
     <React.Fragment>
       <ResponsiveAppBar pages={UserNavLinks(user)} />
       {projects && <Box padding={{ xs: "10px", sm: "50px", minHeight: '90vh' }}>
@@ -85,7 +85,7 @@ const Projects = () => {
       </Box>}
       <Footer />
     </React.Fragment>
-  );
+  ) : <HiddenPortfolioCard user={user.username}/>;
 };
 
 export default Projects;

@@ -12,8 +12,8 @@ import { GetRelation } from "../data/GetUser";
 import { ErrorCard } from "./Error";
 import Loading from "../components/PageLoad";
 import api from "../../apiConfig";
-import Error from "./Error";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
+import HiddenPortfolioCard from "../components/HiddenPortfolioCard";
 
 const Posts = () => {
   PageTitle("Posts");
@@ -33,9 +33,6 @@ const Posts = () => {
 
   const location = useLocation();
 
-  if (!id) {
-    return <Error />;
-  }
   useEffect(() => {
     async function fetchData() {
       setUser(await GetRelation(`http://localhost:8000/api/users/${id.id}/`));
@@ -59,24 +56,24 @@ const Posts = () => {
   if (loading) {
     return <Loading />
   }
-  return (
+  return user.visibility ? (
     <React.Fragment>
       <ResponsiveAppBar pages={UserNavLinks(user)} />
       <Box padding={{ xs: "10px", sm: "50px", minHeight: '90vh' }}>
         <Breadcrumb path={location} />
         {posts && posts.length > 0 ? (<Box padding={{ xs: "10px", sm: "50px" }}>
           <Box sx={{ flexGrow: 1 }}>
-          <Grid container
-            spacing={{ xs: 2, md: 3 }}
-            columns={{ xs: 1, sm: 8, md: 12 }}
-            sx={{justifyContent:'center'}}>
-            {posts && posts.slice(0, 6).map((data, index) => (
-              <Grid xs={2} sm={4} md={4} key={index}>
-                <PostCard type='Post' post={data} mode={"Post"} />
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
+            <Grid container
+              spacing={{ xs: 2, md: 3 }}
+              columns={{ xs: 1, sm: 8, md: 12 }}
+              sx={{ justifyContent: 'center' }}>
+              {posts && posts.slice(0, 6).map((data, index) => (
+                <Grid xs={2} sm={4} md={4} key={index}>
+                  <PostCard type='Post' post={data} mode={"Post"} />
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
           <Box mt={5} sx={{ display: 'flex', justifyContent: 'center' }}>
             <Pagination
               count={count}
@@ -90,7 +87,7 @@ const Posts = () => {
       </Box>
       <Footer />
     </React.Fragment>
-  );
+  ) : <HiddenPortfolioCard user={user.username} />;
 };
 
 export default Posts;

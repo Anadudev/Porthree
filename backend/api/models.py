@@ -187,7 +187,7 @@ class Project(models.Model):
     contributors = models.ManyToManyField(
         UserDetails, related_name="contributed_projects", blank=True
     )
-    slug = models.SlugField(unique=True, blank=True)
+    slug = models.SlugField(max_length=255,unique=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     image = models.ImageField(upload_to="project_images/", blank=True, null=True)

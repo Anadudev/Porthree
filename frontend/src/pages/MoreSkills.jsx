@@ -16,7 +16,7 @@ import { useLocation } from 'react-router-dom';
 import Loading from '../components/PageLoad';
 import HTMLRenderer from '../components/HtmlRender';
 import Limiter from '../components/Limiter';
-
+import HiddenPortfolioCard from '../components/HiddenPortfolioCard';
 
 const Skills = () => {
   const userId = useLoaderData();
@@ -78,7 +78,7 @@ const Skills = () => {
     return <Loading />
   }
   // console.log(user);
-  return (
+  return user.visibility ? (
     <Fragment>
 
       <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
@@ -140,7 +140,7 @@ const Skills = () => {
       <Footer />
     </Fragment>
 
-  )
+  ) : <HiddenPortfolioCard user={user.username}/>
 }
 
 export default Skills;

@@ -23,6 +23,7 @@ import { useNavigate } from 'react-router-dom';
 import Comment from '../components/Comment';
 import { ReplyFormDialog } from '../components/Comment';
 import { TimeSinceComponent } from '../components/PortfolioSections/PostCard';
+import HiddenPortfolioCard from '../components/HiddenPortfolioCard';
 
 const Post = () => {
     PageTitle("Post");
@@ -65,7 +66,7 @@ const Post = () => {
         fetchData();
     }, [post]);
 
-    return (
+    return user.visibility ? (
         <React.Fragment>
             <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
             <Box padding={{ xs: "10px", sm: "50px", minHeight: '90vh' }}>
@@ -135,7 +136,7 @@ const Post = () => {
             </Box>
             <Footer />
         </React.Fragment>
-    )
+    ) : <HiddenPortfolioCard user={user.username}/>
 }
 
 export default Post;

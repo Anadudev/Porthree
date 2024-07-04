@@ -98,6 +98,7 @@ export async function fetchPaginatedData(url, amount = 3) {
  * @returns {Promise<Object>} The fetched data if successful, or an error response if unsuccessful.
  */
 export async function GetRelation(UrlLink) {
+    const loadStatus = { loading: true }
     try {
         // Send GET request to the specified URL
         const response = await axios.get(UrlLink);
@@ -109,16 +110,19 @@ export async function GetRelation(UrlLink) {
     } catch (error) {
         if (error.response) {
             // If there is a response, return it
-            return error.response
+            const e = error.response;
+            throw new Response("Error: "+e.data.error,
+                { status: e.status },
+                { statusText: e.statusText },
+            );
         } else {
             // If there is no response, log the error and throw a new error
-            console.log(error);
-            throw new Error("Failed to fetch user data");
+            throw new Response("Failed to fetch data");
         }
     }
 
     // Return loading state if response is not successful
-    return { loading: true };
+    return loadStatus;
 }
 
 

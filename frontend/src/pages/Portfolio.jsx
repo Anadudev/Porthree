@@ -17,20 +17,14 @@ import { getUserData, GetRelation } from "../data/GetUser";
 import Error, { ErrorCard } from "./Error";
 import Loading from "../components/PageLoad";
 import api from "../../apiConfig";
+import HiddenPortfolioCard from "../components/HiddenPortfolioCard";
+
 
 function Portfolio() {
     const id = useLoaderData();
     PageTitle(id?.username);
-    const currLoc = useLocation();
-    // console.log(id);
-    if (id.error) {
-        return <ErrorCard
-            error={'not found'}
-            code={404}
-            content={id.error + " in porthree"}
-            nav={true}
-        />
-    }
+    /* get current page location path */
+    const location = useLocation();
 
     const [user, setUser] = useState([]);
     const [tools, setTools] = useState(null);
@@ -41,8 +35,9 @@ function Portfolio() {
     const [projects, setProjects] = useState(null);
     const [blog, setBlog] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [visible, setVisible] = useState(false);
 
-
+console.log(id);
     useEffect(() => {
         const fetchDataForUser = async () => {
             // console.log(id)
@@ -50,8 +45,8 @@ function Portfolio() {
 
             let dataResult = [];
             let relationList = [];
-            if (fetchedUser) {
-
+            if (fetchedUser.visibility) {
+                setVisible(true);
                 /* fetch all users tools  */
                 // dataResult = await GetRelation(`http://localhost:8000/api/tools/?user=${fetchedUser.id}`);
                 for (const tool of fetchedUser.tools) {
@@ -79,19 +74,15 @@ function Portfolio() {
                 /* fetch all users posts  */
                 dataResult = await GetRelation(fetchedUser.url + "posts/");
                 if (dataResult.results) { setBlog(dataResult.results); }
-                if (!fetchedUser.loading) {
-                    // setData(result.data);
-                    setLoading(false);
-                    setUser(fetchedUser);
-                }
+                setUser(fetchedUser);
             }
+            setLoading(false);
         };
         fetchDataForUser();
     }, [id]);
 
     if (loading) { return <Loading /> }
 
-    // console.log(skills)
     const errHandle = [
         user,
         tools,
@@ -108,9 +99,9 @@ function Portfolio() {
         }
     }
 
-    // console.log(user.about);
+    console.log(user);
 
-    return (
+    return visible ? (
         <React.Fragment>
             <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
             <Box padding={{ xs: "10px", sm: "50px", minHeight: '90vh' }} className='scroll-smooth'>
@@ -120,7 +111,7 @@ function Portfolio() {
                     </Typography>
                 ) : (
                     <>
-                        <Breadcrumb path={currLoc} />
+                        <Breadcrumb path={location} />
                         <Hero props={user} />
                         <About
                             user={user}
@@ -137,7 +128,7 @@ function Portfolio() {
             </Box>
             <Footer />
         </React.Fragment>
-    );
+    ) : (<HiddenPortfolioCard user={id.username}/>);
 }
 
 export default Portfolio;

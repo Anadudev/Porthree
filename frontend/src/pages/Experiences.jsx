@@ -10,7 +10,7 @@ import PageTitle from './PageTitle';
 import Breadcrumb from '../components/Breadcrumb';
 import { useLocation } from 'react-router-dom';
 import Loading from '../components/PageLoad';
-
+import HiddenPortfolioCard from '../components/HiddenPortfolioCard';
 
 const Experiences = () => {
   const userId = useLoaderData();
@@ -50,7 +50,7 @@ const Experiences = () => {
     return <Loading />
   }
   // console.log(user);
-  return (
+  return user.visibility ? (
     <React.Fragment>
       <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
       <Box padding={{ xs: "10px", sm: "50px", minHeight: '90vh' }}>
@@ -76,7 +76,7 @@ const Experiences = () => {
       <Footer />
     </React.Fragment>
 
-  )
+  ) : <HiddenPortfolioCard user={user.username}/>
 }
 
 export default Experiences;
