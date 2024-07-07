@@ -123,6 +123,7 @@ export function ReplyFormDialog({ type = '', replyType = '', parent = '', editDa
   };
 
   const handleSubmit = (event) => {
+    // console.log("demo");
     event.preventDefault();
     if (!isAuthenticated()) {
       navigate('/login');
@@ -216,7 +217,7 @@ function HandleReply({ type, id }) {
   useEffect(() => {
     /* reset the page back to 1 to reduce server api calls */
     if (update_reply.pageRestValue) {
-      console.log(update_reply.pageRestValue);
+      // console.log(update_reply.pageRestValue);
       setPage(1);
       dispatch(setPageUpdate(false));
     }
@@ -357,7 +358,7 @@ export default function Comment({ author, listTitle, parent }) {
       setRequestValue(response);
       /* reset the page back to 1 to reduce server api calles */
       if (update_comment.pageRestValue) {
-        console.log(update_comment.pageRestValue);
+        // console.log(update_comment.pageRestValue);
         setPage(1);
         dispatch(setPageUpdate(false));
       }
