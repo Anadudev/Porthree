@@ -35,8 +35,8 @@ const Posts = () => {
 
   useEffect(() => {
     async function fetchData() {
-      setUser(await GetRelation(`http://localhost:8000/api/users/${id.id}/`));
-      setResult(await GetRelation(`http://localhost:8000/api/users/${id.id}/posts/?page=${page}&publish=true`))
+      setUser(await GetRelation(`api/users/${id.id}/`));
+      setResult(await GetRelation(`api/users/${id.id}/posts/?page=${page}&publish=true`))
       if (result && result.results) {
         setPosts(result.results);
         if (initialCount === 0) {
@@ -67,7 +67,7 @@ const Posts = () => {
               spacing={{ xs: 2, md: 3 }}
               columns={{ xs: 1, sm: 8, md: 12 }}
               sx={{ justifyContent: 'center' }}>
-              {posts && posts.slice(0, 6).map((data, index) => (
+              {posts && posts.map((data, index) => (
                 <Grid xs={2} sm={4} md={4} key={index}>
                   <PostCard type='Post' post={data} mode={"Post"} />
                 </Grid>

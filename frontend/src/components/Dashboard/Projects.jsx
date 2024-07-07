@@ -6,7 +6,6 @@ import {
   DialogContent, DialogActions, FormControlLabel,
   Switch
 } from '@mui/material';
-import axios from 'axios';
 import ImageUploadandPreview from './ImageUploadandPreview';
 import api from '../../../apiConfig';
 import Limiter from '../Limiter';
@@ -34,7 +33,7 @@ const ProjectsComponent = () => {
     const fetchProjects = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get(`http://localhost:8000/api/users/${userId.id}/projects/`);
+        const response = await api.get(`api/users/${userId.id}/projects/`);
         setProjects(response.data.results);
       } catch (error) {
         setError(error);
@@ -51,7 +50,7 @@ const ProjectsComponent = () => {
     setError(null);
     try {
       const projectData = { ...newProject, user: userId.url };
-      const response = await axios.post(`http://localhost:8000/api/projects/`, projectData, {
+      const response = await api.post(`api/projects/`, projectData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
@@ -74,7 +73,7 @@ const ProjectsComponent = () => {
     setIsLoading(true);
     setError(null);
     try {
-      await axios.delete(`http://localhost:8000/api/projects/${projectId}/`, {
+      await api.delete(`api/projects/${projectId}/`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
@@ -104,7 +103,7 @@ const ProjectsComponent = () => {
         delete newProject.image;
       }
       const projectData = { ...newProject, user: userId.url };
-      const response = await axios.put(`http://localhost:8000/api/projects/${editingProject.id}/`, projectData, {
+      const response = await api.put(`api/projects/${editingProject.id}/`, projectData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',

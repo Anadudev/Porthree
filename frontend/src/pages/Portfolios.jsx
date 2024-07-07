@@ -125,7 +125,7 @@ const Portfolios = () => {
 
     useEffect(() => {
         async function fetchData() {
-            setResult(await GetRelation(`http://localhost:8000/api/users/?page=${page}`));
+            setResult(await GetRelation(`api/users/?page=${page}`));
             if (result.loading) { setLoading(true) }
             if (!result.loading && result.results) {
                 if (result && result.results) {
@@ -139,7 +139,6 @@ const Portfolios = () => {
                     user.projects = (await GetRelation(user.url + 'projects/?publish=true')).count;
                     user.posts = (await GetRelation(user.url + 'posts/?publish=true')).count;
                     user.dataSkills = await gatterRelations(user.skills);
-                    // console.log(user.projects);
                     relationList = [];
                 }
                 setUsers(userList);

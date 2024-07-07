@@ -55,8 +55,8 @@ const Skills = () => {
 
   useEffect(() => {
     async function fetchData() {
-      setUser(await GetRelation(`http://127.0.0.1:8000/api/users/${userId.id}/`));
-      setResult(await GetRelation(`http://127.0.0.1:8000/api/skills/?page=${page}&user=${userId.id}`));
+      setUser(await GetRelation(`api/users/${userId.id}/`));
+      setResult(await GetRelation(`api/skills/?page=${page}&user=${userId.id}`));
       if (result && result.results) {
         setSkills(result.results);
         if (initialCount === 0) {

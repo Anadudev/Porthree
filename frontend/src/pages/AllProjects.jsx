@@ -50,7 +50,7 @@ const AllProjects = () => {
 
     useEffect(() => {
         async function fetchData() {
-            setResult((await GetRelation(`http://127.0.0.1:8000/api/projects/?page=${page}&publish=true`)));
+            setResult((await GetRelation(`api/projects/?page=${page}&publish=true`)));
             if (result && result.results) {
                 setProjects(result.results);
                 if (initialCount === 0) {

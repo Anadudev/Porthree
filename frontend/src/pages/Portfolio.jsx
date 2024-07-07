@@ -41,14 +41,14 @@ console.log(id);
     useEffect(() => {
         const fetchDataForUser = async () => {
             // console.log(id)
-            const fetchedUser = await GetRelation(`http://127.0.0.1:8000/api/users/${id.id}/`);
+            const fetchedUser = await GetRelation(`api/users/${id.id}/`);
 
             let dataResult = [];
             let relationList = [];
             if (fetchedUser.visibility) {
                 setVisible(true);
                 /* fetch all users tools  */
-                // dataResult = await GetRelation(`http://localhost:8000/api/tools/?user=${fetchedUser.id}`);
+                // dataResult = await GetRelation(`api/tools/?user=${fetchedUser.id}`);
                 for (const tool of fetchedUser.tools) {
                     const data = await GetRelation(tool);
                     relationList.push(data)
@@ -63,7 +63,7 @@ console.log(id);
                 if (dataResult.results) { setExperiences(dataResult.results); }
 
                 /* fetch all users skills  */
-                dataResult = await GetRelation(`http://localhost:8000/api/skills/?user=${fetchedUser.id}`);
+                dataResult = await GetRelation(`api/skills/?user=${fetchedUser.id}`);
                 if (dataResult.results) { setSkills(dataResult.results); }
 
                 /* fetch all users socials  */

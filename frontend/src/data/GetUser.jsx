@@ -14,7 +14,7 @@ async function GetUser(user) {
     // console.log(user);
     try {
         // Send GET request to the specified URL
-        const response = await axios.get(`http://localhost:8000/api/users/${user.id}/`);
+        const response = await api.get(`api/users/${user.id}/`);
 
         // Check if response is successful and contains data
         if (response && response.status === 200 && response.data) {
@@ -59,7 +59,7 @@ export async function fetchPaginatedData(url, amount = 3) {
         // Loop until the specified amount of data is fetched.
         while (totalFetched <= amount) {
             // Send a GET request to the specified URL with the current page.
-            const response = await axios.get(`${url}?page=${currentPage}`);
+            const response = await api.get(`${url}?page=${currentPage}`);
 
             // Extract the data from the response.
             const data = response.data;
@@ -101,7 +101,7 @@ export async function GetRelation(UrlLink) {
     const loadStatus = { loading: true }
     try {
         // Send GET request to the specified URL
-        const response = await axios.get(UrlLink);
+        const response = await api.get(UrlLink);
         // Check if response is successful and contains data
         if (response && response.status === 200 && response.data) {
             // Return fetched data
@@ -134,7 +134,7 @@ export async function GetRelation(UrlLink) {
  */
 export async function GetDatas(data) {
     try {
-        const response = await axios.get(`http://localhost:8000/api/${data}/`);
+        const response = await api.get(`api/${data}/`);
         if (response && response.status === 200 && response.data) {
             return response.data;
         }
@@ -181,7 +181,7 @@ const assembleData = async (id, dataList) => {
  */
 export const getUserData = async (userId, data) => {
     try {
-        const response = await axios.get(`http://localhost:8000/api/${data}/`);
+        const response = await api.get(`api/${data}/`);
         if (response && response.status === 200 && response.data) {
             const assembled = await assembleData(userId, response.data.results);
             // console.log(assembled);
@@ -206,7 +206,7 @@ export const getUserData = async (userId, data) => {
  */
 export async function GetItem(item, id) {
     try {
-        const response = await axios.get(`http://localhost:8000/api/${item}/${id}/`);
+        const response = await api.get(`api/${item}/${id}/`);
         if (response && response.status === 200 && response.data) {
             return response.data;
         }
@@ -251,7 +251,7 @@ export function currAuthUser(user) {
 export async function PostData(endpoint, data) {
     try {
         if (isAuthenticated()) {
-            const response = await axios.post(endpoint, data, {
+            const response = await api.post(endpoint, data, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('access_token')}`,
                     'Content-Type': 'multipart/form-data',
@@ -280,7 +280,7 @@ export async function updateData(endpoint, data) {
     if (isAuthenticated()) {
         try {
             // Send a PUT request to the server
-            await axios.put(endpoint, data, {
+            await api.put(endpoint, data, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('access_token')}`,
                     'Content-Type': 'multipart/form-data',
@@ -308,7 +308,7 @@ export async function deleteData(endpoint) {
         // If the user is authenticated, send a DELETE request to the server
         // with the provided endpoint and necessary headers
         if (isAuthenticated()) {
-            await axios.delete(endpoint, {
+            await api.delete(endpoint, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('access_token')}`,
                     'Content-Type': 'multipart/form-data',

@@ -38,11 +38,11 @@ const Login = () => {
       // e.preventDefault();
 
       try {
-        const response = await axios.post(`http://localhost:8000/auth_app/login/`, values);
+        const response = await api.post(`auth_app/login/`, values);
         if (response.status === 200) {
           // The login was successful
           const token = response.data.access; // The JWT token
-          const user = await GetRelation(`http://127.0.0.1:8000/api/users/${response.data.user.id}/`);
+          const user = await GetRelation(`api/users/${response.data.user.id}/`);
           // Store the token in local storage or a cookie for future use
           if (!user.loading) {
             localStorage.setItem('access_token', token);

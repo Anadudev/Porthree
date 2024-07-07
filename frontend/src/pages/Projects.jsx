@@ -34,8 +34,8 @@ const Projects = () => {
   }
   useEffect(() => {
     async function fetchData() {
-      setUser(await GetRelation(`http://localhost:8000/api/users/${id.id}/`));
-      setResult(await GetRelation(`http://localhost:8000/api/users/${id.id}/projects/?page=${page}&publish=true`))
+      setUser(await GetRelation(`api/users/${id.id}/`));
+      setResult(await GetRelation(`api/users/${id.id}/projects/?page=${page}&publish=true`))
       if (result && result.results) {
         setProjects(result.results);
         if (initialCount === 0) {
@@ -66,7 +66,7 @@ const Projects = () => {
             spacing={{ xs: 2, md: 3 }}
             columns={{ xs: 1, sm: 8, md: 12 }}
             sx={{ justifyContent: 'center' }}>
-            {projects && projects.slice(0, 6).map((data, index) => (
+            {projects && projects.map((data, index) => (
               <Grid xs={2} sm={4} md={4} key={index}>
                 <PostCard type='Project' post={data} mode={"Project"} />
               </Grid>
@@ -85,7 +85,7 @@ const Projects = () => {
       </Box>}
       <Footer />
     </React.Fragment>
-  ) : <HiddenPortfolioCard user={user.username}/>;
+  ) : <HiddenPortfolioCard user={user.username} />;
 };
 
 export default Projects;

@@ -40,6 +40,7 @@ import Play from './pages/Play';
 import { GetRelation } from './data/GetUser';
 import { store } from './app/store';
 import { Provider } from 'react-redux';
+import {APIBaseURL} from '../apiConfig'
 
 const router = createBrowserRouter([
   {
@@ -60,7 +61,6 @@ const router = createBrowserRouter([
   {
     path: "/filter",
     element: <Filter />,
-
     errorElement: <Error />,
     children: [
       {
@@ -68,7 +68,7 @@ const router = createBrowserRouter([
         element: <FilterView />,
         loader: async function loader({ params }) {
           const value = params.category;
-          const data = await GetRelation(`http://127.0.0.1:8000/api/${value}`);
+          const data = await GetRelation(`api/${value}`);
           return { data, value };
         },
       },
@@ -94,7 +94,7 @@ const router = createBrowserRouter([
     element: <Portfolio />,
     errorElement: <Error />,
     loader: async ({ params }) => {
-      return (await GetRelation(`http://127.0.0.1:8000/api/user/${params.username}`));
+      return (await GetRelation(`api/user/${params.username}`));
     },
   },
   {
@@ -102,7 +102,7 @@ const router = createBrowserRouter([
     element: <Posts />,
     errorElement: <Error />,
     loader: async ({ params }) => {
-      return (await GetRelation(`http://127.0.0.1:8000/api/user/${params.username}`))
+      return (await GetRelation(`api/user/${params.username}`))
     },
   },
   {
@@ -110,12 +110,12 @@ const router = createBrowserRouter([
     element: <MoreSkills />,
     errorElement: <Error />,
     loader: async ({ params }) => {
-      return (await GetRelation(`http://127.0.0.1:8000/api/user/${params.username}`))
+      return (await GetRelation(`api/user/${params.username}`))
 
     },
   },
-  /* TODO: implement this route functionalities */
   {
+    /* TODO: implement this route functionalities */
     path: "/:username/about",
     element: <UserAbout />,
   },
@@ -125,8 +125,8 @@ const router = createBrowserRouter([
     errorElement: <Error />,
     loader: async ({ params }) => {
       try {
-        const user = await GetRelation(`http://127.0.0.1:8000/api/user/${params.username}`)
-        const slug = await GetRelation(`http://127.0.0.1:8000/api/posts/?slug=${params.slug}`)
+        const user = await GetRelation(`api/user/${params.username}`)
+        const slug = await GetRelation(`api/posts/?slug=${params.slug}`)
         const relate = await GetRelation(slug.results[0].user)
         if (relate.id === user.id)
           return slug
@@ -143,7 +143,7 @@ const router = createBrowserRouter([
     errorElement: <Error />,
     loader: async ({ params }) => {
       try {
-        return await GetRelation(`http://127.0.0.1:8000/api/user/${params.username}`)
+        return await GetRelation(`api/user/${params.username}`)
       } catch (error) {
         return null
       }
@@ -155,7 +155,7 @@ const router = createBrowserRouter([
     errorElement: <Error />,
     loader: async ({ params }) => {
       try {
-        return await fetch(`http://127.0.0.1:8000/api/user/${params.username}`)
+        return await fetch(`${APIBaseURL}api/user/${params.username}`)
       } catch (error) {
         return null
       }
@@ -167,7 +167,7 @@ const router = createBrowserRouter([
     errorElement: <Error />,
     loader: async ({ params }) => {
       try {
-        return await fetch(`http://127.0.0.1:8000/api/user/${params.username}`)
+        return await fetch(`${APIBaseURL}api/user/${params.username}`)
       } catch (error) {
         return null
       }
@@ -179,8 +179,8 @@ const router = createBrowserRouter([
     errorElement: <Error />,
     loader: async ({ params }) => {
       try {
-        const userPath = await fetch(`http://127.0.0.1:8000/api/user/${params.username}`);
-        const slugPath = await fetch(`http://127.0.0.1:8000/api/projects/?slug=${params.slug}`);
+        const userPath = await fetch(`${APIBaseURL}api/user/${params.username}`);
+        const slugPath = await fetch(`${APIBaseURL}api/projects/?slug=${params.slug}`);
         const user = await userPath.json();
         const slug = await slugPath.json();
         const relate = await GetRelation(slug.results[0].user)
@@ -217,7 +217,7 @@ const router = createBrowserRouter([
     loader: async ({ params }) => {
       const user = JSON.parse(localStorage.getItem("user"));
       try {
-        if (params.username === user.username) { return await fetch(`http://127.0.0.1:8000/api/users/?username=${params.username}`) }
+        if (params.username === user.username) { return await fetch(`${APIBaseURL}api/users/?username=${params.username}`) }
         return null;
       } catch (error) {
         return null;

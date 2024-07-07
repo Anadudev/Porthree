@@ -40,7 +40,7 @@ const Projects = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await GetRelation(`http://127.0.0.1:8000/api/projects/?publish=true`);
+      const result = await GetRelation(`api/projects/?publish=true`);
       setProjects(result.results)
     }
     fetchData();

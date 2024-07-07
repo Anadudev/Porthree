@@ -6,7 +6,6 @@ import {
   DialogContent, DialogActions, Checkbox,
   FormControlLabel
 } from '@mui/material';
-import axios from 'axios';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import HTMLRenderer from '../HtmlRender';
@@ -40,7 +39,7 @@ const PostsComponent = () => {
   const fetchPosts = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get(`http://localhost:8000/api/users/${userId.id}/posts/`);
+      const response = await api.get(`api/users/${userId.id}/posts/`);
       setPosts(response.data.results);
       setPublishedPosts(response.data.results.filter(post => post.publish));
       setUnpublishedPosts(response.data.results.filter(post => !post.publish));
@@ -56,7 +55,7 @@ const PostsComponent = () => {
     setError(null);
     try {
       const postData = { ...newPost, user: userId.url };
-      const response = await axios.post(`http://localhost:8000/api/posts/`, postData, {
+      const response = await api.post(`api/posts/`, postData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
@@ -80,7 +79,7 @@ const PostsComponent = () => {
     setIsLoading(true);
     setError(null);
     try {
-      await axios.delete(`http://localhost:8000/api/posts/${postId}/`, {
+      await api.delete(`api/posts/${postId}/`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -109,7 +108,7 @@ const PostsComponent = () => {
         delete newPost.post_image;
       };
       const postData = { ...newPost, user: userId.url };
-      const response = await axios.put(`http://localhost:8000/api/posts/${editingPost.id}/`, postData, {
+      const response = await api.put(`api/posts/${editingPost.id}/`, postData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
@@ -191,7 +190,7 @@ const PostsComponent = () => {
             <DialogTitle>{editingPost ? 'Edit Post' : 'Add Post'}</DialogTitle>
             <DialogContent>
               <form onSubmit={handleSubmit}>
-              <ImageUploadandPreview 
+                <ImageUploadandPreview
                   newProject={newPost}
                   setNewProject={setNewPost}
                   editingProject={editingPost}

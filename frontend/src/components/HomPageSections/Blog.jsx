@@ -13,7 +13,7 @@ const Blog = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await GetRelation(`http://127.0.0.1:8000/api/posts/?publish=true`);
+      const result = await GetRelation(`api/posts/?publish=true`);
       setPosts(result.results)
     }
     fetchData();

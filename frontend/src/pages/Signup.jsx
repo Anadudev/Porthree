@@ -43,7 +43,7 @@ const Signup = () => {
     }),
     onSubmit: async (values, { setErrors }) => {
       try {
-        const response = await axios.post(`http://localhost:8000/auth_app/signup/`, values);
+        const response = await api.post(`auth_app/signup/`, values);
         const success_message = `Account successfully created ${response.data.username}`;
         setSuccess(<Alert severity="success">{success_message}.</Alert>);
         setTimeout(() => {

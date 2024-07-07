@@ -131,7 +131,7 @@ export function ReplyFormDialog({ type = '', replyType = '', parent = '', editDa
     if (formData.comment) {
       const user = JSON.parse(localStorage.getItem("user"))
       formData.user = user.url;
-      PostData(`http://127.0.0.1:8000/api/${type}_comments/`, formData);
+      PostData(`api/${type}_comments/`, formData);
     }
     toEdit && setToEdit(false);
     realTimeUpdate();
@@ -221,7 +221,7 @@ function HandleReply({ type, id }) {
       dispatch(setPageUpdate(false));
     }
     async function fetchData() {
-      setResult(await GetRelation(`http://127.0.0.1:8000/api/${type}_comments/?reply=${id}&page=${page}`));
+      setResult(await GetRelation(`api/${type}_comments/?reply=${id}&page=${page}`));
     }
     fetchData();
   }, [id, type, page, update_reply]);
@@ -353,7 +353,7 @@ export default function Comment({ author, listTitle, parent }) {
 
   useEffect(() => {
     async function AsyncCommentsFetch() {
-      const response = await GetRelation(`http://127.0.0.1:8000/api/${listTitle}_comments/?${listTitle}=${parent}&page=${page}`);
+      const response = await GetRelation(`api/${listTitle}_comments/?${listTitle}=${parent}&page=${page}`);
       setRequestValue(response);
       /* reset the page back to 1 to reduce server api calles */
       if (update_comment.pageRestValue) {

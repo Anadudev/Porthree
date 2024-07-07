@@ -50,7 +50,7 @@ const AllBlogPost = () => {
 
     useEffect(() => {
         async function fetchData() {
-            setResult(await GetRelation(`http://127.0.0.1:8000/api/posts/?page=${page}&publish=true`));
+            setResult(await GetRelation(`api/posts/?page=${page}&publish=true`));
             if (result && result.results) {
                 setPosts(result.results);
                 if (initialCount === 0) {

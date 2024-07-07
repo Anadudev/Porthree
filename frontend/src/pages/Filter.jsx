@@ -207,8 +207,8 @@ export function SelectCategory() {
 
     useEffect(() => {
         async function getData() {
-            setTags(await GetRelation(`http://127.0.0.1:8000/api/all_tags/`))
-            setTools(await GetRelation(`http://127.0.0.1:8000/api/all_tools/`))
+            setTags(await GetRelation(`api/all_tags/`))
+            setTools(await GetRelation(`api/all_tools/`))
         }
         getData();
     }, []);
@@ -266,7 +266,7 @@ export function FilterView() {
             }
             // console.log(category);
 
-            setResult(await GetRelation(`http://127.0.0.1:8000/api/${category.value}/?page=${page}&publish=true${tagqp}${toolqp}`))
+            setResult(await GetRelation(`api/${category.value}/?page=${page}&publish=true${tagqp}${toolqp}`))
             if (result && result.results) {
                 // console.log(initialCount);
                 setData(result.results);
