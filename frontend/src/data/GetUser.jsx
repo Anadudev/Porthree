@@ -111,7 +111,7 @@ export async function GetRelation(UrlLink) {
         if (error.response) {
             // If there is a response, return it
             const e = error.response;
-            throw new Response("Error: "+e.data.error,
+            throw new Response("Error: " + e.data.error,
                 { status: e.status },
                 { statusText: e.statusText },
             );
@@ -257,12 +257,22 @@ export async function PostData(endpoint, data) {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            // console.log(response.data);
             return response.data;
         }
     } catch (error) {
-        console.error('Error making POST request:', error);
-        throw error; // Optionally, you can handle the error or throw it to be handled by the calling function
+        if (error.response) {
+            // If there is a response, return it
+            const e = error.response;
+            throw new Response("Error: " + e.data.error,
+                { status: e.status },
+                { statusText: e.statusText },
+            );
+        } else {
+            // console.log("response.data");
+
+            // If there is no response, log the error and throw a new error
+            throw new Response("Failed to fetch data");
+        }
     }
     return { loading: true };
 }

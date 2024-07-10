@@ -46,11 +46,7 @@ const Projects = () => {
     fetchData();
   }, [])
 
-  if (!projects || projects.length <= 0) {
-    return null;
-  }
-
-  return (
+  return !projects || projects.length <= 0 ? "" : (
     <Box id='projects'>
       <SectionTitle title={'projects'} caption={'some projects by users on our platform'} />
       <Box sx={{ width: '100%' }}>
@@ -58,8 +54,8 @@ const Projects = () => {
           <Grid container
             spacing={{ xs: 2, md: 3 }}
             columns={{ xs: 1, sm: 8, md: 12 }}
-            sx={{justifyContent:'center'}}>
-            {projects && projects.slice(0, 6).map((data, index) => (
+            sx={{ justifyContent: 'center' }}>
+            {projects && projects.map((data, index) => (
               <Grid xs={2} sm={4} md={4} key={index}>
                 <PostCard type='Project' post={data} mode={"Project"} />
               </Grid>

@@ -80,17 +80,17 @@ const AllProjects = () => {
 
                 {projects && projects.length > 0 ? (<Box sx={{ width: '100%' }}>
                     <Box sx={{ flexGrow: 1 }}>
-          <Grid container
-            spacing={{ xs: 2, md: 3 }}
-            columns={{ xs: 1, sm: 8, md: 12 }}
-            sx={{justifyContent:'center'}}>
-            {projects && projects.slice(0, 6).map((data, index) => (
-              <Grid xs={2} sm={4} md={4} key={index}>
-                <PostCard type='Project' post={data} mode={"Project"} />
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
+                        <Grid container
+                            spacing={{ xs: 2, md: 3 }}
+                            columns={{ xs: 1, sm: 8, md: 12 }}
+                            sx={{ justifyContent: 'center' }}>
+                            {projects && projects.map((data, index) => (
+                                <Grid xs={2} sm={4} md={4} key={index}>
+                                    <PostCard type='Project' post={data} mode={"Project"} />
+                                </Grid>
+                            ))}
+                        </Grid>
+                    </Box>
                     <Box mt={5} sx={{ display: 'flex', justifyContent: 'center' }}>
                         <Pagination
                             count={count}

@@ -82,7 +82,7 @@ const AllBlogPost = () => {
                                 spacing={{ xs: 2, md: 3 }}
                                 columns={{ xs: 1, sm: 8, md: 12 }}
                                 sx={{ justifyContent: 'center' }}>
-                                {posts && posts.slice(0, 6).map((data, index) => (
+                                {posts && posts.map((data, index) => (
                                     <Grid xs={2} sm={4} md={4} key={index}>
                                         <PostCard type='Post' post={data} mode={"Post"} />
                                     </Grid>

@@ -58,7 +58,7 @@ const Educations = () => {
         <Box className='flex justify-center'>
           {educations && <Card className={`p-2 xl:p-6 w-[60rem]`}>
             <Typography variant='h6' component={'p'} mb={'20px'} className='font-dark uppercase'>Educations</Typography>
-            {educations.slice(0, 4).map((data, index) => (
+            {educations.map((data, index) => (
               <AboutCard key={index} data={data} customize={user} />
             ))}
             <Box mt={5} sx={{ display: 'flex', justifyContent: 'center' }}>
