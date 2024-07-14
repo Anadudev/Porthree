@@ -28,8 +28,7 @@ DEBUG = True
 
 # list allowed hosts
 ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
+    "porthreebackend.onrender.com",
 ]
 
 # permit frontend to access server
