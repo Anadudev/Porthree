@@ -20,7 +20,6 @@ export const FilterChipSlice = createSlice({
                 value[action.payload[1]] = action.payload[0];
             }
             state.value.tags = value;
-            // console.log(state.value.tags)
         },
         ToggleToolChip: (state, action) => {
             const value = { ...state.value.tools };
@@ -30,7 +29,6 @@ export const FilterChipSlice = createSlice({
                 value[action.payload[1]] = action.payload[0];
             }
             state.value.tools = value;
-            // console.log(action)
         },
         ResetChip(state, { payload }) {
             state.value[payload] = {};

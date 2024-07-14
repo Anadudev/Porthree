@@ -3,9 +3,51 @@ AbstractUser: to extend the builtin use model
 models: to setup a django model
 """
 
+from functools import wraps
+import os
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.text import slugify
+
+
+def delete_old_image(field_name):
+    """A decorator to handle the deletion
+    of old images when a new one is uploaded
+
+    Args:
+        field_name (__class__):  a parameter to
+        specify which field should be checked for
+        old file deletion.
+    """
+
+    def decorator(func):
+        @wraps(func)
+        def wrapper(instance, *args, **kwargs):
+            # Get the model class
+            Model = instance.__class__
+            # Get the primary key of the instance
+            pk = instance.pk
+
+            # check if the primary key exists
+            if pk:
+                # Retrieve old instance from the database
+                old_instance = Model.objects.get(pk=pk)
+                # Retrieve the old instance file
+                old_file = getattr(old_instance, field_name)
+                # Retrieve the new instance file
+                new_file = getattr(instance, field_name)
+
+                # Checking if new file is same old file
+                if old_file and old_file != new_file:
+                    # Checking if old file file path exists
+                    if os.path.isfile(old_file.path):
+                        # Delete the old file if found
+                        os.remove(old_file.path)
+            return func(instance, *args, **kwargs)
+
+        return wrapper
+
+    return decorator
 
 
 class Tool(models.Model):
@@ -16,6 +58,12 @@ class Tool(models.Model):
     tool = models.CharField(unique=True, max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    @delete_old_image("icon")
+    def save(self, *args, **kwargs):
+        """Improves the built in function to
+        properly clear static garbage files"""
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return str(self.tool)
@@ -39,7 +87,7 @@ class UserDetails(AbstractUser):
     primary_color = models.CharField(max_length=50, blank=True, null=True)
     secondary_color = models.CharField(max_length=50, blank=True, null=True)
     picture = models.ImageField(upload_to="profile_pics/", blank=True, null=True)
-    hide_portfolio = models.BooleanField(default=True)
+    visibility = models.BooleanField(default=False)
     tools = models.ManyToManyField(
         Tool, related_name="user_tools", blank=True
     )  # Many-to-Many with Skills
@@ -48,6 +96,12 @@ class UserDetails(AbstractUser):
         """ensuring the email field is unique"""
 
         constraints = [models.UniqueConstraint(fields=["email"], name="unique_email")]
+
+    @delete_old_image("picture")
+    def save(self, *args, **kwargs):
+        """Improves the built in function to
+        properly clear static garbage files"""
+        super().save(*args, **kwargs)
 
     def __str__(self):
         """returns the string representation of the  model
@@ -83,6 +137,7 @@ class Skill(models.Model):
         # Ensure that a user cannot have duplicate tools
         unique_together = ["user", "skill"]
 
+
 class Tag(models.Model):
     """Represents a tag that can be associated with posts or projects."""
 
@@ -93,7 +148,6 @@ class Tag(models.Model):
 
     def __str__(self):
         return str(self.tag)
-
 
 
 class Post(models.Model):
@@ -112,9 +166,11 @@ class Post(models.Model):
         Tag, related_name="posts", blank=True
     )  # Many-to-Many with Tag
 
+
     def __str__(self):
         return str(self.title)
 
+    @delete_old_image("post_image")
     def save(self, *args, **kwargs):
         """automatically generates posts slug from post title"""
         if not self.slug:
@@ -131,7 +187,7 @@ class Project(models.Model):
     contributors = models.ManyToManyField(
         UserDetails, related_name="contributed_projects", blank=True
     )
-    slug = models.SlugField(unique=True, blank=True)
+    slug = models.SlugField(max_length=255,unique=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     image = models.ImageField(upload_to="project_images/", blank=True, null=True)
@@ -149,7 +205,10 @@ class Project(models.Model):
     def __str__(self):
         return str(self.title)
 
+    @delete_old_image("image")
     def save(self, *args, **kwargs):
+        """Improves the built in function to
+        properly clear static garbage files"""
         if not self.slug:
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
@@ -172,6 +231,12 @@ class Social(models.Model):
 
     def __str__(self):
         return str(self.social)
+
+    @delete_old_image("icon")
+    def save(self, *args, **kwargs):
+        """Improves the built in function to
+        properly clear static garbage files"""
+        super().save(*args, **kwargs)
 
 
 class Education(models.Model):
@@ -227,38 +292,37 @@ class Rating(models.Model):
         return f"Rating {self.rate} for {self.project}"
 
 
-class Comment(models.Model):
-    """Represents a comment on a post by a user."""
+class BaseComment(models.Model):
+    """parent/base model for application comments"""
 
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
     comment = models.TextField()
+    reply = models.ForeignKey(
+        "self", on_delete=models.CASCADE, null=True, blank=True, related_name="replies"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        abstract = True
+
     def __str__(self):
-        return f"{self.user} commented on {self.post} at {self.created_at}"
+        return f"{self.user} replied a comment"
 
 
-class Reply(models.Model):
-    """Represents a reply to a comment or a post."""
+class PostComment(BaseComment):
+    """represents a user Post comment on a post"""
 
-    id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True)
+
+
+class ProjectComment(BaseComment):
+    """represents a user project comment on a post"""
+
     project = models.ForeignKey(
         Project, on_delete=models.CASCADE, null=True, blank=True
     )
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
-    reply = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return (
-            f"Reply by {self.user} on {self.post or self.project} at {self.created_at}"
-        )
 
 
 class Share(models.Model):
@@ -281,20 +345,22 @@ class Share(models.Model):
 
 
 class Like(models.Model):
-    """Represents a like on a post, project, comment, reply, or share."""
+    """Represents a like on a post, project, comment, reply."""
 
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True)
+    post_comment = models.ForeignKey(
+        PostComment, on_delete=models.CASCADE, null=True, blank=True
+    )
+    project_comment = models.ForeignKey(
+        ProjectComment, on_delete=models.CASCADE, null=True, blank=True
+    )
     project = models.ForeignKey(
         Project, on_delete=models.CASCADE, null=True, blank=True
     )
-    comment = models.ForeignKey(
-        Comment, on_delete=models.CASCADE, null=True, blank=True
-    )
-    reply = models.ForeignKey(Reply, on_delete=models.CASCADE, null=True, blank=True)
     share = models.ForeignKey(Share, on_delete=models.CASCADE, null=True, blank=True)
-    like = models.BooleanField(default=True)
+    like = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

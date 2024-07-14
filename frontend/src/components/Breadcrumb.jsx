@@ -3,6 +3,7 @@ import * as React from "react";
 import { Link as MuiLink, Box, Breadcrumbs } from "@mui/material";
 import { Link } from "react-router-dom";
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import Limiter from "./Limiter";
 
 const Breadcrumb = ({ path }) => {
     const pathSegments = path.pathname.split("/");
@@ -19,7 +20,7 @@ const Breadcrumb = ({ path }) => {
                     {breadcrumbs.map((item, index) => (
                         // index === 0? "":
                         <MuiLink component={Link} key={index} underline="hover" to={item.to} aria-current={index === last ? "page" : ""} color={index === last ? "text.primary" : "inherit"}>
-                            {item.text}
+                            {Limiter(item.text, 25)}
                         </MuiLink>
                     ))}
                 </Breadcrumbs>

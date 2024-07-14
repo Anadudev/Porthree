@@ -12,8 +12,8 @@ from api.models import (
     Education,
     Experience,
     Rating,
-    Comment,
-    Reply,
+    PostComment,
+    ProjectComment,
     Share,
     Like,
 )
@@ -47,6 +47,7 @@ class UserDetailsSerializer(serializers.HyperlinkedModelSerializer):
             "picture",
             "groups",
             "tools",
+            "visibility",
         ]
 
 
@@ -140,23 +141,23 @@ class RatingSerializer(serializers.HyperlinkedModelSerializer):
         fields = "__all__"
 
 
-class CommentSerializer(serializers.HyperlinkedModelSerializer):
-    """serializing and deserializing the Comment instances into representations such as json"""
+class PostCommentSerializer(serializers.HyperlinkedModelSerializer):
+    """serializing and deserializing the ostComment instances into representations such as json"""
 
     id = serializers.IntegerField(read_only=True)
 
     class Meta:
-        model = Comment
+        model = PostComment
         fields = "__all__"
 
 
-class ReplySerializer(serializers.HyperlinkedModelSerializer):
-    """serializing and deserializing the Reply instances into representations such as json"""
+class ProjectCommentSerializer(serializers.HyperlinkedModelSerializer):
+    """serializing and deserializing the ProjectComment instances into representations such as json"""
 
     id = serializers.IntegerField(read_only=True)
 
     class Meta:
-        model = Reply
+        model = ProjectComment
         fields = "__all__"
 
 

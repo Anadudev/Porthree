@@ -18,6 +18,8 @@ import { Link } from 'react-router-dom';
 import Limiter from '../components/Limiter';
 import Loading from "../components/PageLoad";
 import Footer from '../components/Footer';
+import TimeAgo from 'react-timeago';
+
 const ITEM_HEIGHT = 48;
 let relationList = [];
 
@@ -123,46 +125,36 @@ const Portfolios = () => {
 
     useEffect(() => {
         async function fetchData() {
-            setResult(await GetRelation(`http://localhost:8000/api/users/?page=${page}`));
+            setResult(await GetRelation(`api/users/?page=${page}`));
             if (result.loading) { setLoading(true) }
             if (!result.loading && result.results) {
                 if (result && result.results) {
                     if (initialCount === 0) {
                         setInitialCount(Math.ceil(result.count / result.results.length));
                     }
-
                     setCount(initialCount || Math.ceil(result.count / result.results.length));
                 }
                 const userList = result.results;
-
                 for (const user of userList) {
                     user.projects = (await GetRelation(user.url + 'projects/?publish=true')).count;
-
                     user.posts = (await GetRelation(user.url + 'posts/?publish=true')).count;
-
                     user.dataSkills = await gatterRelations(user.skills);
-                    // console.log(user.projects);
                     relationList = [];
                 }
                 setUsers(userList);
                 setLoading(false);
             }
-        };
+        }
         fetchData();
     }, [page, result.count, count, result.next]);
     const handleChange = (event, value) => {
         setPage(value);
     };
     if (loading) { return <Loading /> }
-    // if (!users || users.length < 1) {
-    //     return null;
-    // }
-    // console.log(users);
     return (
         <Box>
-
             <ResponsiveAppBar pages={NavLinks} />
-            <Box padding={{ xs: "10px", sm: "50px" }}>
+            <Box padding={{ xs: "10px", sm: "50px", minHeight: '90vh' }}>
                 <Breadcrumb path={location} />
                 {users && users.length > 0 ? (<Box sx={{ flexGrow: 1, p: 2 }}>
                     <Grid
@@ -200,6 +192,9 @@ const Portfolios = () => {
                                             </Box>
                                         </Box>
                                         <Typography variant='p' component='p'>{Limiter(user.bio, 100)}</Typography>
+                                        <Typography textAlign={'center'} sx={{ mt: 1 }}>
+                                            <small>Joined <TimeAgo date={user.date_joined} /></small>
+                                        </Typography>
                                         <Box className="mt-3 flex justify-center">
                                             <Chip
                                                 label="Portfolio"

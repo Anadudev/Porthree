@@ -2,53 +2,66 @@
 
 from django.urls import include, path
 from rest_framework import routers
-from api import views
 from .views import (
     GetUserByUsernameView,
     UserEducationsListView,
     UserPostsListView,
     UserExperienceListView,
     UserProjectsListView,
+    UserDetailsViewSet,
+    PostViewSet,
+    ProjectViewSet,
+    TagViewSet,
+    AllTagViewSet,
+    AllToolViewSet,
+    ToolViewSet,
+    SocialViewSet,
+    SkillViewSet,
+    EducationViewSet,
+    ExperienceViewSet,
+    RatingViewSet,
+    PostCommentViewSet,
+    ProjectCommentViewSet,
+    ShareViewSet,
+    LikeViewSet,
 )
 
 
 router = routers.DefaultRouter()
 # users route definition
-router.register(r"users", views.UserDetailsViewSet, basename="userdetails")
+router.register(r"users", UserDetailsViewSet, basename="userdetails")
 # posts route definition
-router.register(r"posts", views.PostViewSet, basename="post")
+router.register(r"posts", PostViewSet, basename="post")
 # projects route definition
-router.register(r"projects", views.ProjectViewSet, basename="project")
+router.register(r"projects", ProjectViewSet, basename="project")
 # Tag route definition
-router.register(r"tags", views.TagViewSet, basename="tag")
+router.register(r"tags", TagViewSet, basename="tag")
 # All Tags route definition
-router.register(r"all_tags", views.AllTagViewSet, basename="all_tag")
+router.register(r"all_tags", AllTagViewSet, basename="all_tag")
 # all Tools route definition
-router.register(r"all_tools", views.AllToolViewSet, basename="all_tool")
+router.register(r"all_tools", AllToolViewSet, basename="all_tool")
 # Tool route definition
-router.register(r"tools", views.ToolViewSet, basename="tool")
+router.register(r"tools", ToolViewSet, basename="tool")
 # Social route definition
-router.register(r"socials", views.SocialViewSet, basename="social")
+router.register(r"socials", SocialViewSet, basename="social")
 # Skill route definition
-router.register(r"skills", views.SkillViewSet, basename="skill")
+router.register(r"skills", SkillViewSet, basename="skill")
 # Education route definition
-router.register(r"educations", views.EducationViewSet, basename="education")
+router.register(r"educations", EducationViewSet, basename="education")
 # Experience route definition
-router.register(r"experiences", views.ExperienceViewSet, basename="experience")
+router.register(r"experiences", ExperienceViewSet, basename="experience")
 # Rating route definition
-router.register(r"ratings", views.RatingViewSet, basename="rating")
-# Comment route definition
-router.register(r"comments", views.CommentViewSet, basename="comment")
-# Reply route definition
-router.register(r"replies", views.ReplyViewSet, basename="replie")
+router.register(r"ratings", RatingViewSet, basename="rating")
+# Post Comment route definition
+router.register(r"post_comments", PostCommentViewSet, basename="postcomment")
+# project Comment route definition
+router.register(r"project_comments", ProjectCommentViewSet, basename="projectcomment")
 # Share route definition
-router.register(r"shares", views.ShareViewSet, basename="share")
+router.register(r"shares", ShareViewSet, basename="share")
 # Like route definition
-router.register(r"likes", views.LikeViewSet, basename="like")
+router.register(r"likes", LikeViewSet, basename="like")
 
-# Wire up our API using automatic URL routing.
-# Additionally, we include login URLs for the browsable API.
-
+# defining url patterns
 urlpatterns = [
     path("", include(router.urls)),
     path(
@@ -69,7 +82,7 @@ urlpatterns = [
     path(
         "users/<int:user_id>/experiences/",
         UserExperienceListView.as_view(),
-        name="user-expereinces-list",
+        name="user-experiences-list",
     ),
     path(
         "users/<int:user_id>/projects/",

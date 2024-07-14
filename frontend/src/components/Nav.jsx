@@ -7,17 +7,12 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from "react-router-dom";
 import { userTools } from '../data/NavLinks';
-
-
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 
 export function TemporaryDrawer({ navItems, color }) {
   const [open, setOpen] = React.useState(false);
@@ -163,7 +158,7 @@ function ResponsiveAppBar({ pages, custom }) {
   // console.log(user);
 
   return (
-    <AppBar sx={{ bgcolor: custom?.primary_color || '' }} position="sticky">
+    <AppBar sx={{ bgcolor: custom?.primary_color || '#1976d2' }} position="sticky">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -206,7 +201,7 @@ function ResponsiveAppBar({ pages, custom }) {
           </Typography>
           {/* large screen nav links */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page, index) => (
+            {pages?.map((page, index) => (
               <Button
                 key={index}
                 component={Link}

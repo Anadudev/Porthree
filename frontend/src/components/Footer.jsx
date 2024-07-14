@@ -1,14 +1,17 @@
 import React from 'react';
 import {
-  Paper, BottomNavigation, Typography,
-  BottomNavigationAction
+  Paper, BottomNavigation, Typography,Box
 } from '@mui/material';
 
+/**
+ * Renders a footer component with the current year in the copyright text.
+ *
+ * @return {JSX.Element} The footer component.
+ */
 export default function Footer() {
   const year = new Date().getFullYear();
   return (
-    <Paper elevation={0} sx={{mt:2}}>
-      <Paper sx={{ /* position: 'fixed', */ bottom: 0, left: 0, right: 0, padding: '10px' }} elevation={3}>
+    <Box  sx={{mt:2, borderTop:`2px solid` }} >
         <BottomNavigation
         sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}
         >
@@ -22,7 +25,6 @@ export default function Footer() {
           >Porthree copyright {year} </Typography>
           {/* <BottomNavigationAction /> */}
         </BottomNavigation>
-      </Paper>
-    </Paper>
+    </Box>
   );
 }

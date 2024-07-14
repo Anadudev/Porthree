@@ -8,8 +8,8 @@ import { Link } from 'react-router-dom';
 
 const Hero = () => {
     return (
-        <Box sx={{ flexGrow: 1 }} mb={10} pt={5} px={{ xs: 0, sm: 7 }} id='hero'>
-            <Grid pb={2} container component={Paper} px={2} elevation={6} spacing={3} height={{ xs: 'fit-content', lg: '37rem' }}>
+        <Box sx={{ flexGrow: 1, minHeight:'90vh' }}  id='hero'>
+            <Grid pb={2} container component={Paper} px={2} elevation={6} spacing={3} minHeight={'80vh'}>
                 <Grid item xs>
                     <Box className="flex justify-center align-middle h-full">
                         <Box className="self-center h-fit">

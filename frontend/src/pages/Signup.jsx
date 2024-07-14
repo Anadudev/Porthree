@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import axios from 'axios';
 import {
   Container, Grid, TextField,
-  Button, Alert
+  Button, Alert, Box
 } from '@mui/material';
 import ResponsiveAppBar from '../components/Nav';
 import Footer from '../components/Footer';
@@ -43,7 +43,7 @@ const Signup = () => {
     }),
     onSubmit: async (values, { setErrors }) => {
       try {
-        const response = await axios.post(`http://localhost:8000/auth_app/signup/`, values);
+        const response = await api.post(`auth_app/signup/`, values);
         const success_message = `Account successfully created ${response.data.username}`;
         setSuccess(<Alert severity="success">{success_message}.</Alert>);
         setTimeout(() => {
@@ -65,7 +65,7 @@ const Signup = () => {
   return (
     <div>
       <ResponsiveAppBar pages={NavLinks} />
-      <div className='p-[50px]'>
+      <Box padding={{ xs: "10px", sm: "50px", minHeight: '90vh' }}>
         <Breadcrumb path={useLocation()} />
         <Container>
           {success}
@@ -148,8 +148,8 @@ const Signup = () => {
             </Grid>
           </form>
         </Container>
+      </Box>
         <Footer />
-      </div>
     </div>
   );
 };

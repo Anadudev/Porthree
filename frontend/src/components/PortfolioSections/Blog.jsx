@@ -75,17 +75,17 @@ const Blogs = ({ blog, user }) => {
       <SectionHeader title={'Helpful writings'} custom={user} />
       <Box sx={{ width: '100%' }}>
         <CustomTabPanel value={value} index={0}>
-          <Box
-            spacing={2}
-            sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
-          >
-            {blog.loading ? <Typography>Loading posts.<CircularProgress size={18} color="inherit" /> </Typography> : (blog && blog.slice(0, 6).map((data, index) => (
-              <Box item key={index}>
-                <PostCard type='Project' post={data} mode={"Blog Post"} />
-              </Box>
-            )))}
-
-
+          <Box sx={{ flexGrow: 1 }}>
+            <Grid container
+              spacing={{ xs: 2, md: 3 }}
+              columns={{ xs: 1, sm: 8, md: 12 }}
+              sx={{ justifyContent: 'center' }}>
+              {blog && blog.slice(0, 6).map((data, index) => (
+                <Grid xs={2} sm={4} md={4} key={index}>
+                  <PostCard type='Post' post={data} mode={"Post"} />
+                </Grid>
+              ))}
+            </Grid>
           </Box>
           <Button component={Link} to={`/${user?.username}/posts`} sx={{ color: `${user?.secondary_color || ''}` }}>More...</Button>
         </CustomTabPanel>

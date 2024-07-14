@@ -9,7 +9,7 @@
 <!-- custom error display -->
 <!-- implement homepage (index page) -->
 
-<!-- update default django url field validation to accept urls starting with www. -->
+update default django url field validation to accept urls starting with www.
 
 Update project readme file
 

@@ -6,6 +6,7 @@ import Breadcrumb from '../components/Breadcrumb';
 import { useLocation } from 'react-router-dom';
 import PageTitle from './PageTitle';
 
+// work on this page
 const About = () => {
     PageTitle("About");
     return (

@@ -6,9 +6,11 @@ import {
   DialogContent, DialogActions, FormControlLabel,
   Switch
 } from '@mui/material';
-import axios from 'axios';
 import ImageUploadandPreview from './ImageUploadandPreview';
 import api from '../../../apiConfig';
+import Limiter from '../Limiter';
+import HTMLRenderer from '../HtmlRender';
+
 const ProjectsComponent = () => {
   const [projects, setProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -31,7 +33,7 @@ const ProjectsComponent = () => {
     const fetchProjects = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get(`http://localhost:8000/api/users/${userId.id}/projects/`);
+        const response = await api.get(`api/users/${userId.id}/projects/`);
         setProjects(response.data.results);
       } catch (error) {
         setError(error);
@@ -48,7 +50,7 @@ const ProjectsComponent = () => {
     setError(null);
     try {
       const projectData = { ...newProject, user: userId.url };
-      const response = await axios.post(`http://localhost:8000/api/projects/`, projectData, {
+      const response = await api.post(`api/projects/`, projectData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
@@ -71,7 +73,7 @@ const ProjectsComponent = () => {
     setIsLoading(true);
     setError(null);
     try {
-      await axios.delete(`http://localhost:8000/api/projects/${projectId}/`, {
+      await api.delete(`api/projects/${projectId}/`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
@@ -99,9 +101,9 @@ const ProjectsComponent = () => {
     try {
       if (!(newProject.image instanceof File)) {
         delete newProject.image;
-      };
+      }
       const projectData = { ...newProject, user: userId.url };
-      const response = await axios.put(`http://localhost:8000/api/projects/${editingProject.id}/`, projectData, {
+      const response = await api.put(`api/projects/${editingProject.id}/`, projectData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
@@ -153,11 +155,11 @@ const ProjectsComponent = () => {
                 <DialogContent>
                   <form onSubmit={handleSubmit}>
                     <Grid container spacing={2}>
-                          <ImageUploadandPreview 
-                            newProject={newProject}
-                            setNewProject={setNewProject}
-                            editingProject={editingProject}
-                            nature="project" />
+                      <ImageUploadandPreview
+                        newProject={newProject}
+                        setNewProject={setNewProject}
+                        editingProject={editingProject}
+                        nature="project" />
                       <Grid item xs={12}>
                         <TextField
                           label="Title"
@@ -224,7 +226,7 @@ const ProjectsComponent = () => {
               <List>
                 {projects.map((project, index) => (
                   <ListItem key={index}>
-                    <ListItemText primary={project.title} secondary={project.content} />
+                    <ListItemText primary={project.title} secondary={(<HTMLRenderer htmlContent={Limiter(project.content, 100)}/>)} />
                     <Button variant="contained" color="secondary" onClick={() => handleEditProject(project)}>
                       Edit
                     </Button>

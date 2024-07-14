@@ -28,9 +28,8 @@ import Loading from '../components/PageLoad';
 import { Pagination } from '@mui/material';
 import PostCard from '../components/PortfolioSections/PostCard';
 import { useSelector, useDispatch } from 'react-redux';
-import { decrement, increment, incrementByAmount, reset } from '../features/counter/counterSlice';
 import { ToggleTagChip, ToggleToolChip, ResetChip } from '../features/FilterChip/FilterChipSlice';
-
+import Grid from '@mui/material/Unstable_Grid2/Grid2';
 /**
 * Renders a PaperComponent with draggable functionality.
 *
@@ -208,8 +207,8 @@ export function SelectCategory() {
 
     useEffect(() => {
         async function getData() {
-            setTags(await GetRelation(`http://127.0.0.1:8000/api/all_tags/`))
-            setTools(await GetRelation(`http://127.0.0.1:8000/api/all_tools/`))
+            setTags(await GetRelation(`api/all_tags/`))
+            setTools(await GetRelation(`api/all_tools/`))
         }
         getData();
     }, []);
@@ -267,7 +266,7 @@ export function FilterView() {
             }
             // console.log(category);
 
-            setResult(await GetRelation(`http://127.0.0.1:8000/api/${category.value}/?page=${page}&publish=true${tagqp}${toolqp}`))
+            setResult(await GetRelation(`api/${category.value}/?page=${page}&publish=true${tagqp}${toolqp}`))
             if (result && result.results) {
                 // console.log(initialCount);
                 setData(result.results);
@@ -305,15 +304,17 @@ export function FilterView() {
     return (
         <Box>
             {data && data.length > 0 ? (<Box sx={{ width: '100%' }}>
-                <Box
-                    spacing={2}
-                    sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
-                >
-                    {data && data.slice(0, 6).map((value, index) => (
-                        <Box item key={index}>
-                            <PostCard post={value || ''} mode={category.value === "projects" ? "Project" : "Post"} />
-                        </Box>
-                    ))}
+                <Box sx={{ flexGrow: 1 }}>
+                    <Grid container
+                        spacing={{ xs: 2, md: 3 }}
+                        columns={{ xs: 1, sm: 8, md: 12 }}
+                        sx={{ justifyContent: 'center' }}>
+                        {data && data.slice(0, 6).map((value, index) => (
+                            <Grid xs={2} sm={4} md={4} key={index}>
+                                <PostCard type='Project' post={value} mode={value.tools ? "Project" : "Post"} />
+                            </Grid>
+                        ))}
+                    </Grid>
                 </Box>
                 <Box mt={5} sx={{ display: 'flex', justifyContent: 'center' }}>
                     <Pagination

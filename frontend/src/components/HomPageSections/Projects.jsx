@@ -3,43 +3,34 @@ import { GetRelation } from '../../data/GetUser';
 import PropTypes from 'prop-types';
 import {
   Typography, Button,
-  Box, CircularProgress
+  Box, CircularProgress, Paper
 } from '@mui/material';
 import PostCard from '../PortfolioSections/PostCard';
 import SectionTitle from './SectionTitle';
 import { Link } from 'react-router-dom';
+import { experimentalStyled as styled } from '@mui/material/styles';
+import Grid from '@mui/material/Unstable_Grid2';
 
-function CustomTabPanel(props) {
-  const { children, value, index, ...other } = props;
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  ...theme.typography.body2,
+  padding: theme.spacing(2),
+  textAlign: 'center',
+  color: theme.palette.text.secondary,
+}));
 
+export function ResponsiveGrid() {
   return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+        {Array.from(Array(6)).map((_, index) => (
+          <Grid xs={2} sm={4} md={4} key={index}>
+            <Item>xs=2</Item>
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
   );
-}
-
-CustomTabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
-};
-
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
 }
 
 
@@ -49,43 +40,33 @@ const Projects = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await GetRelation(`http://127.0.0.1:8000/api/projects/?publish=true`);
+      const result = await GetRelation(`api/projects/?publish=true`);
       setProjects(result.results)
     }
     fetchData();
   }, [])
-  const [value, setValue] = useState(0);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  if (!projects || projects.length <= 0) {
-    return null;
-  }
-
-  return (
+  return !projects || projects.length <= 0 ? "" : (
     <Box id='projects'>
       <SectionTitle title={'projects'} caption={'some projects by users on our platform'} />
       <Box sx={{ width: '100%' }}>
-        <CustomTabPanel value={value} index={0}>
-
-          <Box
-            spacing={2}
-            sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
-          >
-            {projects.loading ? <Typography>Loading Projects.<CircularProgress size={18} color="inherit" /> </Typography> : (
-              projects && projects.slice(0, 6).map((data, index) => (
-                <Box item key={index}>
-                  <PostCard type='Project' post={data} mode={"Project"} />
-                </Box>
-              )))}
-          </Box>
-          <Button component={Link} to={`/projects`}>More...</Button>
-        </CustomTabPanel>
+        <Box sx={{ flexGrow: 1 }}>
+          <Grid container
+            spacing={{ xs: 2, md: 3 }}
+            columns={{ xs: 1, sm: 8, md: 12 }}
+            sx={{ justifyContent: 'center' }}>
+            {projects && projects.map((data, index) => (
+              <Grid xs={2} sm={4} md={4} key={index}>
+                <PostCard type='Project' post={data} mode={"Project"} />
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+        <Button component={Link} to={`/projects`}>Explore More Projects...</Button>
       </Box>
     </Box>
   )
 }
+
 
 export default Projects

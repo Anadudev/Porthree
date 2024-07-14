@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, Fragment } from 'react'
 import { useLoaderData } from "react-router-dom";
-import GetUser, { GetRelation } from '../data/GetUser';
+import { GetRelation } from '../data/GetUser';
 import {
   Box, Typography, Pagination,
   Dialog, DialogContent,
@@ -16,7 +16,7 @@ import { useLocation } from 'react-router-dom';
 import Loading from '../components/PageLoad';
 import HTMLRenderer from '../components/HtmlRender';
 import Limiter from '../components/Limiter';
-
+import HiddenPortfolioCard from '../components/HiddenPortfolioCard';
 
 const Skills = () => {
   const userId = useLoaderData();
@@ -55,8 +55,8 @@ const Skills = () => {
 
   useEffect(() => {
     async function fetchData() {
-      setUser((await GetUser(userId)));
-      setResult(await GetRelation(`http://127.0.0.1:8000/api/skills/?page=${page}&user=${userId.id}`));
+      setUser(await GetRelation(`api/users/${userId.id}/`));
+      setResult(await GetRelation(`api/skills/?page=${page}&user=${userId.id}`));
       if (result && result.results) {
         setSkills(result.results);
         if (initialCount === 0) {
@@ -78,14 +78,14 @@ const Skills = () => {
     return <Loading />
   }
   // console.log(user);
-  return (
+  return user.visibility ? (
     <Fragment>
 
       <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
-      <Box padding={{ xs: "10px", sm: "50px" }}>
+      <Box padding={{ xs: "10px", sm: "50px", minHeight: '90vh' }}>
         <Breadcrumb path={location} />
         <Box className='flex justify-center'>
-          {skills && <Box>
+          {skills && skills.length > 0 ? <Box>
             <Box sx={{ flexGrow: 1, p: 2 }}>
               <Grid
                 container
@@ -134,13 +134,13 @@ const Skills = () => {
                 />
               </Box>
             </Box>
-          </Box>}
+          </Box> : ''}
         </Box>
       </Box>
       <Footer />
     </Fragment>
 
-  )
+  ) : <HiddenPortfolioCard user={user.username}/>
 }
 
 export default Skills;

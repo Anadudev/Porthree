@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useLoaderData } from "react-router-dom";
-import GetUser, { GetRelation } from '../data/GetUser';
+import { GetRelation } from '../data/GetUser';
 import AboutCard from '../components/PortfolioSections/AboutCard';
 import { Box, Card, Typography, Pagination } from "@mui/material";
 import ResponsiveAppBar from "../components/Nav";
@@ -10,7 +10,7 @@ import PageTitle from './PageTitle';
 import Breadcrumb from '../components/Breadcrumb';
 import { useLocation } from 'react-router-dom';
 import Loading from '../components/PageLoad';
-
+import HiddenPortfolioCard from '../components/HiddenPortfolioCard';
 
 const Experiences = () => {
   const userId = useLoaderData();
@@ -27,8 +27,8 @@ const Experiences = () => {
 
   useEffect(() => {
     async function fetchData() {
-      setUser((await GetUser(userId)));
-      setResult(await GetRelation(`http://127.0.0.1:8000/api/users/${userId.id}/experiences/?page=${page}`));
+      setUser((await GetRelation(`api/users/${userId.id}/`)));
+      setResult(await GetRelation(`api/users/${userId.id}/experiences/?page=${page}`));
       if (result && result.results) {
         setExperiences(result.results);
         if (initialCount === 0) {
@@ -50,15 +50,15 @@ const Experiences = () => {
     return <Loading />
   }
   // console.log(user);
-  return (
+  return user.visibility ? (
     <React.Fragment>
       <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
-      <Box padding={{ xs: "10px", sm: "50px" }}>
+      <Box padding={{ xs: "10px", sm: "50px", minHeight: '90vh' }}>
         <Breadcrumb path={location} />
         <Box className='flex justify-center'>
           {experiences && <Card className={`p-2 xl:p-6 w-[60rem]`}>
             <Typography variant='h6' component={'p'} mb={'20px'} className='font-dark uppercase'>Experiences</Typography>
-            {experiences.slice(0, 4).map((data, index) => (
+            {experiences.map((data, index) => (
               <AboutCard key={index} data={data} customize={user} />
             ))}
             <Box mt={5} sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -76,7 +76,7 @@ const Experiences = () => {
       <Footer />
     </React.Fragment>
 
-  )
+  ) : <HiddenPortfolioCard user={user.username}/>
 }
 
 export default Experiences;

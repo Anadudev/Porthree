@@ -13,9 +13,7 @@ import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import { styled } from "@mui/material/styles";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
-import CommentIcon from "@mui/icons-material/Comment";
 import BgImage from "/src/assets/image.jpg";
-import { ErrorCard } from "./Error";
 import Limiter from "../components/Limiter";
 import { Link as RL } from "react-router-dom";
 import HTMLRenderer from "../components/HtmlRender";
@@ -25,6 +23,9 @@ import { ToggleTagChip, ToggleToolChip, ResetChip } from '../features/FilterChip
 import { useNavigate } from 'react-router-dom';
 import Comment from "../components/Comment";
 import { ReplyFormDialog } from "../components/Comment";
+import { TimeSinceComponent } from "../components/PortfolioSections/PostCard";
+import HiddenPortfolioCard from "../components/HiddenPortfolioCard";
+
 
 const HtmlTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -41,18 +42,6 @@ const HtmlTooltip = styled(({ className, ...props }) => (
 const Project = () => {
   PageTitle("Project");
   const projectList = useLoaderData();
-  if (!projectList) {
-    return <ErrorCard
-      error={'not found'}
-      code={404}
-      content={'project does not exist in porthree please check your browsers url'
-      }
-      nav={true}
-    />;
-  }
-  if (projectList.results.length < 1) {
-    return <h1>Project Not Found</h1>;
-  }
   const project = projectList.results[0];
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -66,6 +55,8 @@ const Project = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
+
   const toggleChip = (chipType = '', value) => {
     dispatch(ResetChip('tools'))
     dispatch(ResetChip('tags'));
@@ -108,12 +99,11 @@ const Project = () => {
   if (project.length < 1) {
     return <h1>Project Not Found</h1>;
   }
-
-  return (
+  return user.visibility ? (
     <React.Fragment>
       <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
-      <Box padding={{ xs: "10px", sm: "50px" }}>
-        <Breadcrumb path={useLocation()} />
+      <Box padding={{ xs: "10px", sm: "50px", minHeight: '90vh' }}>
+        <Breadcrumb path={location} />
         <Box sx={{ display: 'flex', flexDirection: 'column' }} className="justify-center align-middle">
           <Card sx={{ width: '90%', maxWidth: "60rem", alignSelf: 'center' }}>
             <CardMedia
@@ -204,7 +194,7 @@ const Project = () => {
                     </AvatarGroup>
                   </Box>
                 </Box>
-                <Box px={"10px"} className="self-center">
+                <Box px={"10px"} sx={{ display: 'flex', justifyContent: 'space-around' }} className="self-center">
                   <Box sx={{ flexGrow: 1 }}>
                     Tools:{" "}
                     {tools?.map((data, index) => (
@@ -218,6 +208,7 @@ const Project = () => {
                       />
                     ))}
                   </Box>
+                  {<TimeSinceComponent data={project} />}
                 </Box>
               </Box>
               <Typography
@@ -252,28 +243,18 @@ const Project = () => {
                 <ShareIcon />
               </IconButton>
               <IconButton aria-label="comment">
-                <ReplyFormDialog actionType={'comment'} />
+                <ReplyFormDialog type={'project'} replyType={'project'} parent={project.url} />
               </IconButton>
             </CardActions>
           </Card>
           <Box sx={{ width: '90%', maxWidth: "60rem", alignSelf: 'center' }}>
-            <Typography
-              variant='h5'
-              sx={{
-                fontWeight: '900',
-                color: `${user?.secondary_color || ''}`,
-                textAlign: 'center',
-                my: 2
-              }}>1k Comments</Typography>
-            <Card>
-              <Comment />
-            </Card>
+            <Comment author={user.username} listTitle={"project"} parent={project.id} />
           </Box>
         </Box>
       </Box>
       <Footer />
     </React.Fragment>
-  );
+  ) : <HiddenPortfolioCard user={user.username}/>;
 };
 
 export default Project;

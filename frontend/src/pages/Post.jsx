@@ -12,10 +12,8 @@ import {
 } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
-import CommentIcon from '@mui/icons-material/Comment';
 import BgImage from '/src/assets/image.jpg';
 import Error from './Error';
-import { GetItem } from '../data/GetUser';
 import { Link as RL } from 'react-router-dom';
 import HTMLRenderer from '../components/HtmlRender';
 import { GetRelation } from '../data/GetUser';
@@ -24,6 +22,8 @@ import { ToggleTagChip, ToggleToolChip, ResetChip } from '../features/FilterChip
 import { useNavigate } from 'react-router-dom';
 import Comment from '../components/Comment';
 import { ReplyFormDialog } from '../components/Comment';
+import { TimeSinceComponent } from '../components/PortfolioSections/PostCard';
+import HiddenPortfolioCard from '../components/HiddenPortfolioCard';
 
 const Post = () => {
     PageTitle("Post");
@@ -66,10 +66,10 @@ const Post = () => {
         fetchData();
     }, [post]);
 
-    return (
+    return user.visibility ? (
         <React.Fragment>
             <ResponsiveAppBar pages={UserNavLinks(user)} custom={user} />
-            <Box padding={{ xs: "10px", sm: "50px" }}>
+            <Box padding={{ xs: "10px", sm: "50px", minHeight: '90vh' }}>
                 <Breadcrumb path={useLocation()} />
                 <Box sx={{ display: 'flex', flexDirection: 'column' }} className="justify-center align-middle">
                     <Card sx={{ width: '90%', maxWidth: "60rem", alignSelf: 'center' }}>
@@ -89,10 +89,15 @@ const Post = () => {
                                     src={user.image || "/static/images/avatar/1.jpg"}
                                     sx={{ width: 56, height: 56, margin: '5px', marginRight: "10px" }}
                                 />
-                                <Box>
-                                    <Typography sx={{ fontWeight: 700 }}>{user.first_name} {user.last_name || ''}</Typography>
-                                    <Link component={RL} to={`/${user.username}`} sx={{ fontWeight: 700, color: `${user?.primary_color || ''}` }} className="capitalize">{user.username || ''}</Link>
-                                    <Typography sx={{ fontWeight: 700 }}>{user.career || ''}</Typography>
+                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                                    <Box>
+                                        <Typography sx={{ fontWeight: 700 }}>{user.first_name} {user.last_name || ''}</Typography>
+                                        <Link component={RL} to={`/${user.username}`} sx={{ fontWeight: 700, color: `${user?.primary_color || ''}` }} className="capitalize">{user.username || ''}</Link>
+                                        <Typography sx={{ fontWeight: 700 }}>{user.career || ''}</Typography>
+                                    </Box>
+                                    <Box >
+                                        <TimeSinceComponent data={post} />
+                                    </Box>
                                 </Box>
                             </Box>
                             <Typography variant="p"
@@ -120,28 +125,18 @@ const Post = () => {
                                 <ShareIcon />
                             </IconButton>
                             <IconButton aria-label="comment">
-                                <ReplyFormDialog actionType={'comment'} />
+                                <ReplyFormDialog type={'post'} replyType={'post'} parent={post.url} />
                             </IconButton>
                         </CardActions>
                     </Card>
                     <Box sx={{ width: '90%', maxWidth: "60rem", alignSelf: 'center' }}>
-                        <Typography
-                            variant='h5'
-                            sx={{
-                                fontWeight: '900',
-                                color: `${user?.secondary_color || ''}`,
-                                textAlign: 'center',
-                                my: 2
-                            }}>1k Comments</Typography>
-                        <Card>
-                            <Comment />
-                        </Card>
+                        <Comment author={user} listTitle={"post"} parent={post.id} />
                     </Box>
                 </Box>
             </Box>
             <Footer />
         </React.Fragment>
-    )
+    ) : <HiddenPortfolioCard user={user.username}/>
 }
 
 export default Post;

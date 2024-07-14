@@ -30,7 +30,7 @@ const ToolsComponent = () => {
           relationList.push(data)
         }
 
-        // const response = await axios.get(`http://localhost:8000/api/users/${userId.id}/tools/`);
+        // const response = await api.get(`api/users/${userId.id}/tools/`);
         setTools(relationList);
       } catch (error) {
         setError(error);
@@ -52,7 +52,7 @@ const ToolsComponent = () => {
 
 
       // Send the POST request with the Authorization header
-      const response = await axios.post(`http://localhost:8000/api/tools/`, toolData, {
+      const response = await api.post(`api/tools/`, toolData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json', // Assuming the API expects JSON data
@@ -75,7 +75,7 @@ const ToolsComponent = () => {
     try {
 
       // Send the DELETE request with the Authorization header
-      await axios.delete(`http://localhost:8000/api/tools/${toolId}/`, {
+      await api.delete(`api/tools/${toolId}/`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

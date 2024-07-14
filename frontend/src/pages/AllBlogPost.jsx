@@ -10,7 +10,7 @@ import { NavLinks } from '../data/NavLinks';
 import { useLocation } from 'react-router-dom';
 import Loading from '../components/PageLoad';
 import Footer from '../components/Footer';
-
+import Grid from '@mui/material/Unstable_Grid2/Grid2';
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
 
@@ -36,6 +36,7 @@ CustomTabPanel.propTypes = {
     index: PropTypes.number.isRequired,
     value: PropTypes.number.isRequired,
 };
+
 const AllBlogPost = () => {
     PageTitle('All Posts')
     const [posts, setPosts] = useState('');
@@ -49,7 +50,7 @@ const AllBlogPost = () => {
 
     useEffect(() => {
         async function fetchData() {
-            setResult(await GetRelation(`http://127.0.0.1:8000/api/posts/?page=${page}&publish=true`));
+            setResult(await GetRelation(`api/posts/?page=${page}&publish=true`));
             if (result && result.results) {
                 setPosts(result.results);
                 if (initialCount === 0) {
@@ -69,22 +70,24 @@ const AllBlogPost = () => {
     if (loading) {
         return <Loading />
     }
-    // console.log(posts);
     return (
         <React.Fragment>
             <ResponsiveAppBar pages={NavLinks} />
-                <Box padding={{ xs: "10px", sm: "50px" }}>
-                    <Breadcrumb path={location} />
-                    {posts && posts.length > 0 ?(<Box sx={{ width: '100%' }}>
-                        <Box
-                            spacing={2}
-                            sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
-                        >
-                            {posts.map((data, index) => (
-                                <Box item key={index}>
-                                    <PostCard type='Project' post={data} mode={"Blog Post"} />
-                                </Box>
-                            ))}
+            <Box padding={{ xs: "10px", sm: "50px", minHeight: '100vh' }}>
+                <Breadcrumb path={location} />
+                {posts && posts.length > 0 ? (
+                    <Box sx={{ width: '100%' }}>
+                        <Box sx={{ flexGrow: 1 }}>
+                            <Grid container
+                                spacing={{ xs: 2, md: 3 }}
+                                columns={{ xs: 1, sm: 8, md: 12 }}
+                                sx={{ justifyContent: 'center' }}>
+                                {posts && posts.map((data, index) => (
+                                    <Grid xs={2} sm={4} md={4} key={index}>
+                                        <PostCard type='Post' post={data} mode={"Post"} />
+                                    </Grid>
+                                ))}
+                            </Grid>
                         </Box>
                         <Box mt={5} sx={{ display: 'flex', justifyContent: 'center' }}>
                             <Pagination
@@ -95,9 +98,9 @@ const AllBlogPost = () => {
                                 onChange={handleChange}
                             />
                         </Box>
-                    </Box>) : <Typography textAlign={'center'}>No Posts</Typography>}
-                </Box>
-            <Footer/>
+                    </Box>) : ''}
+            </Box>
+            <Footer />
         </React.Fragment >
     )
 }
