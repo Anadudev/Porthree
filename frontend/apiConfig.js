@@ -14,7 +14,7 @@
 import axios from "axios";
 
 // The base URL of the API server.
-const APIBaseURL = `https://porthreebackend.onrender.com`;
+const APIBaseURL = `https://porthreebackend.onrender.com/`;
 
 // The access token from local storage.
 // This is used to authenticate requests to the API server.
