@@ -14,7 +14,8 @@
 import axios from "axios";
 
 // The base URL of the API server.
-const APIBaseURL = `http://localhost:8000/`;
+const APIBaseURL = `https://porthreebackend.onrender.com/`;
+// const APIBaseURL = `http://localhost:8000/`;
 
 // The access token from local storage.
 // This is used to authenticate requests to the API server.
@@ -25,7 +26,7 @@ const token = localStorage.getItem('access_token');
 // The headers object is commented out. Uncomment it to add headers.
 const api = axios.create({
     baseURL: APIBaseURL,
-    timeout: 1000,
+    timeout: 9000,
     /*  headers: {
         'Authorization': `Bearer ${token}`,
         'X-Custom-Header': 'foobar',
