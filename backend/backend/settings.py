@@ -29,6 +29,7 @@ DEBUG = True
 # list allowed hosts
 ALLOWED_HOSTS = [
     "porthreebackend.onrender.com",
+    "porthreeapi.koyeb.app",
 ]
 
 # permit frontend to access server
@@ -182,6 +183,7 @@ SECURE_HSTS_PRELOAD = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
