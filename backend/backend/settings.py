@@ -29,6 +29,7 @@ DEBUG = True
 # list allowed hosts
 ALLOWED_HOSTS = [
     "porthreebackend.onrender.com",
+    "porthreeapi.koyeb.app",
 ]
 
 # permit frontend to access server
