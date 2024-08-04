@@ -18,3 +18,5 @@ backend/api/migrations/*.py
 node_modules/
 backend/media/profile_pics/
 backend/db.sqlite3
+frontend/yarn.lock
+backend/env
